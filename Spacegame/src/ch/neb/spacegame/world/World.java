@@ -1,13 +1,20 @@
 package ch.neb.spacegame.world;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
+import java.util.TreeSet;
 
 import ch.neb.spacegame.Arts;
 import ch.neb.spacegame.Camera;
+import ch.neb.spacegame.CollisionListener;
+import ch.neb.spacegame.DamageIndicatorEntity;
 import ch.neb.spacegame.GameEntity;
 import ch.neb.spacegame.Sprite;
 import ch.neb.spacegame.UpdateContext;
@@ -24,6 +31,7 @@ public class World {
 	private Player player;
 
 	private List<GameEntity> gameEntities = new ArrayList<>();
+	private List<CollisionListener> collisionListeners = new ArrayList<>();
 
 	private Queue<GameEntity> removeGameObejctQueue = new LinkedList<>();
 	private Queue<GameEntity> addGameObjectQueue = new LinkedList<>();
@@ -33,18 +41,21 @@ public class World {
 	private long debrisSpawnTime = 0;
 	private static final long DEBRIS_SPAWN_TIME = 50;
 
+	private final Font pixel72;
+
 	public World(int width, int height) {
 		super();
 		this.width = width;
 		this.height = height;
+
+		pixel72 = Arts.getFont(72);
 
 		createPlayer();
 		createStars(2500, 2000, 100);
 
 		spawnInitialDebris(200);
 
-		// gameEntities.add(new SpaceRock(this, new Vec2(0,1), new
-		// Vec2(200,200), 100000, 0.0f, 0.0f));
+		addEntity(new DamageIndicatorEntity(this));
 	}
 
 	public void spawnDebris(final Vec2 position, float theta) {
@@ -60,10 +71,10 @@ public class World {
 		synchronized (this) {
 			if (Math.random() < 0.2f) {
 				final float maxHealth = (float) (Math.random() * 10 + 20);
-				gameEntities.add(new SmallSpaceDebris(this, direction, position, maxHealth, speed, angularSpeed));
+				addEntity(new SmallSpaceDebris(this, direction, position, maxHealth, speed, angularSpeed));
 			} else {
 				final float maxHealth = (float) (Math.random() * 100 + 50);
-				gameEntities.add(new SpaceRock(this, direction, position, maxHealth, speed, angularSpeed));
+				addEntity(new SpaceRock(this, direction, position, maxHealth, speed, angularSpeed));
 			}
 		}
 	}
@@ -79,7 +90,7 @@ public class World {
 
 	private void createPlayer() {
 		player = new Player(this);
-		gameEntities.add(player);
+		addEntity(player);
 	}
 
 	public Player getPlayer() {
@@ -135,6 +146,8 @@ public class World {
 			final GameEntity poll = addGameObjectQueue.poll();
 			gameEntities.add(poll);
 		}
+
+		Collections.sort(gameEntities);
 	}
 
 	private synchronized void removeEntities() {
@@ -152,13 +165,20 @@ public class World {
 		}
 
 		for (GameEntity object : gameEntities) {
-			if (camera.isInView(object.bounds)) {
+			if (object.isInView(camera)) {
 				object.render(graphics, camera);
 			}
+		}
+
+		if (!player.isAlive()) {
+			graphics.setFont(pixel72);
+			graphics.setColor(Color.WHITE);
+			graphics.drawString("Game Over!", 200, 300);
 		}
 	}
 
 	public void checkCollisions() {
+
 		for (int i = 0; i < gameEntities.size(); ++i) {
 			for (int j = i; j < gameEntities.size(); ++j) {
 				final GameEntity a = gameEntities.get(i);
@@ -167,6 +187,11 @@ public class World {
 				if (a.shouldCollide(b) && b.shouldCollide(a) && a.collidesWith(b)) {
 					a.onCollide(b, this);
 					b.onCollide(a, this);
+
+					// fire collision events
+					for (CollisionListener collisionListener : collisionListeners) {
+						collisionListener.onCollide(a, b);
+					}
 				}
 			}
 		}
@@ -182,5 +207,9 @@ public class World {
 
 	public void removeEntity(GameEntity entity) {
 		removeGameObejctQueue.add(entity);
+	}
+
+	public void addCollisionListener(CollisionListener collisionListener) {
+		this.collisionListeners.add(collisionListener);
 	}
 }

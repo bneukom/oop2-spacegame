@@ -29,8 +29,10 @@ public class Rocket extends Bullet {
 		if (target != null && target.getHealth() > 0) {
 			final Vec2 targetPosition = target.getPosition();
 
-			// aim for the target but only change direction in small steps
-			final Vec2 rocketToMobVector = Vec2.subtract(targetPosition, position).normalize().multiply(0.009f * updateContext.deltaT);
+			// aim for the target but only change direction in small steps (and
+			// make it dependent on the speed so if the rocket is slow, it
+			// cannot turn as fast).
+			final Vec2 rocketToMobVector = Vec2.subtract(targetPosition, position).normalize().multiply(0.009f * updateContext.deltaT * (speed + 0.4f));
 
 			direction.add(rocketToMobVector).normalize();
 		}

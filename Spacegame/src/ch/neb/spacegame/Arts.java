@@ -1,5 +1,7 @@
 package ch.neb.spacegame;
 
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -29,5 +31,16 @@ public class Arts {
 			throw new IllegalArgumentException("Invalid image path.");
 		}
 
+	}
+
+	public static Font getFont(float size) {
+		try {
+			File resource = new File(Arts.class.getClassLoader().getResource("font/visitor1.ttf").toURI());
+			return Font.createFont(Font.TRUETYPE_FONT, resource).deriveFont(size);
+		} catch (FontFormatException | IOException | URISyntaxException e1) {
+			e1.printStackTrace();
+		}
+
+		return null;
 	}
 }

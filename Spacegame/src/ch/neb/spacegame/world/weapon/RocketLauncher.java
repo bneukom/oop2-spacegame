@@ -12,7 +12,7 @@ import ch.neb.spacegame.world.bullets.Rocket;
 
 public class RocketLauncher extends Gun {
 
-	private float halfConeAngle = (float) Math.toRadians(30);
+	private float halfConeAngle = (float) Math.toRadians(25);
 
 	public RocketLauncher(long cooldown, World world) {
 		super(cooldown, world);
@@ -52,8 +52,6 @@ public class RocketLauncher extends Gun {
 			final BufferedImage rocket = Arts.rocket;
 			final Vec2 shootPosition = new Vec2(position);
 
-			// shootPosition.x += getWidth() / 2;
-			// shootPosition.y += getHeight() / 2;
 			shootPosition.x -= rocket.getWidth() / 2;
 			shootPosition.y -= rocket.getHeight() / 2;
 
@@ -71,7 +69,7 @@ public class RocketLauncher extends Gun {
 			}
 
 			world.addEntity(new Rocket(world, rocket, startDirection, nearestMob, shootPosition, (float) (GameEntity.DEFAULT_SPEED + (Math.random() * 0.1f) - 0.05f), 10));
-			startAngle += thetaOffset / 10;
+			startAngle += thetaOffset / 50;
 		}
 	}
 

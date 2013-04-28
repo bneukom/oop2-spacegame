@@ -44,9 +44,13 @@ public class Mob extends DrawableGameEntity {
 		graphics.fillRect((int) (x - (width - getWidth())), (int) y, (int) ((health / maxHealth) * width), 5);
 	}
 
+	public boolean isAlive() {
+		return health > 0;
+	}
+
 	public void doDamage(float damage) {
 		health -= damage;
-		if (health < 0) {
+		if (health <= 0) {
 			world.removeEntity(this);
 		}
 		health = Math.max(health, 0);

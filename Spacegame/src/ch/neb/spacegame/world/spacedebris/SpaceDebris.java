@@ -6,6 +6,7 @@ import ch.neb.spacegame.GameEntity;
 import ch.neb.spacegame.UpdateContext;
 import ch.neb.spacegame.math.Vec2;
 import ch.neb.spacegame.world.Mob;
+import ch.neb.spacegame.world.Player;
 import ch.neb.spacegame.world.World;
 import ch.neb.spacegame.world.bullets.Bullet;
 
@@ -50,7 +51,7 @@ public abstract class SpaceDebris extends Mob {
 
 	@Override
 	public boolean shouldCollide(GameEntity other) {
-		return other instanceof Bullet;
+		return other instanceof Bullet || other instanceof Player;
 	}
 
 }

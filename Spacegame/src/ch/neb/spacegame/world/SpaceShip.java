@@ -6,19 +6,18 @@ import java.util.List;
 
 import ch.neb.spacegame.UpdateContext;
 import ch.neb.spacegame.math.Vec2;
-import ch.neb.spacegame.world.weapon.NormalGun;
-import ch.neb.spacegame.world.weapon.RocketLauncher;
 import ch.neb.spacegame.world.weapon.Gun;
 
 public class SpaceShip extends Mob {
 
-	private List<Gun> guns = new ArrayList<Gun>();
+	protected List<Gun> guns = new ArrayList<Gun>();
 
 	public SpaceShip(BufferedImage image, World world) {
 		super(world, image);
-		
-		guns.add(new RocketLauncher(800, world));
-		guns.add(new NormalGun(200, world));
+	}
+	
+	public SpaceShip(World world, BufferedImage image, float speed, float maxHealth) {
+		super(world, image, speed, maxHealth);
 	}
 
 	@Override

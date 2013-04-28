@@ -6,7 +6,7 @@ import java.awt.geom.Rectangle2D;
 import ch.neb.spacegame.math.Vec2;
 import ch.neb.spacegame.world.World;
 
-public abstract class GameEntity {
+public abstract class GameEntity implements Comparable<GameEntity> {
 
 	/**
 	 * The world position of the {@link GameEntity}. Default is (0, 0)
@@ -31,6 +31,8 @@ public abstract class GameEntity {
 	public static float DEFAULT_SPEED = 0.3f;
 
 	public final World world;
+
+	private Layer layer = Layer.DEFAULT;
 
 	public GameEntity(World world) {
 		this(world, new Vec2(0, 0), new Vec2(1, 0));
@@ -88,6 +90,10 @@ public abstract class GameEntity {
 		return bounds.intersects(other.bounds);
 	}
 
+	public boolean isInView(Camera camera) {
+		return camera.isInView(bounds);
+	}
+
 	public Rectangle2D.Float getBounds() {
 		return bounds;
 	}
@@ -96,8 +102,22 @@ public abstract class GameEntity {
 		return position;
 	}
 
+	public Layer getLayer() {
+		return layer;
+	}
+
+	public void setLayer(Layer layer) {
+		this.layer = layer;
+	}
+
+	@Override
+	public int compareTo(GameEntity o) {
+		return layer.compareTo(o.layer);
+	}
+
 	public abstract float getWidth();
 
 	public abstract float getHeight();
+
 
 }

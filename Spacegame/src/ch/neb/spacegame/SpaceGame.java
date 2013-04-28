@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.DisplayMode;
 import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
@@ -14,9 +13,6 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -57,12 +53,7 @@ public class SpaceGame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setIgnoreRepaint(true);
 
-		try {
-			File resource = new File(getClass().getClassLoader().getResource("font/visitor1.ttf").toURI());
-			font = Font.createFont(Font.TRUETYPE_FONT, resource).deriveFont(16.0f);
-		} catch (FontFormatException | IOException | URISyntaxException e1) {
-			e1.printStackTrace();
-		}
+		font = Arts.getFont(16);
 
 		if (fullScreen) {
 			setUndecorated(true);
@@ -152,14 +143,15 @@ public class SpaceGame extends JFrame {
 
 				// display frames per second...
 				g2d.setColor(Color.WHITE);
-				g2d.drawString(String.format("fps: %s", Math.round(1e9 / (deltaT + 1))), 5, resolutionY - 10);
+				g2d.setFont(font);
+				g2d.drawString(String.format("fps: %s", Math.round(1e9 / (deltaT + 1))), 5, 10);
 
 				graphics = buffer.getDrawGraphics();
 				graphics.drawImage(bi, 0, yOffset, null);
 
 				if (!buffer.contentsLost())
 					buffer.show();
-				
+
 				Thread.yield();
 
 			} finally {
