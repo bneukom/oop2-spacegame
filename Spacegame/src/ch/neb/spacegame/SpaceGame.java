@@ -174,7 +174,7 @@ public class SpaceGame extends JFrame {
 
 			@Override
 			public void run() {
-				final SpaceGame spacegame = new SpaceGame(800, 600, true);
+				final SpaceGame spacegame = new SpaceGame(800, 600, false);
 				final Thread gmaeThread = new Thread(new Runnable() {
 
 					@Override

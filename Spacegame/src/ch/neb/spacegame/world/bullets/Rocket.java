@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 
 import ch.neb.spacegame.Animation;
 import ch.neb.spacegame.Arts;
+import ch.neb.spacegame.CollisionListener;
 import ch.neb.spacegame.UpdateContext;
 import ch.neb.spacegame.math.Vec2;
 import ch.neb.spacegame.world.Explosion;
@@ -15,8 +16,8 @@ public class Rocket extends Bullet {
 	private float maxSpeed = 1.9f;
 	private Mob target;
 
-	public Rocket(World world, BufferedImage image, Vec2 direction, Mob target, Vec2 position, float initialspeed, float damage) {
-		super(world, image, direction, position, initialspeed, damage);
+	public Rocket(World world, CollisionListener collisionListener, BufferedImage image, Vec2 direction, Mob target, Vec2 position, float initialspeed, float damage) {
+		super(world, collisionListener, image, direction, position, initialspeed, damage);
 		this.target = target;
 	}
 

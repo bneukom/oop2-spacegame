@@ -2,6 +2,7 @@ package ch.neb.spacegame.world.bullets;
 
 import java.awt.image.BufferedImage;
 
+import ch.neb.spacegame.CollisionListener;
 import ch.neb.spacegame.GameEntity;
 import ch.neb.spacegame.UpdateContext;
 import ch.neb.spacegame.math.Vec2;
@@ -16,9 +17,11 @@ public class Bullet extends DrawableGameEntity {
 	public final float damage;
 
 	public static final float MAX_LIFE = 2000;
+	private CollisionListener collisionListener;
 
-	public Bullet(World world, BufferedImage image, Vec2 direction, Vec2 position, float speed, float damage) {
+	public Bullet(World world, CollisionListener collisionListener, BufferedImage image, Vec2 direction, Vec2 position, float speed, float damage) {
 		super(world, image, speed);
+		this.collisionListener = collisionListener;
 
 		this.direction = direction;
 		this.damage = damage;
@@ -46,6 +49,9 @@ public class Bullet extends DrawableGameEntity {
 
 		Mob hitMob = (Mob) other;
 		hitMob.doDamage(damage);
+
+		if (collisionListener != null)
+			collisionListener.onCollide(this, other);
 
 		world.removeEntity(this);
 

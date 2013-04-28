@@ -16,6 +16,7 @@ public class Mob extends DrawableGameEntity {
 
 	protected float health;
 	protected float maxHealth;
+	protected boolean drawHealth = true;
 
 	public Mob(World world, BufferedImage image) {
 		this(world, image, DEFAULT_SPEED);
@@ -39,9 +40,11 @@ public class Mob extends DrawableGameEntity {
 		float x = position.x - camera.getX();
 		float y = position.y - camera.getY();
 
-		graphics.setColor(Color.GREEN);
-		float width = Math.max(20, getWidth());
-		graphics.fillRect((int) (x - (width - getWidth())), (int) y, (int) ((health / maxHealth) * width), 5);
+		if (drawHealth) {
+			graphics.setColor(Color.GREEN);
+			float width = Math.max(20, getWidth());
+			graphics.fillRect((int) (x - (width - getWidth())), (int) y, (int) ((health / maxHealth) * width), 5);
+		}
 	}
 
 	public boolean isAlive() {
@@ -54,6 +57,10 @@ public class Mob extends DrawableGameEntity {
 			world.removeEntity(this);
 		}
 		health = Math.max(health, 0);
+	}
+
+	public float getMaxHealth() {
+		return maxHealth;
 	}
 
 	public float getHealth() {

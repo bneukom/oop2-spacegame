@@ -19,7 +19,7 @@ public class DamageIndicatorEntity extends GameEntity {
 
 			@Override
 			public void onCollide(GameEntity a, GameEntity b) {
-				if (a == world.getPlayer() || b == world.getPlayer()) {
+				if ((a == world.getPlayer() || b == world.getPlayer()) && hitDelay == 0) {
 					// exactly the time the player is immune to new hits
 					hitDelay = Player.COLLIDE_COOLDOWN;
 				}

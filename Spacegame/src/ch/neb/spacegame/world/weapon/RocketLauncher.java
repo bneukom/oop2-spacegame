@@ -3,6 +3,7 @@ package ch.neb.spacegame.world.weapon;
 import java.awt.image.BufferedImage;
 
 import ch.neb.spacegame.Arts;
+import ch.neb.spacegame.CollisionListener;
 import ch.neb.spacegame.GameEntity;
 import ch.neb.spacegame.math.Vec2;
 import ch.neb.spacegame.world.Mob;
@@ -14,8 +15,8 @@ public class RocketLauncher extends Gun {
 
 	private float halfConeAngle = (float) Math.toRadians(25);
 
-	public RocketLauncher(long cooldown, World world) {
-		super(cooldown, world);
+	public RocketLauncher(long cooldown, World world, CollisionListener collisionListener) {
+		super(cooldown, world, collisionListener);
 	}
 
 	@Override
@@ -68,7 +69,8 @@ public class RocketLauncher extends Gun {
 				startDirection = new Vec2((float) Math.cos(startAngle), (float) Math.sin(startAngle));
 			}
 
-			world.addEntity(new Rocket(world, rocket, startDirection, nearestMob, shootPosition, (float) (GameEntity.DEFAULT_SPEED + (Math.random() * 0.1f) - 0.05f), 10));
+			world.addEntity(new Rocket(world, collisionListener, rocket, startDirection, nearestMob, shootPosition,
+					(float) (GameEntity.DEFAULT_SPEED + (Math.random() * 0.1f) - 0.05f), 10));
 			startAngle += thetaOffset / 50;
 		}
 	}

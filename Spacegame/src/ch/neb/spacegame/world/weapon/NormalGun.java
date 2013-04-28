@@ -3,14 +3,15 @@ package ch.neb.spacegame.world.weapon;
 import java.awt.image.BufferedImage;
 
 import ch.neb.spacegame.Arts;
+import ch.neb.spacegame.CollisionListener;
 import ch.neb.spacegame.math.Vec2;
 import ch.neb.spacegame.world.World;
 import ch.neb.spacegame.world.bullets.Bullet;
 
 public class NormalGun extends Gun {
 
-	public NormalGun(long cooldown, World world) {
-		super(cooldown, world);
+	public NormalGun(long cooldown, World world, CollisionListener collisionListener) {
+		super(cooldown, world, collisionListener);
 	}
 
 	@Override
@@ -26,7 +27,7 @@ public class NormalGun extends Gun {
 			final Vec2 shootPosition = new Vec2(position);
 			shootPosition.x -= bullet.getWidth() / 2;
 			shootPosition.y -= bullet.getHeight() / 2;
-			world.addEntity(new Bullet(world, bullet, new Vec2((float) Math.cos(startAngle), (float) Math.sin(startAngle)), shootPosition, 0.9f, 4));
+			world.addEntity(new Bullet(world, collisionListener, bullet, new Vec2((float) Math.cos(startAngle), (float) Math.sin(startAngle)), shootPosition, 0.9f, 4));
 			startAngle += thetaOffset;
 		}
 	}

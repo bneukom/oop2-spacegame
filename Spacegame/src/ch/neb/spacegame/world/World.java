@@ -15,6 +15,7 @@ import ch.neb.spacegame.Arts;
 import ch.neb.spacegame.Camera;
 import ch.neb.spacegame.CollisionListener;
 import ch.neb.spacegame.DamageIndicatorEntity;
+import ch.neb.spacegame.DrawExperienceGameEntity;
 import ch.neb.spacegame.GameEntity;
 import ch.neb.spacegame.Sprite;
 import ch.neb.spacegame.UpdateContext;
@@ -56,6 +57,7 @@ public class World {
 		spawnInitialDebris(200);
 
 		addEntity(new DamageIndicatorEntity(this));
+		addEntity(new DrawExperienceGameEntity(this));
 	}
 
 	public void spawnDebris(final Vec2 position, float theta) {
