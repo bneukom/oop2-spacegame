@@ -22,7 +22,7 @@ public class Rocket extends Bullet {
 
 	@Override
 	public void update(UpdateContext updateContext) {
-		speed += Math.max(Math.pow(age / 8000, 2), 0.0001);
+		speed += Math.max(Math.pow(age / 6000, 2), 0.0002);
 		speed = Math.min(speed, maxSpeed);
 
 		// aim for target
@@ -30,7 +30,7 @@ public class Rocket extends Bullet {
 			final Vec2 targetPosition = target.getPosition();
 
 			// aim for the target but only change direction in small steps
-			final Vec2 rocketToMobVector = Vec2.subtract(targetPosition, position).normalize().multiply(0.007f * updateContext.deltaT);
+			final Vec2 rocketToMobVector = Vec2.subtract(targetPosition, position).normalize().multiply(0.009f * updateContext.deltaT);
 
 			direction.add(rocketToMobVector).normalize();
 		}

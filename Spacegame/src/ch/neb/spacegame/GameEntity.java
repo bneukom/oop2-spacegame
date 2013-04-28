@@ -28,7 +28,7 @@ public abstract class GameEntity {
 	 */
 	public Rectangle2D.Float bounds = new Rectangle2D.Float();
 
-	public static float DEFAULT_SPEED = 0.35f;
+	public static float DEFAULT_SPEED = 0.3f;
 
 	public final World world;
 
