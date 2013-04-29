@@ -18,9 +18,11 @@ public class Bullet extends DrawableGameEntity {
 
 	public static final float MAX_LIFE = 2000;
 	private CollisionListener collisionListener;
+	private GameEntity owner;
 
-	public Bullet(World world, CollisionListener collisionListener, BufferedImage image, Vec2 direction, Vec2 position, float speed, float damage) {
+	public Bullet(World world, GameEntity owner, CollisionListener collisionListener, BufferedImage image, Vec2 direction, Vec2 position, float speed, float damage) {
 		super(world, image, speed);
+		this.owner = owner;
 		this.collisionListener = collisionListener;
 
 		this.direction = direction;
@@ -48,7 +50,7 @@ public class Bullet extends DrawableGameEntity {
 		super.onCollide(other, world);
 
 		Mob hitMob = (Mob) other;
-		hitMob.doDamage(damage);
+		hitMob.doDamage(owner, damage);
 
 		if (collisionListener != null)
 			collisionListener.onCollide(this, other);

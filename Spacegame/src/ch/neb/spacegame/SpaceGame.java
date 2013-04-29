@@ -144,7 +144,7 @@ public class SpaceGame extends JFrame {
 				// display frames per second...
 				g2d.setColor(Color.WHITE);
 				g2d.setFont(font);
-				g2d.drawString(String.format("fps: %s", Math.round(1e9 / (deltaT + 1))), 5, 10);
+				// g2d.drawString(String.format("fps: %s", Math.round(1e9 / (deltaT + 1))), 5, 10);
 
 				graphics = buffer.getDrawGraphics();
 				graphics.drawImage(bi, 0, yOffset, null);
@@ -174,7 +174,7 @@ public class SpaceGame extends JFrame {
 
 			@Override
 			public void run() {
-				final SpaceGame spacegame = new SpaceGame(800, 600, false);
+				final SpaceGame spacegame = new SpaceGame(800, 600, true);
 				final Thread gmaeThread = new Thread(new Runnable() {
 
 					@Override

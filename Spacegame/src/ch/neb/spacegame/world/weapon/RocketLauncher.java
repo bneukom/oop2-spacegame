@@ -14,16 +14,16 @@ import ch.neb.spacegame.world.bullets.Rocket;
 public class RocketLauncher extends Gun {
 
 	private float halfConeAngle = (float) Math.toRadians(25);
+	private int shots = 4;
 
-	public RocketLauncher(long cooldown, World world, CollisionListener collisionListener) {
-		super(cooldown, world, collisionListener);
+	public RocketLauncher(long cooldown, World world, GameEntity owner, CollisionListener collisionListener) {
+		super(cooldown, world, owner, collisionListener);
 	}
 
 	@Override
 	protected void doShoot(Vec2 position, Vec2 direction) {
 
 		float theta = (float) Math.atan2(direction.y, direction.x);
-		final int shots = 15;
 		final float thetaOffset = 0.03f;
 
 		// search a target in a given cone where the rocket is
@@ -69,10 +69,15 @@ public class RocketLauncher extends Gun {
 				startDirection = new Vec2((float) Math.cos(startAngle), (float) Math.sin(startAngle));
 			}
 
-			world.addEntity(new Rocket(world, collisionListener, rocket, startDirection, nearestMob, shootPosition,
+			world.addEntity(new Rocket(world, owner, collisionListener, rocket, startDirection, nearestMob, shootPosition,
 					(float) (GameEntity.DEFAULT_SPEED + (Math.random() * 0.1f) - 0.05f), 10));
 			startAngle += thetaOffset / 50;
 		}
+	}
+
+	@Override
+	public void upgrade() {
+		shots += 2;
 	}
 
 }

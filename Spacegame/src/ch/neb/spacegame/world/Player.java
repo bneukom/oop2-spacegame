@@ -6,10 +6,12 @@ import java.awt.Graphics2D;
 import ch.neb.spacegame.Animation;
 import ch.neb.spacegame.Arts;
 import ch.neb.spacegame.Camera;
-import ch.neb.spacegame.CollisionListener;
 import ch.neb.spacegame.GameEntity;
+import ch.neb.spacegame.KillListener;
+import ch.neb.spacegame.SpawnListener;
 import ch.neb.spacegame.UpdateContext;
 import ch.neb.spacegame.math.Vec2;
+import ch.neb.spacegame.world.weapon.Gun;
 import ch.neb.spacegame.world.weapon.NormalGun;
 import ch.neb.spacegame.world.weapon.RocketLauncher;
 
@@ -20,39 +22,54 @@ public class Player extends SpaceShip {
 
 	private long timeSinceLastCollision = 0;
 
+	private float points = 0;
 	private float experience = 0;
 	private float nextLevelExperience = 10;
+	private float power = 100;
+	private float maxPower = 100;
 
 	public Player(World world) {
 		super(world, Arts.playerShip, DEFAULT_SPEED, 100);
 
 		drawHealth = false;
 
-		final CollisionListener xpListener = new CollisionListener() {
+		world.addSpawnListener(new SpawnListener() {
 
 			@Override
-			public void onCollide(GameEntity a, GameEntity b) {
-				if (b instanceof Mob) {
-					final Mob mob = (Mob) b;
-					if (!mob.isAlive()) {
-						System.out.println("DEATH COLLIDE");
-						increaseExperience(1);
-					}
+			public void spawned(GameEntity entity) {
+				if (entity instanceof Mob) {
+					final Mob mob = (Mob) entity;
+					mob.addKillListener(new KillListener() {
+
+						@Override
+						public void killed(GameEntity by) {
+							if (by == Player.this) {
+								increaseExperience(1);
+							}
+						}
+					});
 				}
 			}
-		};
+		});
 
-		// guns.add(new RocketLauncher(800, world, xpListener));
-		guns.add(new NormalGun(200, world, xpListener));
+		guns.add(new RocketLauncher(800, world, this, null));
+		guns.add(new NormalGun(200, world, this, null));
 	}
 
 	private void increaseExperience(float amount) {
-		System.out.println("AMOUNT: " + amount);
+		points += amount;
 		experience += amount;
 		if (experience >= nextLevelExperience) {
+			for (Gun gun : guns) {
+				gun.upgrade();
+			}
 			experience = experience - nextLevelExperience;
-			nextLevelExperience = nextLevelExperience * 2;
+			nextLevelExperience = (float) (Math.pow(nextLevelExperience, 1.020) * nextLevelExperience / 4.5);
 		}
+	}
+
+	public float getPoints() {
+		return points;
 	}
 
 	@Override
@@ -66,7 +83,7 @@ public class Player extends SpaceShip {
 		graphics.setColor(Color.GREEN);
 		graphics.fillRect((int) (x - 10), (int) y - 6, (int) ((health / maxHealth) * width), 3);
 		graphics.setColor(Color.RED);
-		graphics.fillRect((int) (x - 10), (int) y - 3, (int) ((maxHealth / maxHealth) * width), 3);
+		graphics.fillRect((int) (x - 10), (int) y - 3, (int) ((power / maxPower) * width), 3);
 
 	}
 
@@ -92,21 +109,48 @@ public class Player extends SpaceShip {
 
 		float distance = Vec2.distance(playerScreenPosition, destination);
 
+		boolean isMoving = false;
 		// move forwards
 		if (updateContext.keys.forward.isDown && distance > MOVE_HOLD_EPSILON) {
+			isMoving = true;
 			final Vec2 offset = Vec2.multiply(direction, speed * updateContext.deltaT);
 			position.add(offset);
 		}
 
 		// move backwards
 		if (updateContext.keys.backward.isDown && distance > MOVE_HOLD_EPSILON) {
+			isMoving = true;
 			final Vec2 offset = Vec2.multiply(direction, -speed * updateContext.deltaT);
 			position.add(offset);
+		}
+
+		if (updateContext.keys.powerBoost.isDown && power > 0 && isMoving) {
+			power -= (0.075 * updateContext.deltaT);
+			power = Math.max(0, power);
+
+			if (power != 0) {
+				speed += 0.00022 * updateContext.deltaT;
+			} else {
+				speed -= 0.003;
+				speed = Math.max(speed, DEFAULT_SPEED);
+			}
+		} else {
+			speed -= 0.003;
+			speed = Math.max(speed, DEFAULT_SPEED);
 		}
 
 		if (updateContext.mouseInput.isDown(1)) {
 			shoot();
 		}
+
+		// regenerate power
+		power += (0.02 * updateContext.deltaT);
+		power = Math.min(maxPower, power);
+		
+		
+		// regenerate health
+		health += maxHealth / 200000 * updateContext.deltaT;
+		health = Math.min(maxHealth, health);
 
 		timeSinceLastCollision += updateContext.deltaT;
 	}
@@ -117,7 +161,8 @@ public class Player extends SpaceShip {
 
 		if (timeSinceLastCollision > COLLIDE_COOLDOWN) {
 			timeSinceLastCollision = 0;
-			doDamage(10);
+			doDamage(this, 10);
+			world.addEntity(new Explosion(world, new Animation(Arts.smallexplosion, 23, 23, 1, 100, 1), new Vec2(position), new Vec2(1, 0)));
 		}
 
 	}

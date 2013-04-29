@@ -3,9 +3,13 @@ package ch.neb.spacegame.world;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 import ch.neb.spacegame.Arts;
 import ch.neb.spacegame.Camera;
+import ch.neb.spacegame.GameEntity;
+import ch.neb.spacegame.KillListener;
 import ch.neb.spacegame.UpdateContext;
 import ch.neb.spacegame.math.Vec2;
 
@@ -17,6 +21,7 @@ public class Mob extends DrawableGameEntity {
 	protected float health;
 	protected float maxHealth;
 	protected boolean drawHealth = true;
+	private List<KillListener> killListeners = new ArrayList<>();
 
 	public Mob(World world, BufferedImage image) {
 		this(world, image, DEFAULT_SPEED);
@@ -32,6 +37,8 @@ public class Mob extends DrawableGameEntity {
 		this.maxHealth = maxHealth;
 		this.health = maxHealth;
 	}
+	
+	
 
 	@Override
 	public void render(Graphics2D graphics, Camera camera) {
@@ -51,12 +58,21 @@ public class Mob extends DrawableGameEntity {
 		return health > 0;
 	}
 
-	public void doDamage(float damage) {
+	public void doDamage(GameEntity attackee, float damage) {
+		if (health == 0) return;
+		
 		health -= damage;
 		if (health <= 0) {
 			world.removeEntity(this);
+			for (KillListener killListener : killListeners) {
+				killListener.killed(attackee);
+			}
 		}
 		health = Math.max(health, 0);
+	}
+	
+	public void addKillListener(KillListener killListener) {
+		killListeners.add(killListener);
 	}
 
 	public float getMaxHealth() {

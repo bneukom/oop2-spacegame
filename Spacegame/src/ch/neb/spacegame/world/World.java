@@ -15,8 +15,9 @@ import ch.neb.spacegame.Arts;
 import ch.neb.spacegame.Camera;
 import ch.neb.spacegame.CollisionListener;
 import ch.neb.spacegame.DamageIndicatorEntity;
-import ch.neb.spacegame.DrawExperienceGameEntity;
+import ch.neb.spacegame.DrawGameInfoEntity;
 import ch.neb.spacegame.GameEntity;
+import ch.neb.spacegame.SpawnListener;
 import ch.neb.spacegame.Sprite;
 import ch.neb.spacegame.UpdateContext;
 import ch.neb.spacegame.math.Vec2;
@@ -33,6 +34,7 @@ public class World {
 
 	private List<GameEntity> gameEntities = new ArrayList<>();
 	private List<CollisionListener> collisionListeners = new ArrayList<>();
+	private List<SpawnListener> spawnListeners = new ArrayList<>();
 
 	private Queue<GameEntity> removeGameObejctQueue = new LinkedList<>();
 	private Queue<GameEntity> addGameObjectQueue = new LinkedList<>();
@@ -42,14 +44,10 @@ public class World {
 	private long debrisSpawnTime = 0;
 	private static final long DEBRIS_SPAWN_TIME = 50;
 
-	private final Font pixel72;
-
 	public World(int width, int height) {
 		super();
 		this.width = width;
 		this.height = height;
-
-		pixel72 = Arts.getFont(72);
 
 		createPlayer();
 		createStars(2500, 2000, 100);
@@ -57,7 +55,7 @@ public class World {
 		spawnInitialDebris(200);
 
 		addEntity(new DamageIndicatorEntity(this));
-		addEntity(new DrawExperienceGameEntity(this));
+		addEntity(new DrawGameInfoEntity(this));
 	}
 
 	public void spawnDebris(final Vec2 position, float theta) {
@@ -147,6 +145,9 @@ public class World {
 		while (!addGameObjectQueue.isEmpty()) {
 			final GameEntity poll = addGameObjectQueue.poll();
 			gameEntities.add(poll);
+			for (SpawnListener spawnListener : spawnListeners) {
+				spawnListener.spawned(poll);
+			}
 		}
 
 		Collections.sort(gameEntities);
@@ -170,12 +171,6 @@ public class World {
 			if (object.isInView(camera)) {
 				object.render(graphics, camera);
 			}
-		}
-
-		if (!player.isAlive()) {
-			graphics.setFont(pixel72);
-			graphics.setColor(Color.WHITE);
-			graphics.drawString("Game Over!", 200, 300);
 		}
 	}
 
@@ -213,5 +208,9 @@ public class World {
 
 	public void addCollisionListener(CollisionListener collisionListener) {
 		this.collisionListeners.add(collisionListener);
+	}
+
+	public void addSpawnListener(SpawnListener spawnListener) {
+		spawnListeners.add(spawnListener);
 	}
 }
