@@ -61,7 +61,7 @@ public class Bullet extends DrawableGameEntity {
 
 	@Override
 	public boolean shouldCollide(GameEntity other) {
-		return other instanceof Mob;
+		return other instanceof Mob && other != owner;
 	}
 
 }

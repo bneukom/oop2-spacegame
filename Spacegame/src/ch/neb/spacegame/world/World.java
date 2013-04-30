@@ -1,15 +1,11 @@
 package ch.neb.spacegame.world;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Set;
-import java.util.TreeSet;
 
 import ch.neb.spacegame.Arts;
 import ch.neb.spacegame.Camera;
@@ -21,6 +17,7 @@ import ch.neb.spacegame.SpawnListener;
 import ch.neb.spacegame.Sprite;
 import ch.neb.spacegame.UpdateContext;
 import ch.neb.spacegame.math.Vec2;
+import ch.neb.spacegame.world.enemies.EnemyShip;
 import ch.neb.spacegame.world.spacedebris.SmallSpaceDebris;
 import ch.neb.spacegame.world.spacedebris.SpaceRock;
 
@@ -42,7 +39,9 @@ public class World {
 	private List<Sprite> stars = new ArrayList<>();
 
 	private long debrisSpawnTime = 0;
-	private static final long DEBRIS_SPAWN_TIME = 50;
+	private long enemySpawnTime = 0;
+	private static final long DEBRIS_SPAWN_TIME = 300;
+	private static final long ENEMY_SPAWN_TIME = 2000;
 
 	public World(int width, int height) {
 		super();
@@ -53,6 +52,7 @@ public class World {
 		createStars(2500, 2000, 100);
 
 		spawnInitialDebris(200);
+		spawnInitialEnemies(5);
 
 		addEntity(new DamageIndicatorEntity(this));
 		addEntity(new DrawGameInfoEntity(this));
@@ -86,6 +86,18 @@ public class World {
 			spawnDebris(position, theta);
 		}
 
+	}
+
+	private void spawnInitialEnemies(int amount) {
+		for (int i = 0; i < amount; ++i) {
+			spawnEnemy();
+		}
+	}
+
+	private void spawnEnemy() {
+		final EnemyShip enemyShip = new EnemyShip(this, Arts.playerShip, 0.2f, 300);
+		enemyShip.setPosition((float) (Math.random() * width), (float) (Math.random() * height));
+		addEntity(enemyShip);
 	}
 
 	private void createPlayer() {
@@ -125,9 +137,12 @@ public class World {
 			}
 		}
 
+		// TODO into own GameEntity?
+		debrisSpawnTime += updateContext.deltaT;
+		enemySpawnTime += updateContext.deltaT;
+		
 		// TODO just spawn outside of player view!!!
 		// spawn random debris
-		debrisSpawnTime += updateContext.deltaT;
 		if (debrisSpawnTime > DEBRIS_SPAWN_TIME) {
 			debrisSpawnTime = 0;
 			if (Math.random() < 0.5f) {
@@ -138,6 +153,11 @@ public class World {
 				spawnDebris(new Vec2((float) (Math.random() * width), -20f), (float) (Math.random() * Math.PI));
 			}
 
+		}
+		
+		if (enemySpawnTime > ENEMY_SPAWN_TIME) {
+			enemySpawnTime = 0;
+			spawnEnemy();
 		}
 	}
 

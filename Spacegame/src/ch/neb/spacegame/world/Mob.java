@@ -37,8 +37,6 @@ public class Mob extends DrawableGameEntity {
 		this.maxHealth = maxHealth;
 		this.health = maxHealth;
 	}
-	
-	
 
 	@Override
 	public void render(Graphics2D graphics, Camera camera) {
@@ -59,8 +57,9 @@ public class Mob extends DrawableGameEntity {
 	}
 
 	public void doDamage(GameEntity attackee, float damage) {
-		if (health == 0) return;
-		
+		if (health == 0)
+			return;
+
 		health -= damage;
 		if (health <= 0) {
 			world.removeEntity(this);
@@ -70,7 +69,7 @@ public class Mob extends DrawableGameEntity {
 		}
 		health = Math.max(health, 0);
 	}
-	
+
 	public void addKillListener(KillListener killListener) {
 		killListeners.add(killListener);
 	}
@@ -81,5 +80,14 @@ public class Mob extends DrawableGameEntity {
 
 	public float getHealth() {
 		return health;
+	}
+
+	/**
+	 * Returns the amount of experience gained when this mob gets killed. Default value is 1.
+	 * 
+	 * @return
+	 */
+	public float getExperience() {
+		return 1;
 	}
 }

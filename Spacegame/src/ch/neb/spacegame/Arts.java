@@ -23,6 +23,7 @@ public class Arts {
 	public static BufferedImage debris1 = createImage("sprites/debris1.png");
 	public static BufferedImage rocket = createImage("sprites/rocket.png");
 	public static BufferedImage smallexplosion = createImage("sprites/smallexplosion.png");
+	public static BufferedImage exhaust = createImage("sprites/exhaust.png");
 
 	public static BufferedImage createImage(String path) {
 		try {

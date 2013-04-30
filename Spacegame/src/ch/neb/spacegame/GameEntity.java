@@ -114,6 +114,11 @@ public abstract class GameEntity implements Comparable<GameEntity> {
 	public int compareTo(GameEntity o) {
 		return layer.compareTo(o.layer);
 	}
+	
+	public void setPosition(float x, float y) {
+		position.x = x;
+		position.y = y;
+	}
 
 	public abstract float getWidth();
 

@@ -11,7 +11,7 @@ import ch.neb.spacegame.UpdateContext;
 import ch.neb.spacegame.math.Vec2;
 
 public class DrawableGameEntity extends GameEntity {
-	private BufferedImage image;
+	protected BufferedImage image;
 	private AffineTransform transform = new AffineTransform();
 	protected Vec2 halfWidth;
 
