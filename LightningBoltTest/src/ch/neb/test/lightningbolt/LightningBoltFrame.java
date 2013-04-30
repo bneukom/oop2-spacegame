@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.Path2D;
 import java.awt.image.Kernel;
 import java.util.ArrayList;
@@ -38,10 +39,27 @@ public class LightningBoltFrame extends JFrame {
 		private Vec2 start = new Vec2(10, 300);
 
 		public RenderPanel() {
+			addMouseMotionListener(new MouseMotionAdapter() {
+
+				@Override
+				public void mouseDragged(MouseEvent e) {
+					segments = generateLightning(Arrays.asList(new LightningSegment(start, new Vec2(e.getX(), e.getY()))), 4, 100);
+
+					repaint();
+				}
+			});
+
 			addMouseListener(new MouseAdapter() {
 
 				@Override
 				public void mouseReleased(MouseEvent e) {
+					segments = generateLightning(Arrays.asList(new LightningSegment(start, new Vec2(e.getX(), e.getY()))), 4, 100);
+
+					repaint();
+				}
+
+				@Override
+				public void mousePressed(MouseEvent e) {
 					segments = generateLightning(Arrays.asList(new LightningSegment(start, new Vec2(e.getX(), e.getY()))), 4, 100);
 
 					repaint();
