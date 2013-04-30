@@ -16,9 +16,12 @@ public class Rocket extends Bullet {
 
 	private float maxSpeed = 1.9f;
 	private Mob target;
+	private boolean ignoreOtherTargets;
 
-	public Rocket(World world, GameEntity owner, CollisionListener collisionListener, BufferedImage image, Vec2 direction, Mob target, Vec2 position, float initialspeed, float damage) {
+	public Rocket(World world, GameEntity owner, boolean ignoreOtherTargets, CollisionListener collisionListener, BufferedImage image, Vec2 direction, Mob target, Vec2 position,
+			float initialspeed, float damage) {
 		super(world, owner, collisionListener, image, direction, position, initialspeed, damage);
+		this.ignoreOtherTargets = ignoreOtherTargets;
 		this.target = target;
 	}
 
@@ -34,13 +37,20 @@ public class Rocket extends Bullet {
 			// aim for the target but only change direction in small steps (and
 			// make it dependent on the speed so if the rocket is slow, it
 			// cannot turn as fast).
-//			final Vec2 rocketToMobVector = Vec2.subtract(targetPosition, position).normalize().multiply(0.009f * updateContext.deltaT * (speed + 0.4f));
 			final Vec2 rocketToMobVector = Vec2.subtract(targetPosition, position).normalize().multiply(0.014f * updateContext.deltaT * (speed + 0.4f));
 
 			direction.add(rocketToMobVector).normalize();
 		}
 
 		super.update(updateContext);
+	}
+
+	@Override
+	public boolean shouldCollide(GameEntity other) {
+		if (ignoreOtherTargets)
+			return other == target;
+		else
+			return super.shouldCollide(other);
 	}
 
 	@Override

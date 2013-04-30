@@ -18,6 +18,7 @@ public class Keys {
 	public Key left = new Key();
 	public Key right = new Key();
 	public Key powerBoost = new Key();
+	public Key shield = new Key();
 
 	public Keys() {
 		keyMappings.put(KeyEvent.VK_ESCAPE, exit);
@@ -25,7 +26,12 @@ public class Keys {
 		keyMappings.put(KeyEvent.VK_UP, forward);
 		keyMappings.put(KeyEvent.VK_S, backward);
 		keyMappings.put(KeyEvent.VK_DOWN, backward);
-		keyMappings.put(KeyEvent.VK_SPACE, powerBoost);
+		keyMappings.put(KeyEvent.VK_LEFT, left);
+		keyMappings.put(KeyEvent.VK_A, left);
+		keyMappings.put(KeyEvent.VK_RIGHT, right);
+		keyMappings.put(KeyEvent.VK_D, right);
+		keyMappings.put(KeyEvent.VK_SPACE, shield);
+		keyMappings.put(KeyEvent.VK_SHIFT, powerBoost);
 	}
 
 	public void keyDown(int keyCode) {

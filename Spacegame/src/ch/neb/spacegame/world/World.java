@@ -21,7 +21,8 @@ import ch.neb.spacegame.world.enemies.EnemyShip;
 import ch.neb.spacegame.world.spacedebris.SmallSpaceDebris;
 import ch.neb.spacegame.world.spacedebris.SpaceRock;
 
-//TODO somehow limit enemy objects
+// TODO somehow limit enemy objects
+// TODO better debris spawn!!!
 public class World {
 
 	public int width;
@@ -95,7 +96,7 @@ public class World {
 	}
 
 	private void spawnEnemy() {
-		final EnemyShip enemyShip = new EnemyShip(this, Arts.playerShip, 0.2f, 300);
+		final EnemyShip enemyShip = new EnemyShip(this, Arts.ship2, (float) (0.1f * Math.random() + 0.1f), 300);
 		enemyShip.setPosition((float) (Math.random() * width), (float) (Math.random() * height));
 		addEntity(enemyShip);
 	}

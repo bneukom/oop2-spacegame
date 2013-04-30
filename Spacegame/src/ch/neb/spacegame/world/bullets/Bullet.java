@@ -64,4 +64,8 @@ public class Bullet extends DrawableGameEntity {
 		return other instanceof Mob && other != owner;
 	}
 
+	public GameEntity getOwner() {
+		return owner;
+	}
+
 }

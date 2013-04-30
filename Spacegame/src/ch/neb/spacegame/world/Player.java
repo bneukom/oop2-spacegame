@@ -1,7 +1,9 @@
 package ch.neb.spacegame.world;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
@@ -21,26 +23,32 @@ import ch.neb.spacegame.world.weapon.RocketLauncher;
 
 public class Player extends SpaceShip {
 
+	private static final float MAX_SPEED = 0.55f;
+	private static final BasicStroke DEFAULT_STROKE = new BasicStroke(1);
+	private static final BasicStroke BORDER_STROKE = new BasicStroke(2);
 	private static final float MOVE_HOLD_EPSILON = 10f;
 	public static final long COLLIDE_COOLDOWN = 1500;
 
-	private long timeSinceLastCollision = 0;
+	// initial value set, so player will be immune when the game starts
+	private long timeSinceLastCollision = 3000;
 
 	private final AffineTransform transform = new AffineTransform();
 	private BufferedImage exhaustImage = Arts.exhaust;
 
 	private float points = 0;
-	private float experience = 0;
+	private float totalXP = 0;
 	private float nextLevelExperience = 10;
 	private float power = 100;
 	private float maxPower = 100;
 	private boolean isPowerEnabled = false;
+	private boolean isShieldEnabled = false;
 
 	public Player(World world) {
-		super(world, Arts.playerShip, DEFAULT_SPEED, 500);
+		super(world, Arts.ship1, DEFAULT_SPEED, 500);
 
 		drawHealth = false;
 
+		// used for experience gain
 		world.addSpawnListener(new SpawnListener() {
 
 			@Override
@@ -60,16 +68,16 @@ public class Player extends SpaceShip {
 			}
 		});
 
-		guns.add(new RocketLauncher(800, world, this, null));
-		guns.add(new NormalGun(200, world, this, null, 4, 5));
+		guns.add(new RocketLauncher(800, world, this, null, false, 4, 10));
+		guns.add(new NormalGun(200, world, this, 4, 5));
 	}
 
 	private void increaseExperience(float amount) {
 		points += amount;
-		experience += amount;
-		if (experience >= nextLevelExperience) {
+		totalXP += amount;
+		if (totalXP >= nextLevelExperience) {
 			onLevelUp();
-			experience = experience - nextLevelExperience;
+			totalXP = totalXP - nextLevelExperience;
 			nextLevelExperience = (float) (Math.pow(nextLevelExperience, 1.020) * nextLevelExperience / 4.5);
 		}
 	}
@@ -78,7 +86,7 @@ public class Player extends SpaceShip {
 		for (Gun gun : guns) {
 			gun.upgrade();
 
-			maxPower += 10;
+			maxPower += 25;
 		}
 	}
 
@@ -93,11 +101,20 @@ public class Player extends SpaceShip {
 		float x = position.x - camera.getX();
 		float y = position.y - camera.getY();
 
+		if (isShieldEnabled) {
+			graphics.setColor(new Color(34, 40, 125, 135));
+			graphics.fillOval((int) x - 7, (int) y - 7, (int) getWidth() + 13, (int) getHeight() + 13);
+			graphics.setStroke(BORDER_STROKE);
+			graphics.setColor(new Color(34, 40, 125, 235));
+			graphics.drawOval((int) x - 7, (int) y - 7, (int) getWidth() + 13, (int) getHeight() + 13);
+			graphics.setStroke(DEFAULT_STROKE);
+		}
+
 		float width = Math.max(35, getWidth());
 		graphics.setColor(Color.GREEN);
-		graphics.fillRect((int) (x - 6), (int) y - 6, (int) ((health / maxHealth) * width), 3);
+		graphics.fillRect((int) (x - 6), (int) y - 9, (int) ((health / maxHealth) * width), 3);
 		graphics.setColor(Color.RED);
-		graphics.fillRect((int) (x - 6), (int) y - 3, (int) ((power / maxPower) * width), 3);
+		graphics.fillRect((int) (x - 6), (int) y - 6, (int) ((power / maxPower) * width), 3);
 
 		if (isPowerEnabled) {
 			// same rotation as the ship, but other offset
@@ -124,6 +141,7 @@ public class Player extends SpaceShip {
 		float distance = Vec2.distance(playerScreenPosition, destination);
 
 		boolean isMoving = false;
+
 		// move forwards
 		if (updateContext.keys.forward.isDown && distance > MOVE_HOLD_EPSILON) {
 			isMoving = true;
@@ -132,26 +150,53 @@ public class Player extends SpaceShip {
 		}
 
 		// move backwards
-		if (updateContext.keys.backward.isDown && distance > MOVE_HOLD_EPSILON) {
+		if (updateContext.keys.backward.isDown && distance > MOVE_HOLD_EPSILON && !isMoving) {
 			isMoving = true;
 			final Vec2 offset = Vec2.multiply(direction, -speed * updateContext.deltaT);
 			position.add(offset);
 		}
 
+		// strafe left
+		if (updateContext.keys.left.isDown && distance > MOVE_HOLD_EPSILON && !isMoving) {
+			isMoving = true;
+			final Vec2 strafeLeft = new Vec2(-direction.y, direction.x);
+			final Vec2 offset = Vec2.multiply(strafeLeft, speed * updateContext.deltaT);
+			position.add(offset);
+		}
+
+		// strafe right
+		if (updateContext.keys.right.isDown && distance > MOVE_HOLD_EPSILON && !isMoving) {
+			isMoving = true;
+			final Vec2 strafeLeft = new Vec2(direction.y, -direction.x);
+			final Vec2 offset = Vec2.multiply(strafeLeft, speed * updateContext.deltaT);
+			position.add(offset);
+		}
+
+		isShieldEnabled = false;
+		if (updateContext.keys.shield.isDown && power > 0) {
+			power -= (0.085 * updateContext.deltaT);
+			power = Math.max(0, power);
+
+			if (power > 0) {
+				isShieldEnabled = true;
+			}
+		}
+
 		isPowerEnabled = false;
-		if (updateContext.keys.powerBoost.isDown && power > 0 && isMoving) {
+		if (updateContext.keys.powerBoost.isDown && power > 0 && isMoving && !isShieldEnabled) {
 			power -= (0.075 * updateContext.deltaT);
 			power = Math.max(0, power);
 
 			if (power != 0) {
-				speed += 0.00022 * updateContext.deltaT;
+				speed += 0.00018 * updateContext.deltaT;
+				speed = Math.min(speed, MAX_SPEED);
 				isPowerEnabled = true;
 			} else {
-				speed -= 0.003;
+				speed -= 0.008;
 				speed = Math.max(speed, DEFAULT_SPEED);
 			}
 		} else {
-			speed -= 0.003;
+			speed -= 0.008;
 			speed = Math.max(speed, DEFAULT_SPEED);
 		}
 
@@ -176,16 +221,24 @@ public class Player extends SpaceShip {
 
 		if (other instanceof SpaceDebris && timeSinceLastCollision > COLLIDE_COOLDOWN) {
 			timeSinceLastCollision = 0;
-			
+
 			// collide with space debris, do lots of damage!
-			doDamage(this, 40);
-			world.addEntity(new Explosion(world, new Animation(Arts.smallexplosion, 23, 23, 1, 100, 1), new Vec2(position), new Vec2(1, 0)));
+			doDamage(this, 80);
+			
+			if (!isShieldEnabled)
+				world.addEntity(new Explosion(world, new Animation(Arts.smallexplosion, 23, 23, 1, 100, 1), new Vec2(position), new Vec2(1, 0)));
 		}
 
 	}
 
-	public float getExperience() {
-		return experience;
+	@Override
+	public void doDamage(GameEntity attackee, float damage) {
+		if (!isShieldEnabled)
+			super.doDamage(attackee, damage);
+	}
+
+	public float getTotalExperience() {
+		return totalXP;
 	}
 
 	public float getNextLevelExperience() {

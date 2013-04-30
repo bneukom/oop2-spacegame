@@ -15,16 +15,14 @@ public class DamageIndicatorEntity extends GameEntity {
 
 		setLayer(Layer.OVERLAY);
 
-		world.addCollisionListener(new CollisionListener() {
+		world.getPlayer().addDamageListener(new DamageListener() {
 
 			@Override
-			public void onCollide(GameEntity a, GameEntity b) {
-				if ((a == world.getPlayer() || b == world.getPlayer()) && hitDelay == 0) {
-					// exactly the time the player is immune to new hits
-					hitDelay = Player.COLLIDE_COOLDOWN;
-				}
+			public void damageRecieved(GameEntity attackee, float amount) {
+				hitDelay = Player.COLLIDE_COOLDOWN;
 			}
 		});
+
 	}
 
 	@Override

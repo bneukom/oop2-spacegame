@@ -16,7 +16,7 @@ public class DrawGameInfoEntity extends GameEntity {
 	private Font infoFont;
 	private Font deathFont;
 
-	private static long MAX_INITIAL_SHOW_TIME = 6000;
+	private static long MAX_INITIAL_SHOW_TIME = 9000;
 	private long initialInfoTime = MAX_INITIAL_SHOW_TIME;
 
 	public DrawGameInfoEntity(World world) {
@@ -25,7 +25,7 @@ public class DrawGameInfoEntity extends GameEntity {
 		setLayer(Layer.OVERLAY);
 
 		pointsFont = Arts.getFont(20);
-		infoFont = Arts.getFont(40);
+		infoFont = Arts.getFont(25);
 		deathFont = Arts.getFont(75);
 	}
 
@@ -58,9 +58,11 @@ public class DrawGameInfoEntity extends GameEntity {
 		if (initialInfoTime > 0) {
 			graphics.setFont(infoFont);
 			graphics.setColor(new Color(1f, 1f, 1f, (float) initialInfoTime / MAX_INITIAL_SHOW_TIME));
-			graphics.drawString("Gain Points by shooting stuff!", 40, 225);
-			graphics.drawString("Press Escape to exit!", 40, 275);
-			graphics.drawString("Press Space for a speed boost!", 40, 325);
+			
+			graphics.drawString("Use W A S D for movement.", 50, 250);
+			graphics.drawString("Press Shift for a speed boost an Space for a shield.", 50, 275);
+			graphics.drawString("Press Escape to exit the game.", 50, 300);
+			graphics.drawString("Gain Points by shooting stuff.", 50, 325);
 		}
 
 		graphics.setColor(Color.WHITE);
@@ -70,7 +72,7 @@ public class DrawGameInfoEntity extends GameEntity {
 		graphics.drawString(pointsString, 800 - 140, 20);
 
 		graphics.setColor(color);
-		graphics.fillRect(15, 570, (int) ((world.getPlayer().getExperience() / world.getPlayer().getNextLevelExperience()) * XP_BAR_WIDTH), 10);
+		graphics.fillRect(15, 570, (int) ((world.getPlayer().getTotalExperience() / world.getPlayer().getNextLevelExperience()) * XP_BAR_WIDTH), 10);
 
 		if (!world.getPlayer().isAlive()) {
 			graphics.setFont(deathFont);

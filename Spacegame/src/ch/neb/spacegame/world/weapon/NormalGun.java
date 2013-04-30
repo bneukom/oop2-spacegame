@@ -14,8 +14,8 @@ public class NormalGun extends Gun {
 	private int shots = 5;
 	private float damage;
 
-	public NormalGun(long cooldown, World world, GameEntity owner, CollisionListener collisionListener, int initialShots, float damage) {
-		super(cooldown, world, owner, collisionListener);
+	public NormalGun(long cooldown, World world, GameEntity owner, int initialShots, float damage) {
+		super(cooldown, world, owner, null);
 
 		shots = initialShots;
 		this.damage = damage;

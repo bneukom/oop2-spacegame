@@ -1,6 +1,5 @@
 package ch.neb.spacegame;
 
-import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 

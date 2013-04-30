@@ -11,6 +11,7 @@ import ch.neb.spacegame.world.World;
 import ch.neb.spacegame.world.bullets.Bullet;
 import ch.neb.spacegame.world.weapon.NormalGun;
 
+// TODO collision resolve?
 public class EnemyShip extends SpaceShip {
 
 	private static final int HEARING_DISTANCE = 800;
@@ -23,7 +24,12 @@ public class EnemyShip extends SpaceShip {
 		super(world, image, speed, maxHealth);
 		maxSpeed = speed;
 
-		guns.add(new NormalGun(600, world, this, null, 1, 5));
+		guns.add(new NormalGun(600, world, this, 3, 3));
+
+		System.out.println("PLAYER: " + world.getPlayer());
+
+		// TODO does not quite work yet!
+		// guns.add(new RocketLauncher(600, world, this, world.getPlayer(), true, 2, 3));
 	}
 
 	@Override
@@ -40,7 +46,6 @@ public class EnemyShip extends SpaceShip {
 		if (playerDistance < HEARING_DISTANCE) {
 			final Vec2 newDirection = Vec2.subtract(player.getPosition(), position);
 			newDirection.normalize();
-			System.out.println(newDirection);
 			direction.setTo(newDirection);
 
 			// shoot if near enough
@@ -83,7 +88,12 @@ public class EnemyShip extends SpaceShip {
 
 	@Override
 	public boolean shouldCollide(GameEntity other) {
-		return other instanceof Bullet;
+		// disabled friendly fire
+		if (other instanceof Bullet) {
+			Bullet bullet = (Bullet) other;
+			return !(bullet.getOwner() instanceof EnemyShip);
+		}
+		return false;
 	}
 
 	@Override

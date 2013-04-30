@@ -6,12 +6,10 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.neb.spacegame.Arts;
 import ch.neb.spacegame.Camera;
+import ch.neb.spacegame.DamageListener;
 import ch.neb.spacegame.GameEntity;
 import ch.neb.spacegame.KillListener;
-import ch.neb.spacegame.UpdateContext;
-import ch.neb.spacegame.math.Vec2;
 
 /**
  * A mob represents a game entity which can be drawn and destroyed.
@@ -22,6 +20,7 @@ public class Mob extends DrawableGameEntity {
 	protected float maxHealth;
 	protected boolean drawHealth = true;
 	private List<KillListener> killListeners = new ArrayList<>();
+	private List<DamageListener> damageListeners = new ArrayList<>();
 
 	public Mob(World world, BufferedImage image) {
 		this(world, image, DEFAULT_SPEED);
@@ -61,6 +60,10 @@ public class Mob extends DrawableGameEntity {
 			return;
 
 		health -= damage;
+		for (DamageListener damageListener : damageListeners) {
+			damageListener.damageRecieved(attackee, damage);
+		}
+		
 		if (health <= 0) {
 			world.removeEntity(this);
 			for (KillListener killListener : killListeners) {
@@ -70,6 +73,9 @@ public class Mob extends DrawableGameEntity {
 		health = Math.max(health, 0);
 	}
 
+	public void addDamageListener(DamageListener damageListener) {
+		damageListeners.add(damageListener);
+	}
 	public void addKillListener(KillListener killListener) {
 		killListeners.add(killListener);
 	}

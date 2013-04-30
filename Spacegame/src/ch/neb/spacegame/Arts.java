@@ -10,7 +10,9 @@ import java.net.URISyntaxException;
 import javax.imageio.ImageIO;
 
 public class Arts {
-	public static BufferedImage playerShip = createImage("sprites/playership.png");
+	public static BufferedImage ship1 = createImage("sprites/ship1.png");
+	public static BufferedImage ship2 = createImage("sprites/ship2.png");
+	public static BufferedImage ship3 = createImage("sprites/ship3.png");
 	public static BufferedImage star1 = createImage("sprites/star1.png");
 	public static BufferedImage star2 = createImage("sprites/star2.png");
 	public static BufferedImage starsystem = createImage("sprites/starsystem.png");
