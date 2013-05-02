@@ -18,6 +18,7 @@ import ch.neb.spacegame.math.Vec2;
 import ch.neb.spacegame.world.bullets.Bullet;
 import ch.neb.spacegame.world.spacedebris.SpaceDebris;
 import ch.neb.spacegame.world.weapon.Gun;
+import ch.neb.spacegame.world.weapon.LightningGun;
 import ch.neb.spacegame.world.weapon.NormalGun;
 import ch.neb.spacegame.world.weapon.RocketLauncher;
 
@@ -70,6 +71,7 @@ public class Player extends SpaceShip {
 
 		guns.add(new RocketLauncher(800, world, this, null, false, 4, 10));
 		guns.add(new NormalGun(200, world, this, 4, 5));
+		guns.add(new LightningGun(500, world, this, null, 100));
 	}
 
 	private void increaseExperience(float amount) {

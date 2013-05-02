@@ -41,7 +41,7 @@ public class World {
 
 	private long debrisSpawnTime = 0;
 	private long enemySpawnTime = 0;
-	private static final long DEBRIS_SPAWN_TIME = 300;
+	private static final long DEBRIS_SPAWN_TIME = 200;
 	private static final long ENEMY_SPAWN_TIME = 2000;
 
 	public World(int width, int height) {

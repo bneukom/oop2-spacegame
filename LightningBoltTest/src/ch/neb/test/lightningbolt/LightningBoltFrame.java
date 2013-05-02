@@ -136,6 +136,7 @@ public class LightningBoltFrame extends JFrame {
 				new LightningBoltFrame();
 			}
 		});
+
 	}
 
 	private static class Lightning {
