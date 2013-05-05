@@ -108,11 +108,11 @@ public class LaserGun extends Gun {
 				graphics.draw(renderLaser);
 
 				graphics.setStroke(new BasicStroke(8, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-				graphics.setColor(new Color(56, 42, 78, 180));
+				graphics.setColor(new Color(76, 62, 78, 190));
 				graphics.draw(renderLaser);
 
 				graphics.setStroke(new BasicStroke(4, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-				graphics.setColor(new Color(127, 83, 158, 130));
+				graphics.setColor(new Color(157, 103, 178, 130));
 				graphics.draw(renderLaser);
 
 				graphics.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));

@@ -140,6 +140,7 @@ public class SpaceGame extends JFrame {
 					System.exit(0);
 				}
 
+
 				// count Frames per second...
 				lastTime = curTime;
 				curTime = System.nanoTime();

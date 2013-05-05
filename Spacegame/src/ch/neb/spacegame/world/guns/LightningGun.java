@@ -251,6 +251,7 @@ public class LightningGun extends Gun {
 	@Override
 	public void upgrade(int level) {
 		offspring += 3;
+		damage += 3;
 	}
 
 }

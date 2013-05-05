@@ -46,6 +46,7 @@ public class Player extends SpaceShip {
 	private boolean isPowerEnabled = false;
 	private boolean isShieldEnabled = false;
 
+	// right click weapon
 	private LaserGun laser;
 
 	public Player(World world) {
@@ -76,7 +77,7 @@ public class Player extends SpaceShip {
 		});
 
 		guns.add(new LightningGun(500, world, this, null, 10));
-		guns.add(new NormalGun(200, world, Arts.bullet2, this, 4, 15));
+		guns.add(new NormalGun(200, world, Arts.bullet2, this, 4, 10));
 		guns.add(new RocketLauncher(800, world, this, null, false, 2, 10));
 	}
 
@@ -267,7 +268,6 @@ public class Player extends SpaceShip {
 			super.doDamage(attackee, damage, type);
 		else
 			super.heal(damage / 3); // heal a third of the damage done if shield is active
-
 	}
 
 	public float getTotalExperience() {

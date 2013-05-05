@@ -25,6 +25,7 @@ import ch.neb.spacegame.UpdateContext;
 import ch.neb.spacegame.math.Vec2;
 import ch.neb.spacegame.world.enemies.EnemyShip;
 import ch.neb.spacegame.world.guns.NormalGun;
+import ch.neb.spacegame.world.guns.RocketLauncher;
 import ch.neb.spacegame.world.spacedebris.SmallSpaceDebris;
 import ch.neb.spacegame.world.spacedebris.SpaceRock;
 import static ch.neb.spacegame.math.Random.selectRandom;
@@ -51,7 +52,7 @@ public class World {
 	// TODO into own game entity
 	private long debrisSpawnTime = 0;
 	private long enemySpawnTime = 0;
-	private static final long DEBRIS_SPAWN_TIME = 125;
+	private static final long DEBRIS_SPAWN_TIME = 150;
 	private static final long ENEMY_SPAWN_TIME = 2000;
 
 	public World(int width, int height) {
@@ -84,7 +85,7 @@ public class World {
 	public void spawnDebris(final Vec2 position, float theta) {
 		final Vec2 direction = new Vec2((float) Math.cos(theta), (float) Math.sin(theta));
 
-		final float speed = (float) (Math.random() * 0.06f + 0.05f);
+		final float speed = (float) (Math.random() * 0.06f + 0.075f);
 
 		float angularSpeed = (float) (Math.random() * 0.001f + 0.001f);
 
@@ -121,7 +122,7 @@ public class World {
 		final EnemyShip enemyShip = new EnemyShip(this, selectRandom(Arts.ship2, Arts.ship3, Arts.ship4), (float) (0.1f * Math.random() + 0.1f), 300);
 
 		enemyShip.addGun(selectRandom(new NormalGun(350, this, Arts.bullet2, enemyShip, 3, 3), new NormalGun(100, this, Arts.bullet2, enemyShip, 1, 1)));
-
+		enemyShip.addGun(new RocketLauncher(1500, this, enemyShip, player, true, 2, 1));
 		enemyShip.setPosition((float) (Math.random() * width), (float) (Math.random() * height));
 		addEntity(enemyShip);
 	}
@@ -236,6 +237,7 @@ public class World {
 		}
 	}
 
+	// TODO use an octtree
 	public synchronized void checkCollisions() {
 		for (int i = 0; i < gameEntities.size(); ++i) {
 			for (int j = 0; j < gameEntities.size(); ++j) {

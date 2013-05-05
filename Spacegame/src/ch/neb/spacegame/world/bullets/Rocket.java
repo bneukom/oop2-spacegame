@@ -14,7 +14,7 @@ import ch.neb.spacegame.world.World;
 
 public class Rocket extends Bullet {
 
-	private float maxSpeed = 1.9f;
+	private float maxSpeed = 1.6f;
 	private Mob target;
 	private boolean ignoreOtherTargets;
 	private boolean targetDead;
@@ -43,7 +43,7 @@ public class Rocket extends Bullet {
 				// aim for the target but only change direction in small steps (and
 				// make it dependent on the speed so if the rocket is slow, it
 				// cannot turn as fast).
-				final Vec2 rocketToMobVector = Vec2.subtract(targetPosition, position).normalize().multiply(0.015f * updateContext.deltaT * (speed + 0.4f));
+				final Vec2 rocketToMobVector = Vec2.subtract(targetPosition, position).normalize().multiply(0.019f * updateContext.deltaT * (speed + 0.4f));
 				direction.add(rocketToMobVector).normalize();
 			}
 
