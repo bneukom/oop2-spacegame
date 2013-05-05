@@ -54,8 +54,13 @@ public class Mob extends DrawableGameEntity {
 	public boolean isAlive() {
 		return health > 0;
 	}
+	
+	public void heal(float amount) {
+		health += amount;
+		health = Math.min(maxHealth, health);
+	}
 
-	public void doDamage(GameEntity attackee, float damage) {
+	public void doDamage(GameEntity attackee, float damage, DamageType type) {
 		if (health == 0)
 			return;
 
@@ -95,5 +100,9 @@ public class Mob extends DrawableGameEntity {
 	 */
 	public float getExperience() {
 		return 1;
+	}
+	
+	public enum DamageType {
+		COLLISION, GUN
 	}
 }

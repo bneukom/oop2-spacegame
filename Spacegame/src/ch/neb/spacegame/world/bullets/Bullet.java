@@ -9,6 +9,7 @@ import ch.neb.spacegame.math.Vec2;
 import ch.neb.spacegame.world.DrawableGameEntity;
 import ch.neb.spacegame.world.Mob;
 import ch.neb.spacegame.world.World;
+import ch.neb.spacegame.world.Mob.DamageType;
 
 // TODO create Weapon!
 public class Bullet extends DrawableGameEntity {
@@ -18,7 +19,7 @@ public class Bullet extends DrawableGameEntity {
 
 	public static final float MAX_LIFE = 2000;
 	private CollisionListener collisionListener;
-	private GameEntity owner;
+	protected GameEntity owner;
 
 	public Bullet(World world, GameEntity owner, CollisionListener collisionListener, BufferedImage image, Vec2 direction, Vec2 position, float speed, float damage) {
 		super(world, image, speed);
@@ -44,13 +45,14 @@ public class Bullet extends DrawableGameEntity {
 		position.add(offset);
 
 	}
+	
 
 	@Override
 	public void onCollide(GameEntity other, World world) {
 		super.onCollide(other, world);
 
 		Mob hitMob = (Mob) other;
-		hitMob.doDamage(owner, damage);
+		hitMob.doDamage(owner, damage, DamageType.GUN);
 
 		if (collisionListener != null)
 			collisionListener.onCollide(this, other);

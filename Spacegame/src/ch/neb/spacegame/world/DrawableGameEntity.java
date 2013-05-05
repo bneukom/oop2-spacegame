@@ -1,6 +1,5 @@
 package ch.neb.spacegame.world;
 
-import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -22,22 +21,26 @@ public class DrawableGameEntity extends GameEntity {
 	public DrawableGameEntity(World world, BufferedImage image, float speed) {
 		super(world, speed);
 		this.image = image;
-		halfWidth = new Vec2(image.getWidth() / 2f, image.getHeight() / 2f);
+
+		if (image != null)
+			halfWidth = new Vec2(image.getWidth() / 2f, image.getHeight() / 2f);
+		else
+			halfWidth = new Vec2(0, 0);
 	}
-
-
 
 	@Override
 	public void render(Graphics2D graphics, Camera camera) {
 		super.render(graphics, camera);
 
-		transform.setToIdentity();
-		float screenX = position.x - camera.getX();
-		float screenY = position.y - camera.getY();
-		transform.rotate(Math.atan2(direction.y, direction.x) + Math.PI / 2, screenX + image.getWidth() / 2, screenY + image.getHeight() / 2);
-		transform.translate(screenX, screenY);
+		if (image != null) {
+			transform.setToIdentity();
+			float screenX = position.x - camera.getX();
+			float screenY = position.y - camera.getY();
+			transform.rotate(Math.atan2(direction.y, direction.x) + Math.PI / 2, screenX + image.getWidth() / 2, screenY + image.getHeight() / 2);
+			transform.translate(screenX, screenY);
 
-		graphics.drawImage(image, transform, null);
+			graphics.drawImage(image, transform, null);
+		}
 	}
 
 	@Override

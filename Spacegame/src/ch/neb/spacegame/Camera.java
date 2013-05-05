@@ -43,6 +43,13 @@ public class Camera {
 		this.bounds.x = x;
 		this.bounds.y = y;
 		this.position.setTo(x, y);
+
+		// float x = position.x - width / 2;
+		// float y = position.y - height / 2;
+		//
+		// this.bounds.x = x;
+		// this.bounds.y = y;
+		// this.position.setTo(x, y);
 	}
 
 	public boolean isInView(Rectangle2D.Float rectangle) {

@@ -42,14 +42,13 @@ public class InputListener implements MouseListener, MouseMotionListener, KeyLis
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		mouseInput.mouseDown(e.getButton());
 	}
-
+	
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		mouseInput.mouseUp(e.getButton());

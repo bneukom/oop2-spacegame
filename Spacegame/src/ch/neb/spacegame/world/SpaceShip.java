@@ -8,7 +8,7 @@ import ch.neb.spacegame.Animation;
 import ch.neb.spacegame.Arts;
 import ch.neb.spacegame.UpdateContext;
 import ch.neb.spacegame.math.Vec2;
-import ch.neb.spacegame.world.weapon.Gun;
+import ch.neb.spacegame.world.guns.Gun;
 
 public class SpaceShip extends Mob {
 
@@ -28,6 +28,11 @@ public class SpaceShip extends Mob {
 		for (Gun gun : guns) {
 			gun.update(updateContext.deltaT);
 		}
+
+	}
+
+	public void addGun(Gun gun) {
+		this.guns.add(gun);
 	}
 
 	public void shoot(Vec2 direction) {

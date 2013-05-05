@@ -16,11 +16,12 @@ import ch.neb.spacegame.SpawnListener;
 import ch.neb.spacegame.UpdateContext;
 import ch.neb.spacegame.math.Vec2;
 import ch.neb.spacegame.world.bullets.Bullet;
+import ch.neb.spacegame.world.guns.Gun;
+import ch.neb.spacegame.world.guns.LaserGun;
+import ch.neb.spacegame.world.guns.LightningGun;
+import ch.neb.spacegame.world.guns.NormalGun;
+import ch.neb.spacegame.world.guns.RocketLauncher;
 import ch.neb.spacegame.world.spacedebris.SpaceDebris;
-import ch.neb.spacegame.world.weapon.Gun;
-import ch.neb.spacegame.world.weapon.LightningGun;
-import ch.neb.spacegame.world.weapon.NormalGun;
-import ch.neb.spacegame.world.weapon.RocketLauncher;
 
 public class Player extends SpaceShip {
 
@@ -36,6 +37,7 @@ public class Player extends SpaceShip {
 	private final AffineTransform transform = new AffineTransform();
 	private BufferedImage exhaustImage = Arts.exhaust;
 
+	private int level = 0;
 	private float points = 0;
 	private float totalXP = 0;
 	private float nextLevelExperience = 10;
@@ -44,8 +46,12 @@ public class Player extends SpaceShip {
 	private boolean isPowerEnabled = false;
 	private boolean isShieldEnabled = false;
 
+	private LaserGun laser;
+
 	public Player(World world) {
 		super(world, Arts.ship1, DEFAULT_SPEED, 500);
+
+		laser = new LaserGun(0, world, this, null);
 
 		drawHealth = false;
 
@@ -69,9 +75,9 @@ public class Player extends SpaceShip {
 			}
 		});
 
-		guns.add(new RocketLauncher(800, world, this, null, false, 4, 10));
-		guns.add(new NormalGun(200, world, this, 4, 5));
-		guns.add(new LightningGun(500, world, this, null, 100));
+		guns.add(new LightningGun(500, world, this, null, 10));
+		guns.add(new NormalGun(200, world, Arts.bullet2, this, 4, 15));
+		guns.add(new RocketLauncher(800, world, this, null, false, 2, 10));
 	}
 
 	private void increaseExperience(float amount) {
@@ -80,13 +86,19 @@ public class Player extends SpaceShip {
 		if (totalXP >= nextLevelExperience) {
 			onLevelUp();
 			totalXP = totalXP - nextLevelExperience;
-			nextLevelExperience = (float) (Math.pow(nextLevelExperience, 1.020) * nextLevelExperience / 4.5);
+
+			// function for exponential xp gain needed
+			// nextLevelExperience = (float) (Math.pow(nextLevelExperience, 1.018) * nextLevelExperience / 5);
+
+			// linear gain
+			nextLevelExperience *= 2;
 		}
 	}
 
 	private void onLevelUp() {
+		level++;
 		for (Gun gun : guns) {
-			gun.upgrade();
+			gun.upgrade(level);
 
 			maxPower += 25;
 		}
@@ -126,6 +138,8 @@ public class Player extends SpaceShip {
 
 			graphics.drawImage(exhaustImage, transform, null);
 		}
+
+		// System.out.println(Math.toDegrees(Math.atan2(direction.y, direction.x)));
 
 	}
 
@@ -186,7 +200,7 @@ public class Player extends SpaceShip {
 
 		isPowerEnabled = false;
 		if (updateContext.keys.powerBoost.isDown && power > 0 && isMoving && !isShieldEnabled) {
-			power -= (0.075 * updateContext.deltaT);
+			power -= (0.045 * updateContext.deltaT);
 			power = Math.max(0, power);
 
 			if (power != 0) {
@@ -206,8 +220,21 @@ public class Player extends SpaceShip {
 			shoot();
 		}
 
+		laser.update(updateContext.deltaT);
+		if (updateContext.mouseInput.isDown(3) && power > 0) {
+			power -= (0.085 * updateContext.deltaT);
+			power = Math.max(0, power);
+
+			if (power > 0) {
+				final Vec2 shotPosition = new Vec2(position);
+				shotPosition.x += getWidth() / 2;
+				shotPosition.y += getHeight() / 2;
+				laser.shoot(shotPosition, new Vec2(direction));
+			}
+		}
+
 		// regenerate power
-		power += (0.02 * updateContext.deltaT);
+		power += (0.03 * updateContext.deltaT);
 		power = Math.min(maxPower, power);
 
 		// regenerate health
@@ -215,6 +242,7 @@ public class Player extends SpaceShip {
 		health = Math.min(maxHealth, health);
 
 		timeSinceLastCollision += updateContext.deltaT;
+
 	}
 
 	@Override
@@ -224,9 +252,9 @@ public class Player extends SpaceShip {
 		if (other instanceof SpaceDebris && timeSinceLastCollision > COLLIDE_COOLDOWN) {
 			timeSinceLastCollision = 0;
 
-			// collide with space debris, do lots of damage!
-			doDamage(this, 80);
-			
+			// collide with space debris, does lots of damage!
+			doDamage(this, 80, DamageType.COLLISION);
+
 			if (!isShieldEnabled)
 				world.addEntity(new Explosion(world, new Animation(Arts.smallexplosion, 23, 23, 1, 100, 1), new Vec2(position), new Vec2(1, 0)));
 		}
@@ -234,9 +262,12 @@ public class Player extends SpaceShip {
 	}
 
 	@Override
-	public void doDamage(GameEntity attackee, float damage) {
+	public void doDamage(GameEntity attackee, float damage, DamageType type) {
 		if (!isShieldEnabled)
-			super.doDamage(attackee, damage);
+			super.doDamage(attackee, damage, type);
+		else
+			super.heal(damage / 3); // heal a third of the damage done if shield is active
+
 	}
 
 	public float getTotalExperience() {
@@ -249,6 +280,9 @@ public class Player extends SpaceShip {
 
 	@Override
 	public boolean shouldCollide(GameEntity other) {
-		return (other instanceof Mob && other != this) || other instanceof Bullet;
+		if (other instanceof Bullet) {
+			return ((Bullet) other).getOwner() != this;
+		}
+		return (other instanceof Mob && other != this);
 	}
 }

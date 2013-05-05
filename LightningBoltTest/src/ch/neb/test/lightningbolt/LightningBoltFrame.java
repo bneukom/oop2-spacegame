@@ -33,6 +33,7 @@ public class LightningBoltFrame extends JFrame {
 		setContentPane(panel);
 
 		setVisible(true);
+		
 
 	}
 

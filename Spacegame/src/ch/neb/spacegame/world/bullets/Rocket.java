@@ -17,6 +17,7 @@ public class Rocket extends Bullet {
 	private float maxSpeed = 1.9f;
 	private Mob target;
 	private boolean ignoreOtherTargets;
+	private boolean targetDead;
 
 	public Rocket(World world, GameEntity owner, boolean ignoreOtherTargets, CollisionListener collisionListener, BufferedImage image, Vec2 direction, Mob target, Vec2 position,
 			float initialspeed, float damage) {
@@ -31,15 +32,21 @@ public class Rocket extends Bullet {
 		speed = Math.min(speed, maxSpeed);
 
 		// aim for target
-		if (target != null && target.getHealth() > 0) {
+		if (target != null /* && target.getHealth() > 0 */) {
 			final Vec2 targetPosition = target.getPosition();
 
-			// aim for the target but only change direction in small steps (and
-			// make it dependent on the speed so if the rocket is slow, it
-			// cannot turn as fast).
-			final Vec2 rocketToMobVector = Vec2.subtract(targetPosition, position).normalize().multiply(0.014f * updateContext.deltaT * (speed + 0.4f));
+			if (Vec2.distance(position, targetPosition) < 40 && target.getHealth() <= 0) {
+				targetDead = true;
+			}
 
-			direction.add(rocketToMobVector).normalize();
+			if (!targetDead) {
+				// aim for the target but only change direction in small steps (and
+				// make it dependent on the speed so if the rocket is slow, it
+				// cannot turn as fast).
+				final Vec2 rocketToMobVector = Vec2.subtract(targetPosition, position).normalize().multiply(0.015f * updateContext.deltaT * (speed + 0.4f));
+				direction.add(rocketToMobVector).normalize();
+			}
+
 		}
 
 		super.update(updateContext);

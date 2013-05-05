@@ -23,6 +23,7 @@ public abstract class GameEntity implements Comparable<GameEntity> {
 	 */
 	protected Vec2 direction = new Vec2(1, 0);
 
+	// TODO change to Shape (not every game entity has a rectangular shape!)
 	/**
 	 * The bounds of this {@link GameEntity}.
 	 */
@@ -114,15 +115,28 @@ public abstract class GameEntity implements Comparable<GameEntity> {
 	public int compareTo(GameEntity o) {
 		return layer.compareTo(o.layer);
 	}
-	
+
+	public void setDirection(Vec2 d) {
+		direction.x = d.x;
+		direction.y = d.y;
+	}
+
+	public void setPosition(Vec2 p) {
+		position.x = p.x;
+		position.y = p.y;
+	}
+
 	public void setPosition(float x, float y) {
 		position.x = x;
 		position.y = y;
 	}
 
+	public Vec2 getDirection() {
+		return direction;
+	}
+
 	public abstract float getWidth();
 
 	public abstract float getHeight();
-
 
 }

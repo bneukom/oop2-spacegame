@@ -19,7 +19,6 @@ import javax.swing.SwingUtilities;
 
 import ch.neb.spacegame.world.World;
 
-// TODO run game in thread...
 public class SpaceGame extends JFrame {
 
 	private static final int DECORATOR_HEIGHT = 25;
@@ -109,6 +108,7 @@ public class SpaceGame extends JFrame {
 		updateContext.mouseInput = mouseInput;
 		updateContext.camera = camera;
 
+		// run until user presses exit
 		while (true) {
 			try {
 				// clear back buffer...
@@ -120,6 +120,8 @@ public class SpaceGame extends JFrame {
 				// delta time in milli seconds
 				updateContext.deltaT = (long) (deltaT / 1e6);
 
+				// graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
 				// update
 				world.update(updateContext);
 
@@ -130,6 +132,8 @@ public class SpaceGame extends JFrame {
 
 				// render
 				world.render(g2d, camera);
+
+				mouseInput.step();
 
 				// exit
 				if (keys.exit.isDown) {
@@ -144,7 +148,7 @@ public class SpaceGame extends JFrame {
 				// display frames per second...
 				g2d.setColor(Color.WHITE);
 				g2d.setFont(font);
-				// g2d.drawString(String.format("fps: %s", Math.round(1e9 / (deltaT + 1))), 5, 10);
+				g2d.drawString(String.format("fps: %s", Math.round(1e9 / (deltaT + 1))), 5, 10);
 
 				graphics = buffer.getDrawGraphics();
 				graphics.drawImage(bi, 0, yOffset, null);

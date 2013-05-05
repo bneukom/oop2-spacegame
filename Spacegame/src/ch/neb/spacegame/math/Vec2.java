@@ -98,7 +98,7 @@ public class Vec2 {
 
 	@Override
 	public boolean equals(Object obj) {
-		throw new IllegalStateException("Do not call equal for Vec2, implementation could be quite difficult! (would use an epislon to compare values).");
+		throw new IllegalStateException("Do not call equal for Vec2, implementation could be quite difficult! (would use an epislon to compare float values).");
 	}
 
 	public static float lengthSqr(Vec2 v) {

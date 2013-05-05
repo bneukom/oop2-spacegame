@@ -13,8 +13,11 @@ public class Arts {
 	public static BufferedImage ship1 = createImage("sprites/ship1.png");
 	public static BufferedImage ship2 = createImage("sprites/ship2.png");
 	public static BufferedImage ship3 = createImage("sprites/ship3.png");
+	public static BufferedImage ship4 = createImage("sprites/ship4.png");
 	public static BufferedImage star1 = createImage("sprites/star1.png");
 	public static BufferedImage star2 = createImage("sprites/star2.png");
+	public static BufferedImage sun = createImage("sprites/sun.png");
+	public static BufferedImage sun2 = createImage("sprites/sun2.png");
 	public static BufferedImage starsystem = createImage("sprites/starsystem.png");
 	public static BufferedImage mouse = createImage("sprites/mouse.png");
 	public static BufferedImage bullet1 = createImage("sprites/bullet1.png");
@@ -26,6 +29,7 @@ public class Arts {
 	public static BufferedImage rocket = createImage("sprites/rocket.png");
 	public static BufferedImage smallexplosion = createImage("sprites/smallexplosion.png");
 	public static BufferedImage exhaust = createImage("sprites/exhaust.png");
+
 
 	public static BufferedImage createImage(String path) {
 		try {

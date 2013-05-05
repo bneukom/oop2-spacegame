@@ -2,6 +2,7 @@ package ch.neb.spacegame.world.enemies;
 
 import java.awt.image.BufferedImage;
 
+import ch.neb.spacegame.Arts;
 import ch.neb.spacegame.GameEntity;
 import ch.neb.spacegame.UpdateContext;
 import ch.neb.spacegame.math.Vec2;
@@ -9,7 +10,7 @@ import ch.neb.spacegame.world.Player;
 import ch.neb.spacegame.world.SpaceShip;
 import ch.neb.spacegame.world.World;
 import ch.neb.spacegame.world.bullets.Bullet;
-import ch.neb.spacegame.world.weapon.NormalGun;
+import ch.neb.spacegame.world.guns.NormalGun;
 
 // TODO collision resolve?
 public class EnemyShip extends SpaceShip {
@@ -23,13 +24,6 @@ public class EnemyShip extends SpaceShip {
 	public EnemyShip(World world, BufferedImage image, float speed, float maxHealth) {
 		super(world, image, speed, maxHealth);
 		maxSpeed = speed;
-
-		guns.add(new NormalGun(600, world, this, 3, 3));
-
-		System.out.println("PLAYER: " + world.getPlayer());
-
-		// TODO does not quite work yet!
-		// guns.add(new RocketLauncher(600, world, this, world.getPlayer(), true, 2, 3));
 	}
 
 	@Override
@@ -75,7 +69,7 @@ public class EnemyShip extends SpaceShip {
 		final float y = position.x;
 
 		// TODO smooth turning!
-		if (x == 0 || y == 0 || x + getWidth() == world.width || y + getHeight() == world.height) {
+		if (x <= 0 || y <= 0 || x + getWidth() >= world.width || y + getHeight() >= world.height) {
 			direction.multiply(-1);
 		}
 
