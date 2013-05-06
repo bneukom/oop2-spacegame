@@ -12,7 +12,7 @@ import ch.neb.spacegame.world.bullets.Bullet;
 
 public abstract class SpaceDebris extends Mob {
 
-	private Vec2 initialDirection;
+	private Vec2 movementDirection;
 
 	private float angularSpeed;
 
@@ -20,9 +20,9 @@ public abstract class SpaceDebris extends Mob {
 
 	public static long MIN_AGE_TO_DIE = 10000;
 
-	public SpaceDebris(World world, BufferedImage image, Vec2 initialDirection, Vec2 position, float maxHealth, float speed, float angularSpeed) {
+	public SpaceDebris(World world, BufferedImage image, Vec2 movementDirection, Vec2 position, float maxHealth, float speed, float angularSpeed) {
 		super(world, image, speed, maxHealth);
-		this.initialDirection = initialDirection;
+		this.movementDirection = movementDirection;
 		this.position = position;
 		this.angularSpeed = angularSpeed;
 
@@ -35,7 +35,7 @@ public abstract class SpaceDebris extends Mob {
 		age += updateContext.deltaT;
 
 		// always fly to the same direction
-		final Vec2 offset = Vec2.multiply(initialDirection, speed * updateContext.deltaT);
+		final Vec2 offset = Vec2.multiply(movementDirection, speed * updateContext.deltaT);
 		position.add(offset);
 
 		final float theta = angularSpeed * updateContext.deltaT;
@@ -47,6 +47,10 @@ public abstract class SpaceDebris extends Mob {
 		if (age > MIN_AGE_TO_DIE && position.x + getWidth() < 0 || position.y + getHeight() < 0 || position.x > world.width || position.y > world.height) {
 			world.removeEntity(this);
 		}
+	}
+
+	public void setMovementDirection(Vec2 d) {
+		this.movementDirection = d;
 	}
 
 	@Override

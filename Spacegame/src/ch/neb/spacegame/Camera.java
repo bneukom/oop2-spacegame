@@ -27,6 +27,18 @@ public class Camera {
 		return position.y;
 	}
 
+	public float leftDistance(Vec2 p) {
+		return p.x - position.x;
+	}
+
+	public float rightDistance(Vec2 p) {
+		return (position.x + width) - p.x;
+	}
+
+	public float topDistance(Vec2 p) {
+		return p.y - position.y;
+	}
+
 	/**
 	 * Sets the center point of the camera to the specific location.
 	 * 

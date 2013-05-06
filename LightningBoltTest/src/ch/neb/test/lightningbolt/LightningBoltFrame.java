@@ -156,7 +156,7 @@ public class LightningBoltFrame extends JFrame {
 			this.delay = delay;
 			this.weak = weak;
 
-			this.segments = generateLightning(Arrays.asList(new LightningSegment(start, end)), 5, 100);
+			this.segments = generateLightning(Arrays.asList(new LightningSegment(start, end)), 8, 100);
 		}
 
 		public void update(long deltaT) {
