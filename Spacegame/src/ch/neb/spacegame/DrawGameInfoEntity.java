@@ -58,7 +58,7 @@ public class DrawGameInfoEntity extends GameEntity {
 		if (initialInfoTime > 0) {
 			graphics.setFont(infoFont);
 			graphics.setColor(new Color(1f, 1f, 1f, (float) initialInfoTime / MAX_INITIAL_SHOW_TIME));
-			
+
 			graphics.drawString("Use W A S D for movement.", 50, 250);
 			graphics.drawString("Press Shift for a speed boost an Space for a shield.", 50, 275);
 			graphics.drawString("Press Escape to exit the game.", 50, 300);
@@ -68,8 +68,8 @@ public class DrawGameInfoEntity extends GameEntity {
 		graphics.setColor(Color.WHITE);
 		graphics.setFont(pointsFont);
 
-		final String pointsString = "Points: " + (int) world.getPlayer().getPoints();
-		graphics.drawString(pointsString, 800 - 140, 20);
+		final String pointsString = "Level: " + (int) world.getPlayer().getLevel() + " Points: " + (int) world.getPlayer().getPoints();
+		graphics.drawString(pointsString, 800 - graphics.getFontMetrics().stringWidth(pointsString) - 5, 20);
 
 		graphics.setColor(color);
 		graphics.fillRect(15, 570, (int) ((world.getPlayer().getTotalExperience() / world.getPlayer().getNextLevelExperience()) * XP_BAR_WIDTH), 10);

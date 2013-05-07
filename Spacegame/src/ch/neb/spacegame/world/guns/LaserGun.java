@@ -48,6 +48,8 @@ public class LaserGun extends Gun {
 
 	private static class Laser extends GameEntity {
 
+		private static final double DAMAGE_TICK = 1.95;
+		
 		private boolean active = false;
 		private float length = 800;
 		private GameEntity owner;
@@ -147,7 +149,7 @@ public class LaserGun extends Gun {
 		public void onCollide(GameEntity other, World world) {
 			super.onCollide(other, world);
 			final Mob mob = (Mob) other;
-			mob.doDamage(owner, (float) (lastDeltaT * 1.35), DamageType.GUN);
+			mob.doDamage(owner, (float) (lastDeltaT * DAMAGE_TICK), DamageType.GUN);
 		}
 
 		@Override

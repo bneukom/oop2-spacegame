@@ -92,7 +92,7 @@ public class Player extends SpaceShip {
 			// nextLevelExperience = (float) (Math.pow(nextLevelExperience, 1.018) * nextLevelExperience / 5);
 
 			// linear gain
-			nextLevelExperience *= 2;
+			nextLevelExperience *= 1.8;
 		}
 	}
 
@@ -107,6 +107,10 @@ public class Player extends SpaceShip {
 
 	public float getPoints() {
 		return points;
+	}
+	
+	public int getLevel() {
+		return level;
 	}
 
 	@Override

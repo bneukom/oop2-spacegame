@@ -7,4 +7,8 @@ public class Random {
 			return null;
 		return objects[(int) (Math.random() * (objects.length))];
 	}
+
+	public static float randomSignum() {
+		return Math.random() > 0.5 ? -1 : 1;
+	}
 }

@@ -12,7 +12,7 @@ import ch.neb.spacegame.Camera;
 import ch.neb.spacegame.CollisionListener;
 import ch.neb.spacegame.DamageIndicatorEntity;
 import ch.neb.spacegame.DrawGameInfoEntity;
-import ch.neb.spacegame.EnemySpawner;
+import ch.neb.spacegame.SpawnerGameEntity;
 import ch.neb.spacegame.GameEntity;
 import ch.neb.spacegame.SpawnListener;
 import ch.neb.spacegame.Sprite;
@@ -49,7 +49,7 @@ public class World {
 
 		addEntity(new DamageIndicatorEntity(this));
 		addEntity(new DrawGameInfoEntity(this));
-		addEntity(new EnemySpawner(this));
+		addEntity(new SpawnerGameEntity(this));
 
 		// play background music
 		// try {
