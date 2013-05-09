@@ -50,7 +50,7 @@ public class Player extends SpaceShip {
 	private LaserGun laser;
 
 	public Player(World world) {
-		super(world, Arts.ship1, DEFAULT_SPEED, 500);
+		super(world, Arts.ship1, DEFAULT_SPEED, 700);
 
 		laser = new LaserGun(0, world, this, null);
 
@@ -101,14 +101,16 @@ public class Player extends SpaceShip {
 		for (Gun gun : guns) {
 			gun.upgrade(level);
 
-			maxPower += 25;
+			maxPower += 20;
+			maxHealth += 10;
+			health = maxHealth;
 		}
 	}
 
 	public float getPoints() {
 		return points;
 	}
-	
+
 	public int getLevel() {
 		return level;
 	}
@@ -271,7 +273,8 @@ public class Player extends SpaceShip {
 		if (!isShieldEnabled)
 			super.doDamage(attackee, damage, type);
 		else
-			super.heal(damage / 3); // heal a third of the damage done if shield is active
+			super.doDamage(attackee, damage / 2, type); // only do half damage
+		// super.heal(damage / 3); // heal a third of the damage done if shield is active
 	}
 
 	public float getTotalExperience() {

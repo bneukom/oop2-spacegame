@@ -69,8 +69,8 @@ public class SpawnerGameEntity extends GameEntity {
 	private EnemyShip createEnemy(float health) {
 		final EnemyShip enemyShip = new EnemyShip(world, selectRandom(Arts.ship2, Arts.ship3, Arts.ship4), (float) (0.1f * Math.random() + 0.1f), health);
 
-		enemyShip.addGun(selectRandom(new NormalGun(350, world, Arts.bullet2, enemyShip, 3, 3), new NormalGun(100, world, Arts.bullet2, enemyShip, 1, 1)));
-		enemyShip.addGun(new RocketLauncher(1500, world, enemyShip, world.getPlayer(), true, 2, 1));
+		enemyShip.addGun(selectRandom(new NormalGun(850, world, Arts.bullet2, enemyShip, 3, 2), new NormalGun(800, world, Arts.bullet2, enemyShip, 1, 2)));
+		enemyShip.addGun(new RocketLauncher(1750, world, enemyShip, world.getPlayer(), true, 2, 1));
 
 		return enemyShip;
 	}
@@ -198,7 +198,7 @@ public class SpawnerGameEntity extends GameEntity {
 
 		@Override
 		public void spawn(World world, Camera camera) {
-			final EnemyShip enemy = createEnemy(DEFAULT_ENEMY_HEALTH + (world.getPlayer().getLevel() * 80));
+			final EnemyShip enemy = createEnemy(DEFAULT_ENEMY_HEALTH + (world.getPlayer().getLevel() * 70));
 			final Player player = world.getPlayer();
 			final Vec2 position = new Vec2(player.getPosition()).translate((float) ((Math.random() * 500f + 300f) * Random.randomSignum()),
 					(float) ((Math.random() * 500f + 300f) * Random.randomSignum()));

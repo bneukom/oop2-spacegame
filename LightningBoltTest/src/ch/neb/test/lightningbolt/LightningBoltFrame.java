@@ -75,9 +75,6 @@ public class LightningBoltFrame extends JFrame {
 
 				private long lastTime;
 
-				public void Runnable() {
-					lastTime = System.currentTimeMillis();
-				}
 
 				@Override
 				public void run() {

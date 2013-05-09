@@ -145,7 +145,7 @@ public class World {
 		}
 	}
 
-	// TODO use an octtree
+	// TODO use a quadtree for better performance
 	public synchronized void checkCollisions() {
 		for (int i = 0; i < gameEntities.size(); ++i) {
 			for (int j = 0; j < gameEntities.size(); ++j) {
