@@ -26,9 +26,6 @@ public class SpawnerGameEntity extends GameEntity {
 	public SpawnerGameEntity(World world) {
 		super(world);
 
-		spawnInitialDebris(200);
-		spawnInitialEnemies(5);
-
 		spawners.add(new DebrisSpawner(world, DEBRIS_SPAWN_TIME));
 		spawners.add(new EnemySpawner(world, ENEMY_SPAWN_TIME));
 	}
@@ -42,30 +39,6 @@ public class SpawnerGameEntity extends GameEntity {
 		}
 	}
 
-	public void spawnInitialDebris(int amount) {
-		for (int i = 0; i < amount; ++i) {
-			final Vec2 position = new Vec2((float) (Math.random() * world.width), (float) (Math.random() * world.height));
-			final float theta = (float) (Math.random() * 2 * Math.PI);
-			final Vec2 direction = new Vec2((float) Math.cos(theta), (float) Math.sin(theta));
-
-			final float speed = (float) (Math.random() * 0.06f + 0.075f);
-
-			float angularSpeed = (float) (Math.random() * 0.001f + 0.001f);
-
-			// random turn direction
-			angularSpeed *= Math.random() > 0.5 ? -1 : 1;
-
-			if (Math.random() < 0.2f) {
-				final float maxHealth = (float) (Math.random() * 10 + 20);
-				world.addEntity(new SmallSpaceDebris(world, direction, position, maxHealth, speed, angularSpeed));
-			} else {
-				final float maxHealth = (float) (Math.random() * 100 + 50);
-				world.addEntity(new SpaceRock(world, direction, position, maxHealth, speed, angularSpeed));
-			}
-		}
-
-	}
-
 	private EnemyShip createEnemy(float health) {
 		final EnemyShip enemyShip = new EnemyShip(world, selectRandom(Arts.ship2, Arts.ship3, Arts.ship4), (float) (0.1f * Math.random() + 0.1f), health);
 
@@ -73,14 +46,6 @@ public class SpawnerGameEntity extends GameEntity {
 		enemyShip.addGun(new RocketLauncher(1750, world, enemyShip, world.getPlayer(), true, 2, 1));
 
 		return enemyShip;
-	}
-
-	private void spawnInitialEnemies(int amount) {
-		for (int i = 0; i < amount; ++i) {
-			EnemyShip enemy = createEnemy(DEFAULT_ENEMY_HEALTH);
-			enemy.setPosition((float) (Math.random() * world.width), (float) (Math.random() * world.height));
-			world.addEntity(enemy);
-		}
 	}
 
 	@Override

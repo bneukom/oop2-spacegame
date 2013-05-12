@@ -68,11 +68,6 @@ public class EnemyShip extends SpaceShip {
 		final float x = position.x;
 		final float y = position.x;
 
-		// TODO smooth turning!
-		if (x <= 0 || y <= 0 || x + getWidth() >= world.width || y + getHeight() >= world.height) {
-			direction.multiply(-1);
-		}
-
 		// TODO into mob code?!
 		// move
 		final Vec2 offset = Vec2.multiply(direction, speed * updateContext.deltaT);

@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Sun May 12 22:59:34 CEST 2013
+onejar.license.required=false
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=true
+jarname=C\:\\Users\\bneukom\\workspace-spacegame-GIT\\Spacegame\\Spacegame\\Spacegame.jar
+manifest.mergeall=true
+manifest.mainclass=ch.neb.spacegame.SpaceGame
+manifest.file=.project
+jarname.isextern=true
+onejar.expand=
+excludes=
+includes=<inc|Spacegame/res>

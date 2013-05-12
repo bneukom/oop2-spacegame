@@ -46,22 +46,27 @@ public class Camera {
 	 */
 	public void setPosition(Vec2 position) {
 		// bounds adjusting
-		float x = Math.max(position.x - width / 2, 0);
-		float y = Math.max(position.y - height / 2, 0);
-
-		x = Math.min(x, world.width - width);
-		y = Math.min(y, world.width - height);
-
-		this.bounds.x = x;
-		this.bounds.y = y;
-		this.position.setTo(x, y);
-
-		// float x = position.x - width / 2;
-		// float y = position.y - height / 2;
+		// float x = Math.max(position.x - width / 2, 0);
+		// float y = Math.max(position.y - height / 2, 0);
+		//
+		// x = Math.min(x, world.width - width);
+		// y = Math.min(y, world.width - height);
 		//
 		// this.bounds.x = x;
 		// this.bounds.y = y;
 		// this.position.setTo(x, y);
+
+		// center
+		float x = position.x - width / 2;
+		float y = position.y - height / 2;
+
+		this.bounds.x = x;
+		this.bounds.y = y;
+		this.position.setTo(x, y);
+	}
+
+	public boolean isInView(float x, float y, float width, float height) {
+		return bounds.intersects(x, y, width, height);
 	}
 
 	public boolean isInView(Rectangle2D.Float rectangle) {

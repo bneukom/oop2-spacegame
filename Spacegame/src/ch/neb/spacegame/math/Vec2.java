@@ -37,7 +37,6 @@ public class Vec2 {
 		return x * other.x + y * other.y;
 	}
 
-
 	public Vec2(Vec2 other) {
 		this.x = other.x;
 		this.y = other.y;
@@ -110,7 +109,8 @@ public class Vec2 {
 	}
 
 	public static float length(float x, float y) {
-		return (float) Math.sqrt(x * x + y * y);
+		return (float) Math.hypot(x, y);
+		// return (float) Math.sqrt(x * x + y * y);
 	}
 
 	@Override

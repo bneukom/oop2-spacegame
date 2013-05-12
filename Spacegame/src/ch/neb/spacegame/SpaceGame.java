@@ -43,7 +43,7 @@ public class SpaceGame extends JFrame {
 		this.keys = new Keys();
 		this.mouseInput = new MouseInput();
 		this.inputListener = new InputListener(keys, mouseInput);
-		this.world = new World(5000, 5000);
+		this.world = new World();
 		this.camera = new Camera(resolutionX, resolutionY, world);
 
 		setResizable(false);
@@ -140,7 +140,6 @@ public class SpaceGame extends JFrame {
 					System.exit(0);
 				}
 
-
 				// count Frames per second...
 				lastTime = curTime;
 				curTime = System.nanoTime();
@@ -175,11 +174,18 @@ public class SpaceGame extends JFrame {
 	}
 
 	public static void main(String[] args) {
+		final boolean fullscreen;
+		if (args.length > 0) {
+			fullscreen = Boolean.parseBoolean(args[0]);
+		} else {
+			fullscreen = true;
+		}
+
 		SwingUtilities.invokeLater(new Runnable() {
 
 			@Override
 			public void run() {
-				final SpaceGame spacegame = new SpaceGame(800, 600, true);
+				final SpaceGame spacegame = new SpaceGame(800, 600, fullscreen);
 				final Thread gmaeThread = new Thread(new Runnable() {
 
 					@Override

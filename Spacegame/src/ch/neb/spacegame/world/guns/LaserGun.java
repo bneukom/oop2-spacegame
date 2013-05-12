@@ -36,7 +36,7 @@ public class LaserGun extends Gun {
 
 	@Override
 	public void upgrade(int level) {
-		laser.damageTick += 0.2;
+		laser.damageTick += 0.5;
 	}
 
 	@Override

@@ -190,8 +190,8 @@ public class Player extends SpaceShip {
 		// strafe right
 		if (updateContext.keys.right.isDown && distance > MOVE_HOLD_EPSILON && !isMoving) {
 			isMoving = true;
-			final Vec2 strafeLeft = new Vec2(direction.y, -direction.x);
-			final Vec2 offset = Vec2.multiply(strafeLeft, speed * updateContext.deltaT);
+			final Vec2 strafeRight = new Vec2(direction.y, -direction.x);
+			final Vec2 offset = Vec2.multiply(strafeRight, speed * updateContext.deltaT);
 			position.add(offset);
 		}
 

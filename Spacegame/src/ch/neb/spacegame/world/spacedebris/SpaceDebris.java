@@ -12,13 +12,15 @@ import ch.neb.spacegame.world.bullets.Bullet;
 
 public abstract class SpaceDebris extends Mob {
 
+
 	private Vec2 movementDirection;
 
 	private float angularSpeed;
 
 	private long age;
 
-	public static long MIN_AGE_TO_DIE = 10000;
+	private static long MIN_AGE_TO_DIE = 10000;
+	private static final int MIN_DISTANCE = 1000;
 
 	public SpaceDebris(World world, BufferedImage image, Vec2 movementDirection, Vec2 position, float maxHealth, float speed, float angularSpeed) {
 		super(world, image, speed, maxHealth);
@@ -43,9 +45,13 @@ public abstract class SpaceDebris extends Mob {
 		direction.x = (float) (direction.x * Math.cos(theta) - direction.y * Math.sin(theta));
 		direction.y = (float) (direction.x * Math.sin(theta) + direction.y * Math.cos(theta));
 
-		// remove if out of world bounds
-		if (age > MIN_AGE_TO_DIE && position.x + getWidth() < 0 || position.y + getHeight() < 0 || position.x > world.width || position.y > world.height) {
-			world.removeEntity(this);
+		// remove if too far away from player
+		if (age > MIN_AGE_TO_DIE) {
+			float distance = Vec2.distance(world.getPlayer().getPosition(), getPosition());
+			if (distance > MIN_DISTANCE) {
+				System.out.println("REMOVE");
+				world.removeEntity(this);
+			}
 		}
 	}
 

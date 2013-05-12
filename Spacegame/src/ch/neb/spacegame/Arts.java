@@ -5,7 +5,9 @@ import java.awt.FontFormatException;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 
@@ -30,22 +32,22 @@ public class Arts {
 	public static BufferedImage smallexplosion = createImage("sprites/smallexplosion.png");
 	public static BufferedImage exhaust = createImage("sprites/exhaust.png");
 
-
 	public static BufferedImage createImage(String path) {
 		try {
-			return ImageIO.read(new File(Arts.class.getClassLoader().getResource(path).toURI()));
-		} catch (IOException | URISyntaxException e) {
-			throw new IllegalArgumentException("Invalid image path.");
+			return ImageIO.read(Arts.class.getClassLoader().getResourceAsStream(path));
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+
+		return null;
 
 	}
 
 	public static Font getFont(float size) {
 		try {
-			File resource = new File(Arts.class.getClassLoader().getResource("font/visitor1.ttf").toURI());
-			return Font.createFont(Font.TRUETYPE_FONT, resource).deriveFont(size);
-		} catch (FontFormatException | IOException | URISyntaxException e1) {
-			e1.printStackTrace();
+			return Font.createFont(Font.TRUETYPE_FONT, Arts.class.getClassLoader().getResourceAsStream("font/visitor1.ttf")).deriveFont(size);
+		} catch (FontFormatException | IOException e) {
+			e.printStackTrace();
 		}
 
 		return null;
