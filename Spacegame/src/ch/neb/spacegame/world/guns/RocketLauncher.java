@@ -89,9 +89,9 @@ public class RocketLauncher extends Gun {
 	@Override
 	public void upgrade(int level) {
 		if (level % 2 == 0)
-			shots += 2;
+			shots += 1;
 		else 
-			damage += 3;
+			damage += 4;
 	}
 
 }

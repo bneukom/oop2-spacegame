@@ -16,7 +16,7 @@ public class DrawGameInfoEntity extends GameEntity {
 	private Font infoFont;
 	private Font deathFont;
 
-	private static long MAX_INITIAL_SHOW_TIME = 9000;
+	private static long MAX_INITIAL_SHOW_TIME = 11000;
 	private long initialInfoTime = MAX_INITIAL_SHOW_TIME;
 
 	public DrawGameInfoEntity(World world) {
@@ -61,8 +61,9 @@ public class DrawGameInfoEntity extends GameEntity {
 
 			graphics.drawString("Use W A S D for movement.", 50, 250);
 			graphics.drawString("Press Shift for a speed boost an Space for a shield.", 50, 275);
-			graphics.drawString("Press Escape to exit the game.", 50, 300);
-			graphics.drawString("Gain Points by shooting stuff.", 50, 325);
+			graphics.drawString("Use the right mouse button for a laser.", 50, 300);
+			graphics.drawString("Press Escape to exit the game.", 50, 325);
+			graphics.drawString("Gain Points by shooting stuff.", 50, 350);
 		}
 
 		graphics.setColor(Color.WHITE);

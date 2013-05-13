@@ -30,7 +30,7 @@ public class DamageIndicatorEntity extends GameEntity {
 		super.render(graphics, camera);
 
 		if (hitDelay > 0) {
-			graphics.setColor(new Color(1, 0, 0, 0.5f * hitDelay / Player.COLLIDE_COOLDOWN));
+			graphics.setColor(new Color(1, 0, 0, 0.4f * hitDelay / (Player.COLLIDE_COOLDOWN * 2)));
 			graphics.fillRect(0, 0, 800, 600);
 		}
 

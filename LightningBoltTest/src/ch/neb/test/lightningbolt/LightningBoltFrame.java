@@ -117,7 +117,7 @@ public class LightningBoltFrame extends JFrame {
 				}
 			}
 
-			// blur image
+			// apply gaussian filter
 			long start = System.currentTimeMillis();
 			graphics.drawImage(image, blurFilter, 0, 0);
 			System.out.println(System.currentTimeMillis() - start);
@@ -153,7 +153,7 @@ public class LightningBoltFrame extends JFrame {
 			this.delay = delay;
 			this.weak = weak;
 
-			this.segments = generateLightning(Arrays.asList(new LightningSegment(start, end)), 8, 100);
+			this.segments = generateLightning(Arrays.asList(new LightningSegment(start, end)), 6, 150);
 		}
 
 		public void update(long deltaT) {
@@ -220,14 +220,14 @@ public class LightningBoltFrame extends JFrame {
 				newSegments.add(new LightningSegment(new Vec2(midPoint), new Vec2(end)));
 
 				// add a offshoot
-				if (Math.random() < 0.15f) {
+				if (Math.random() < 0.35f) {
 					final Vec2 direction = Vec2.subtract(midPoint, start);
 
 					final float theta = (float) Math.toRadians(Math.random() * 10);
 					direction.x = (float) (direction.x * Math.cos(theta) - direction.y * Math.sin(theta));
 					direction.y = (float) (direction.x * Math.sin(theta) + direction.y * Math.cos(theta));
 
-					final Vec2 splitEnd = new Vec2(direction).multiply(0.7f).add(midPoint);
+					final Vec2 splitEnd = new Vec2(direction).multiply(0.9f).add(midPoint);
 
 					newSegments.add(new LightningSegment(midPoint, splitEnd));
 				}

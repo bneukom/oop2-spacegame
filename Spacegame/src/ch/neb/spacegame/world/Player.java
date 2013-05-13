@@ -68,7 +68,8 @@ public class Player extends SpaceShip {
 						@Override
 						public void killed(GameEntity by) {
 							if (by == Player.this) {
-								increaseExperience(mob.getExperience());
+								// increase expierience gain every level a bit
+								increaseExperience(mob.getExperience() * (1f + level / 5f));
 							}
 						}
 					});

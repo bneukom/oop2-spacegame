@@ -40,10 +40,10 @@ public class NormalGun extends Gun {
 
 	@Override
 	public void upgrade(int level) {
-		if (level % 2 == 0)
+		if (level % 3 == 0)
 			shots += 2;
 		else
-			damage += 3;
+			damage += 2;
 	}
 
 }

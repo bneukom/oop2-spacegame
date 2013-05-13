@@ -49,7 +49,6 @@ public abstract class SpaceDebris extends Mob {
 		if (age > MIN_AGE_TO_DIE) {
 			float distance = Vec2.distance(world.getPlayer().getPosition(), getPosition());
 			if (distance > MIN_DISTANCE) {
-				System.out.println("REMOVE");
 				world.removeEntity(this);
 			}
 		}

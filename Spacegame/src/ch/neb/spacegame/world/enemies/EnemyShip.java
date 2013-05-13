@@ -65,9 +65,6 @@ public class EnemyShip extends SpaceShip {
 			timeSinceLastDirectionChange = 0;
 		}
 
-		final float x = position.x;
-		final float y = position.x;
-
 		// TODO into mob code?!
 		// move
 		final Vec2 offset = Vec2.multiply(direction, speed * updateContext.deltaT);

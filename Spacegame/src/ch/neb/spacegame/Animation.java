@@ -29,7 +29,7 @@ public class Animation {
 		}
 
 		if (frames.size() == 0) {
-			throw new IllegalArgumentException("Empty animations are not valid.");
+			throw new IllegalArgumentException("Empty animations are not valid");
 		}
 
 		currentFrame = frames.get(0);

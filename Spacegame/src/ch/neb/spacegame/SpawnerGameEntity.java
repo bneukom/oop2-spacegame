@@ -138,17 +138,17 @@ public class SpawnerGameEntity extends GameEntity {
 
 		public SpaceDebris createDebris() {
 
-			final float speed = (float) (Math.random() * 0.075f + 0.095f + 0.01 * world.getPlayer().getLevel());
+			final float speed = (float) (Math.random() * 0.075f + 0.095f + 0.008 * world.getPlayer().getLevel());
 			float angularSpeed = (float) (Math.random() * 0.001f + 0.001f);
 
 			// random turn direction
 			angularSpeed *= Math.random() > 0.5 ? -1 : 1;
 
 			if (Math.random() < 0.25f) {
-				final float maxHealth = (float) ((Math.random() * 10 + 20) * ((world.getPlayer().getLevel() + 1) * 0.75f));
+				final float maxHealth = (float) ((Math.random() * 10 + 20) * ((world.getPlayer().getLevel() + 1) * 0.45f));
 				return new SmallSpaceDebris(world, new Vec2(1, 0), new Vec2(0, 0), maxHealth, speed, angularSpeed);
 			} else {
-				final float maxHealth = (float) ((Math.random() * 100 + 50) * ((world.getPlayer().getLevel() + 1) * 0.75f));
+				final float maxHealth = (float) ((Math.random() * 100 + 50) * ((world.getPlayer().getLevel() + 1) * 0.65f));
 				return new SpaceRock(world, new Vec2(1, 0), new Vec2(0, 0), maxHealth, speed, angularSpeed);
 			}
 		}
@@ -163,7 +163,8 @@ public class SpawnerGameEntity extends GameEntity {
 
 		@Override
 		public void spawn(World world, Camera camera) {
-			final EnemyShip enemy = createEnemy(DEFAULT_ENEMY_HEALTH + (world.getPlayer().getLevel() * 70));
+			// TODO sometimes spawn multiple enemies (so to make it a bit burstier)...
+			final EnemyShip enemy = createEnemy(DEFAULT_ENEMY_HEALTH + (world.getPlayer().getLevel() * 60));
 			final Player player = world.getPlayer();
 			final Vec2 position = new Vec2(player.getPosition()).translate((float) ((Math.random() * 500f + 300f) * Random.randomSignum()),
 					(float) ((Math.random() * 500f + 300f) * Random.randomSignum()));
