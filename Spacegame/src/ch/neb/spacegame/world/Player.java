@@ -124,12 +124,14 @@ public class Player extends SpaceShip {
 		float y = position.y - camera.getY();
 
 		if (isShieldEnabled) {
+			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			graphics.setColor(new Color(34, 40, 125, 135));
 			graphics.fillOval((int) x - 7, (int) y - 7, (int) getWidth() + 13, (int) getHeight() + 13);
 			graphics.setStroke(BORDER_STROKE);
 			graphics.setColor(new Color(34, 40, 125, 235));
 			graphics.drawOval((int) x - 7, (int) y - 7, (int) getWidth() + 13, (int) getHeight() + 13);
 			graphics.setStroke(DEFAULT_STROKE);
+			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 		}
 
 		float width = Math.max(35, getWidth());
@@ -271,11 +273,10 @@ public class Player extends SpaceShip {
 
 	@Override
 	public void doDamage(GameEntity attackee, float damage, DamageType type) {
-		if (!isShieldEnabled)
-			super.doDamage(attackee, damage, type);
-		else
-			super.doDamage(attackee, damage / 2, type); // only do half damage
-		// super.heal(damage / 3); // heal a third of the damage done if shield is active
+		// if (!isShieldEnabled)
+		// super.doDamage(attackee, damage, type);
+		// else
+		// super.doDamage(attackee, damage / 2, type); // only do half damage
 	}
 
 	public float getTotalExperience() {

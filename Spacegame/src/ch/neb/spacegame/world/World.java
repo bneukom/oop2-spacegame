@@ -23,6 +23,7 @@ import ch.neb.spacegame.Camera;
 import ch.neb.spacegame.CollisionListener;
 import ch.neb.spacegame.DamageIndicatorEntity;
 import ch.neb.spacegame.DrawGameInfoEntity;
+import ch.neb.spacegame.EnemyIndicatorEntity;
 import ch.neb.spacegame.GameEntity;
 import ch.neb.spacegame.SpaceGame;
 import ch.neb.spacegame.SpawnListener;
@@ -53,6 +54,7 @@ public class World {
 		addEntity(new DamageIndicatorEntity(this));
 		addEntity(new DrawGameInfoEntity(this));
 		addEntity(new SpawnerGameEntity(this));
+		addEntity(new EnemyIndicatorEntity(this));
 
 		space = generate(800, 600, 150, 75, 6, 3);
 

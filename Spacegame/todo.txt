@@ -1,3 +1,0 @@
-when hit with shield on, regenerate life
-speed boost should use less power
-faster space debris

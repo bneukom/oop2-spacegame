@@ -63,7 +63,7 @@ public class LaserGun extends Gun {
 
 			this.owner = owner;
 
-			setLayer(Layer.OVERLAY);
+			setLayer(Layer.HUD);
 		}
 
 		@Override

@@ -48,9 +48,11 @@ public class SpaceGame extends JFrame {
 
 		setResizable(false);
 		setBounds(200, 200, resolutionX, resolutionY + DECORATOR_HEIGHT);
-		setTitle("Software Renderer");
+		setTitle("Space Shooter");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setIgnoreRepaint(true);
+		
+		setIconImage(Arts.star1);
 
 		font = Arts.getFont(16);
 
@@ -146,9 +148,9 @@ public class SpaceGame extends JFrame {
 				deltaT = curTime - lastTime;
 
 				// display frames per second...
-				g2d.setColor(Color.WHITE);
-				g2d.setFont(font);
-				g2d.drawString(String.format("fps: %s", Math.round(1e9 / (deltaT + 1))), 5, 10);
+				// g2d.setColor(Color.WHITE);
+				// g2d.setFont(font);
+				// g2d.drawString(String.format("fps: %s", Math.round(1e9 / (deltaT + 1))), 5, 10);
 
 				graphics = buffer.getDrawGraphics();
 				graphics.drawImage(bi, 0, yOffset, null);
@@ -178,7 +180,7 @@ public class SpaceGame extends JFrame {
 		if (args.length > 0) {
 			fullscreen = Boolean.parseBoolean(args[0]);
 		} else {
-			fullscreen = true;
+			fullscreen = false;
 		}
 
 		SwingUtilities.invokeLater(new Runnable() {

@@ -22,7 +22,7 @@ public class DrawGameInfoEntity extends GameEntity {
 	public DrawGameInfoEntity(World world) {
 		super(world);
 
-		setLayer(Layer.OVERLAY);
+		setLayer(Layer.HUD);
 
 		pointsFont = Arts.getFont(20);
 		infoFont = Arts.getFont(25);
@@ -59,18 +59,21 @@ public class DrawGameInfoEntity extends GameEntity {
 			graphics.setFont(infoFont);
 			graphics.setColor(new Color(1f, 1f, 1f, (float) initialInfoTime / MAX_INITIAL_SHOW_TIME));
 
-			graphics.drawString("Use W A S D for movement.", 50, 250);
-			graphics.drawString("Press Shift for a speed boost an Space for a shield.", 50, 275);
-			graphics.drawString("Use the right mouse button for a laser.", 50, 300);
-			graphics.drawString("Press Escape to exit the game.", 50, 325);
-			graphics.drawString("Gain Points by shooting stuff.", 50, 350);
+			graphics.drawString("Use W A S D for movement.", 20, 250);
+			graphics.drawString("Press Shift for a speed boost an Space for a shield.", 20, 275);
+			graphics.drawString("Use the right mouse button for a laser.", 20, 300);
+			graphics.drawString("Press Escape to exit the game.", 20, 325);
+			graphics.drawString("Gain Points by shooting stuff.", 20, 350);
 		}
 
 		graphics.setColor(Color.WHITE);
 		graphics.setFont(pointsFont);
 
 		final String pointsString = "Level: " + (int) world.getPlayer().getLevel() + " Points: " + (int) world.getPlayer().getPoints();
-		graphics.drawString(pointsString, 800 - graphics.getFontMetrics().stringWidth(pointsString) - 5, 20);
+		graphics.setColor(color);
+		graphics.fillRect(800 - 250, 0, 250, 30);
+		graphics.setColor(Color.WHITE);
+		graphics.drawString(pointsString, 800 - 250 + 5, 20);
 
 		graphics.setColor(color);
 		graphics.fillRect(15, 570, (int) ((world.getPlayer().getTotalExperience() / world.getPlayer().getNextLevelExperience()) * XP_BAR_WIDTH), 10);

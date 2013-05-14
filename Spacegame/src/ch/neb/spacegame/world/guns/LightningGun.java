@@ -121,7 +121,7 @@ public class LightningGun extends Gun {
 
 			this.segments = generateLightning(Arrays.asList(new LightningSegment(start, end)), 4, 60);
 
-			setLayer(Layer.OVERLAY);
+			setLayer(Layer.HUD);
 		}
 
 		@Override

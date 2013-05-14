@@ -13,7 +13,7 @@ public class DamageIndicatorEntity extends GameEntity {
 	public DamageIndicatorEntity(final World world) {
 		super(world);
 
-		setLayer(Layer.OVERLAY);
+		setLayer(Layer.HUD);
 
 		world.getPlayer().addDamageListener(new DamageListener() {
 

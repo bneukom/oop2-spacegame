@@ -20,8 +20,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-// http://drilian.com/2009/02/25/lightning-bolts/
-// TODO http://stackoverflow.com/questions/12541081/adding-filter-to-image-in-swing !!!
+/**
+ * Test implementation of http://drilian.com/2009/02/25/lightning-bolts/
+ */
 public class LightningBoltFrame extends JFrame {
 
 	public LightningBoltFrame() {
@@ -33,7 +34,6 @@ public class LightningBoltFrame extends JFrame {
 		setContentPane(panel);
 
 		setVisible(true);
-		
 
 	}
 
@@ -43,11 +43,12 @@ public class LightningBoltFrame extends JFrame {
 
 		private List<Lightning> lightnings = new ArrayList<>();
 
-		final float[] kernel = { 1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f,
+		final float[] kernel =
+		{ 1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f,
 				1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f,
 				1.0f / 9.0f, 1.0f / 9.0f, 1.0f / 9.0f };
 
-		final BufferedImageOp blurFilter = new ConvolveOp(new Kernel(3, 3, kernel), ConvolveOp.EDGE_NO_OP, null);
+		final BufferedImageOp gaussianFilter = new ConvolveOp(new Kernel(3, 3, kernel), ConvolveOp.EDGE_NO_OP, null);
 		final BufferedImage image;
 		private Graphics2D imageGraphics;
 
@@ -74,7 +75,6 @@ public class LightningBoltFrame extends JFrame {
 			Thread renderer = new Thread(new Runnable() {
 
 				private long lastTime;
-
 
 				@Override
 				public void run() {
@@ -119,8 +119,8 @@ public class LightningBoltFrame extends JFrame {
 
 			// apply gaussian filter
 			long start = System.currentTimeMillis();
-			graphics.drawImage(image, blurFilter, 0, 0);
-			System.out.println(System.currentTimeMillis() - start);
+			graphics.drawImage(image, gaussianFilter, 0, 0);
+			System.out.println("Rendertime: " + (System.currentTimeMillis() - start));
 			// graphics.drawImage(image, 0, 0, null);
 		}
 
@@ -153,7 +153,7 @@ public class LightningBoltFrame extends JFrame {
 			this.delay = delay;
 			this.weak = weak;
 
-			this.segments = generateLightning(Arrays.asList(new LightningSegment(start, end)), 6, 150);
+			this.segments = generateLightning(Arrays.asList(new LightningSegment(start, end)), 6, 125);
 		}
 
 		public void update(long deltaT) {
@@ -219,8 +219,8 @@ public class LightningBoltFrame extends JFrame {
 				newSegments.add(new LightningSegment(new Vec2(start), new Vec2(midPoint)));
 				newSegments.add(new LightningSegment(new Vec2(midPoint), new Vec2(end)));
 
-				// add a offshoot
-				if (Math.random() < 0.35f) {
+				// add an offshoot with a certian change
+				if (Math.random() < 0.3f) {
 					final Vec2 direction = Vec2.subtract(midPoint, start);
 
 					final float theta = (float) Math.toRadians(Math.random() * 10);

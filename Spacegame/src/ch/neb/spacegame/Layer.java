@@ -1,5 +1,5 @@
 package ch.neb.spacegame;
 
 public enum Layer {
-	DEFAULT, OVERLAY
+	DEFAULT, GAME_OVERLAY, HUD
 }
