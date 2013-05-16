@@ -19,6 +19,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 import ch.neb.spacegame.Arts;
+import ch.neb.spacegame.Audio;
 import ch.neb.spacegame.Camera;
 import ch.neb.spacegame.CollisionListener;
 import ch.neb.spacegame.DamageIndicatorEntity;
@@ -58,17 +59,7 @@ public class World {
 
 		space = generate(800, 600, 150, 75, 6, 3);
 
-		// play background music
-		// try {
-		// File file = new File(SpaceGame.class.getClassLoader().getResource("audio/background.wav").toURI());
-		// AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
-		// Clip clip = AudioSystem.getClip();
-		// clip.open(audioInputStream);
-		// clip.loop(Clip.LOOP_CONTINUOUSLY);
-		// } catch (Exception ex) {
-		// ex.printStackTrace();
-		// }
-
+		Audio.loopSound("audio/megamantheme.wav");
 	}
 
 	private void createPlayer() {

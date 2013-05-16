@@ -51,7 +51,7 @@ public class SpaceGame extends JFrame {
 		setTitle("Space Shooter");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setIgnoreRepaint(true);
-		
+
 		setIconImage(Arts.star1);
 
 		font = Arts.getFont(16);
@@ -180,7 +180,7 @@ public class SpaceGame extends JFrame {
 		if (args.length > 0) {
 			fullscreen = Boolean.parseBoolean(args[0]);
 		} else {
-			fullscreen = false;
+			fullscreen = true;
 		}
 
 		SwingUtilities.invokeLater(new Runnable() {

@@ -53,9 +53,9 @@ public class SpaceShip extends Mob {
 	public void onDestroy() {
 		super.onDestroy();
 
-		world.addEntity(new Explosion(world, new Animation(Arts.explosion, 48, 48, 100, 1), new Vec2(position).translate(-14, -14), new Vec2(1, 0)));
-		world.addEntity(new Explosion(world, new Animation(Arts.explosion, 48, 48, 110, 1), new Vec2(position).translate(-19, -9), new Vec2(1, 0)));
-		world.addEntity(new Explosion(world, new Animation(Arts.explosion, 48, 48, 115, 1), new Vec2(position).translate(-5, -5), new Vec2(1, 0)));
+		world.addEntity(new Explosion(world, new Animation(Arts.explosion, 48, 48, 100, 1), true, new Vec2(position).translate(-14, -14), new Vec2(1, 0)));
+		world.addEntity(new Explosion(world, new Animation(Arts.explosion, 48, 48, 110, 1), false, new Vec2(position).translate(-19, -9), new Vec2(1, 0)));
+		world.addEntity(new Explosion(world, new Animation(Arts.explosion, 48, 48, 115, 1), false, new Vec2(position).translate(-5, -5), new Vec2(1, 0)));
 	}
 
 }

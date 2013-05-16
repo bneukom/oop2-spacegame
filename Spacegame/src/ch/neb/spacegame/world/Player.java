@@ -7,8 +7,12 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+
 import ch.neb.spacegame.Animation;
 import ch.neb.spacegame.Arts;
+import ch.neb.spacegame.Audio;
 import ch.neb.spacegame.Camera;
 import ch.neb.spacegame.GameEntity;
 import ch.neb.spacegame.KillListener;
@@ -48,6 +52,7 @@ public class Player extends SpaceShip {
 
 	// right click weapon
 	private LaserGun laser;
+	private Clip laserClip;
 
 	public Player(World world) {
 		super(world, Arts.ship1, DEFAULT_SPEED, 700);
@@ -77,8 +82,13 @@ public class Player extends SpaceShip {
 			}
 		});
 
-		guns.add(new LightningGun(500, world, this, null, 10));
+		laserClip = Audio.loadSound("audio/laser.wav");
+		
+		final FloatControl gainControl = (FloatControl) laserClip.getControl(FloatControl.Type.MASTER_GAIN);
+		gainControl.setValue(-10.0f); // Reduce volume by 10 decibels.
+
 		guns.add(new NormalGun(200, world, Arts.bullet2, this, 4, 10));
+		guns.add(new LightningGun(500, world, this, null, 10));
 		guns.add(new RocketLauncher(800, world, this, null, false, 2, 10));
 	}
 
@@ -226,13 +236,18 @@ public class Player extends SpaceShip {
 			speed = Math.max(speed, DEFAULT_SPEED);
 		}
 
+		// TODO generalize played sound
 		if (updateContext.mouseInput.isDown(1)) {
 			shoot();
+			laserClip.loop(Clip.LOOP_CONTINUOUSLY);
+		} else {
+			laserClip.stop();
+			laserClip.setFramePosition(0);
 		}
 
 		laser.update(updateContext.deltaT);
 		if (updateContext.mouseInput.isDown(3) && power > 0) {
-			power -= (0.085 * updateContext.deltaT);
+			power -= (0.075 * updateContext.deltaT);
 			power = Math.max(0, power);
 
 			if (power > 0) {
@@ -266,17 +281,17 @@ public class Player extends SpaceShip {
 			doDamage(this, 80, DamageType.COLLISION);
 
 			if (!isShieldEnabled)
-				world.addEntity(new Explosion(world, new Animation(Arts.smallexplosion, 23, 23, 1, 100, 1), new Vec2(position), new Vec2(1, 0)));
+				world.addEntity(new Explosion(world, new Animation(Arts.smallexplosion, 23, 23, 1, 100, 1), false, new Vec2(position), new Vec2(1, 0)));
 		}
 
 	}
 
 	@Override
 	public void doDamage(GameEntity attackee, float damage, DamageType type) {
-		// if (!isShieldEnabled)
-		// super.doDamage(attackee, damage, type);
-		// else
-		// super.doDamage(attackee, damage / 2, type); // only do half damage
+		if (!isShieldEnabled)
+			super.doDamage(attackee, damage, type);
+		else
+			super.doDamage(attackee, damage / 2, type); // only do half damage
 	}
 
 	public float getTotalExperience() {

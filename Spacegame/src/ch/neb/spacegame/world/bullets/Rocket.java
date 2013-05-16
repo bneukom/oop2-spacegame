@@ -64,7 +64,7 @@ public class Rocket extends Bullet {
 	public void onDestroy() {
 		super.onDestroy();
 
-		world.addEntity(new Explosion(world, new Animation(Arts.smallexplosion, 23, 23, 1, 100, 1), new Vec2(position), new Vec2(1, 0)));
+		world.addEntity(new Explosion(world, new Animation(Arts.smallexplosion, 23, 23, 1, 100, 1), false, new Vec2(position), new Vec2(1, 0)));
 	}
 
 }

@@ -15,7 +15,7 @@ import ch.neb.spacegame.world.guns.NormalGun;
 // TODO collision resolve?
 public class EnemyShip extends SpaceShip {
 
-	private static final int HEARING_DISTANCE = 800;
+	private static final int HEARING_DISTANCE = 5000;
 	private static final int SHOOT_DISTANCE = 400;
 	private static final long CHANGE_DIRECTION_TIME = 3000;
 	private long timeSinceLastDirectionChange = 0;
