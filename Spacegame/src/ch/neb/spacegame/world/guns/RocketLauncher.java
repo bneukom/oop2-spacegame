@@ -61,7 +61,7 @@ public class RocketLauncher extends Gun {
 		float startAngle = theta - (shots / 2) * thetaOffset;
 
 		for (int i = 0; i < shots; ++i) {
-			final BufferedImage rocket = Arts.rocket;
+			final BufferedImage rocket = Arts.rocket2;
 			final Vec2 shootPosition = new Vec2(position);
 
 			shootPosition.x -= rocket.getWidth() / 2;

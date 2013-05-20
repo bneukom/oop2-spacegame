@@ -182,11 +182,11 @@ public class World {
 		removeGameObejctQueue.add(entity);
 	}
 
-	public void addCollisionListener(CollisionListener collisionListener) {
+	public synchronized void addCollisionListener(CollisionListener collisionListener) {
 		this.collisionListeners.add(collisionListener);
 	}
 
-	public void addSpawnListener(SpawnListener spawnListener) {
+	public synchronized void addSpawnListener(SpawnListener spawnListener) {
 		spawnListeners.add(spawnListener);
 	}
 }

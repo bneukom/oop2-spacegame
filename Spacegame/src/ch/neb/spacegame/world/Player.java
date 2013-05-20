@@ -7,9 +7,6 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
-
 import ch.neb.spacegame.Animation;
 import ch.neb.spacegame.Arts;
 import ch.neb.spacegame.Audio;
@@ -79,8 +76,6 @@ public class Player extends SpaceShip {
 				}
 			}
 		});
-		
-		
 
 		Audio.changeVolumne("audio/laser.wav", -10.0f);
 
@@ -111,7 +106,7 @@ public class Player extends SpaceShip {
 
 			maxPower += 20;
 			maxHealth += 10;
-			health += maxHealth / 2;
+			health += maxHealth / 4; // add 1/4 of max hp 
 			health = Math.min(health, maxHealth);
 		}
 	}
@@ -237,7 +232,7 @@ public class Player extends SpaceShip {
 		// TODO generalize played sound
 		if (updateContext.mouseInput.isDown(1)) {
 			shoot();
-			
+
 			Audio.loopSound("audio/laser.wav");
 		} else {
 			Audio.reset("audio/laser.wav");

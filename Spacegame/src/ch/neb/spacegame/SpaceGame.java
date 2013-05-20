@@ -203,7 +203,7 @@ public class SpaceGame extends JFrame {
 					} else {
 						// consume less cpu
 						try {
-							Thread.sleep(100);
+							Thread.sleep(50);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
@@ -255,7 +255,7 @@ public class SpaceGame extends JFrame {
 	}
 
 	private void setPaused(final UpdateContext updateContext, boolean paused) {
-		updateContext.isPaused = !updateContext.isPaused;
+		updateContext.isPaused = paused;
 
 		if (updateContext.isPaused) {
 			Audio.stop();
