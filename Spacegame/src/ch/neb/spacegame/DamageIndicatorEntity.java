@@ -26,8 +26,8 @@ public class DamageIndicatorEntity extends GameEntity {
 	}
 
 	@Override
-	public void render(Graphics2D graphics, Camera camera) {
-		super.render(graphics, camera);
+	public void render(Graphics2D graphics, UpdateContext updateContext) {
+		super.render(graphics, updateContext);
 
 		if (hitDelay > 0) {
 			graphics.setColor(new Color(1, 0, 0, 0.4f * hitDelay / (Player.COLLIDE_COOLDOWN * 2)));

@@ -8,7 +8,6 @@ public class MouseInput {
 
 	private Vec2 position = new Vec2(0, 0);
 
-
 	public synchronized boolean isDown(int button) {
 		return isDown[button];
 	}
@@ -18,13 +17,7 @@ public class MouseInput {
 		this.position.y = y;
 	}
 
-	public synchronized void step() {
-	}
-
-	private void clear(boolean[] states) {
-		for (int i = 0; i < states.length; ++i) {
-			states[i] = false;
-		}
+	public synchronized void update() {
 	}
 
 	public synchronized Vec2 getPosition() {
@@ -38,6 +31,5 @@ public class MouseInput {
 	public synchronized void mouseUp(int button) {
 		isDown[button] = false;
 	}
-
 
 }

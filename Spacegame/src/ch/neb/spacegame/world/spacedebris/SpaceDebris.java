@@ -53,6 +53,11 @@ public abstract class SpaceDebris extends Mob {
 			}
 		}
 	}
+	
+	@Override
+	public float getExperience() {
+		return 1;
+	}
 
 	public void setMovementDirection(Vec2 d) {
 		this.movementDirection = d;

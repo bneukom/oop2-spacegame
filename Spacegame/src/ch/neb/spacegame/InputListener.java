@@ -8,26 +8,27 @@ import java.awt.event.MouseMotionListener;
 
 public class InputListener implements MouseListener, MouseMotionListener, KeyListener {
 
-	private Keys keys;
+	private Keyboard keyboard;
 	private MouseInput mouseInput;
 
-	public InputListener(Keys keys, MouseInput mouseInput) {
-		this.keys = keys;
+	public InputListener(Keyboard keyboard, MouseInput mouseInput) {
+		this.keyboard = keyboard;
 		this.mouseInput = mouseInput;
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
+		keyboard.keyTyped(KeyEvent.getExtendedKeyCodeForChar(e.getKeyChar()));
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		keys.keyDown(e.getKeyCode());
+		keyboard.keyDown(e.getKeyCode());
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		keys.keyUp(e.getKeyCode());
+		keyboard.keyUp(e.getKeyCode());
 	}
 
 	@Override
@@ -48,7 +49,7 @@ public class InputListener implements MouseListener, MouseMotionListener, KeyLis
 	public void mousePressed(MouseEvent e) {
 		mouseInput.mouseDown(e.getButton());
 	}
-	
+
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		mouseInput.mouseUp(e.getButton());

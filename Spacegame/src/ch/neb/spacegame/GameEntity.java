@@ -75,7 +75,7 @@ public abstract class GameEntity implements Comparable<GameEntity> {
 		bounds.height = getHeight();
 	}
 
-	public void render(Graphics2D graphics, Camera camera) {
+	public void render(Graphics2D graphics, UpdateContext updateContext) {
 
 	}
 

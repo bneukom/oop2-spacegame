@@ -11,7 +11,6 @@ import ch.neb.spacegame.world.Mob;
 import ch.neb.spacegame.world.World;
 import ch.neb.spacegame.world.Mob.DamageType;
 
-// TODO create Weapon!
 public class Bullet extends DrawableGameEntity {
 
 	protected float age;

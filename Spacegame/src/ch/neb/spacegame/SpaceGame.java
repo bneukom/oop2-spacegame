@@ -10,9 +10,13 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -30,21 +34,25 @@ public class SpaceGame extends JFrame {
 	private Font font;
 
 	private Camera camera;
-	private Keys keys;
+	private Keyboard keyboard;
 	private MouseInput mouseInput;
 	private InputListener inputListener;
 
 	private World world;
 
+	int yOffset = 0;
+
 	public SpaceGame(int resolutionX, int resolutionY, boolean fullScreen) {
 		this.resolutionX = resolutionX;
 		this.resolutionY = resolutionY;
 		this.fullScreen = fullScreen;
-		this.keys = new Keys();
+		this.keyboard = new Keyboard();
 		this.mouseInput = new MouseInput();
-		this.inputListener = new InputListener(keys, mouseInput);
+		this.inputListener = new InputListener(keyboard, mouseInput);
 		this.world = new World();
 		this.camera = new Camera(resolutionX, resolutionY, world);
+
+		yOffset = fullScreen ? 0 : 25;
 
 		setResizable(false);
 		setBounds(200, 200, resolutionX, resolutionY + DECORATOR_HEIGHT);
@@ -69,13 +77,26 @@ public class SpaceGame extends JFrame {
 		final Toolkit toolkit = Toolkit.getDefaultToolkit();
 		final Cursor cursor = toolkit.createCustomCursor(Arts.mouse, new Point(0, 0), "img");
 		setCursor(cursor);
+
+		addWindowFocusListener(new WindowFocusListener() {
+
+			@Override
+			public void windowLostFocus(WindowEvent e) {
+				Audio.stop();
+			}
+
+			@Override
+			public void windowGainedFocus(WindowEvent e) {
+				Audio.start();
+			}
+		});
 	}
 
 	public void run() {
 		// Get graphics configuration...
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		GraphicsDevice gd = ge.getDefaultScreenDevice();
-		GraphicsConfiguration gc = gd.getDefaultConfiguration();
+		final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		final GraphicsDevice gd = ge.getDefaultScreenDevice();
+		final GraphicsConfiguration gc = gd.getDefaultConfiguration();
 
 		if (fullScreen) {
 			// Change to full screen
@@ -87,11 +108,11 @@ public class SpaceGame extends JFrame {
 			gd.setDisplayMode(new DisplayMode(resolutionX, resolutionY, 32, 60));
 		}
 
-		// Create BackBuffer...
+		// create backbuffer
 		createBufferStrategy(2);
 		BufferStrategy buffer = getBufferStrategy();
 
-		// Create off-screen drawing surface
+		// Offscreen rendering
 		BufferedImage bi = gc.createCompatibleImage(resolutionX, resolutionY);
 
 		// Objects needed for rendering...
@@ -99,47 +120,106 @@ public class SpaceGame extends JFrame {
 		Graphics2D g2d = null;
 
 		// offset rendering used when in window mode
-		int yOffset = fullScreen ? 0 : 25;
 
 		long curTime = System.nanoTime();
 		long lastTime = curTime;
 		long deltaT = 0;
 
 		final UpdateContext updateContext = new UpdateContext();
-		updateContext.keys = keys;
+		updateContext.keyboard = keyboard;
 		updateContext.mouseInput = mouseInput;
 		updateContext.camera = camera;
+		updateContext.isPaused = false;
+
+		boolean showFps = false;
 
 		// run until user presses exit
 		while (true) {
 			try {
-				// clear back buffer...
-				g2d = bi.createGraphics();
-				g2d.setColor(Color.BLACK);
-				g2d.fillRect(0, 0, resolutionX, resolutionY);
-				g2d.setFont(font);
+				synchronized (keyboard) {
+					// clear back buffer...
+					g2d = bi.createGraphics();
+					g2d.setColor(Color.BLACK);
+					g2d.fillRect(0, 0, resolutionX, resolutionY);
+					g2d.setFont(font);
 
-				// delta time in milli seconds
-				updateContext.deltaT = (long) (deltaT / 1e6);
+					// delta time in milli seconds
+					updateContext.deltaT = (long) (deltaT / 1e6);
 
-				// graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+					// exit
+					if (keyboard.exit.isDown) {
+						System.exit(0);
+					}
 
-				// update
-				world.update(updateContext);
+					if (keyboard.showFps.typed) {
+						showFps = !showFps;
+					}
 
-				world.checkCollisions();
+					if (keyboard.sound.typed) {
+						Audio.toggleEnabled();
+					}
 
-				// update the camera
-				updateCameraPosition();
+					if (keyboard.fullscreen.typed) {
+						fullScreen = !fullScreen;
+						
+						setPaused(updateContext, true);
+						
+						// change fullscreen mode
+						dispose();
+						try {
+							SwingUtilities.invokeAndWait(new Runnable() {
 
-				// render
-				world.render(g2d, camera);
+								@Override
+								public void run() {
+									setUndecorated(fullScreen);
+									setVisible(true);
+									gd.setFullScreenWindow(!fullScreen ? null : SpaceGame.this);
 
-				mouseInput.step();
+									if (gd.isDisplayChangeSupported()) {
+										gd.setDisplayMode(new DisplayMode(resolutionX, resolutionY, 32, 60));
+									}
 
-				// exit
-				if (keys.exit.isDown) {
-					System.exit(0);
+									// create backbuffer
+									createBufferStrategy(2);
+
+									yOffset = fullScreen ? 0 : 25;
+								}
+
+							});
+						} catch (InvocationTargetException | InterruptedException e) {
+							e.printStackTrace();
+						}
+
+					}
+
+					// pause
+					if (keyboard.pause.typed) {
+						togglePaused(updateContext);
+					}
+
+					if (!updateContext.isPaused) {
+						// update
+						world.update(updateContext);
+					} else {
+						// consume less cpu
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+
+					// check if any collisions happened
+					world.checkCollisions();
+
+					// update the camera
+					updateCameraPosition();
+
+					// render
+					world.render(g2d, updateContext);
+
+					mouseInput.update();
+					keyboard.update();
 				}
 
 				// count Frames per second...
@@ -147,10 +227,11 @@ public class SpaceGame extends JFrame {
 				curTime = System.nanoTime();
 				deltaT = curTime - lastTime;
 
-				// display frames per second...
-				// g2d.setColor(Color.WHITE);
-				// g2d.setFont(font);
-				// g2d.drawString(String.format("fps: %s", Math.round(1e9 / (deltaT + 1))), 5, 10);
+				if (showFps) {
+					g2d.setColor(Color.WHITE);
+					g2d.setFont(font);
+					g2d.drawString(String.format("fps: %s", Math.round(1e9 / (deltaT + 1))), 5, 10);
+				}
 
 				graphics = buffer.getDrawGraphics();
 				graphics.drawImage(bi, 0, yOffset, null);
@@ -161,12 +242,26 @@ public class SpaceGame extends JFrame {
 				Thread.yield();
 
 			} finally {
-				// release resources
 				if (graphics != null)
 					graphics.dispose();
 				if (g2d != null)
 					g2d.dispose();
 			}
+		}
+	}
+	
+	private void togglePaused(final UpdateContext updateContext) {
+		setPaused(updateContext, !updateContext.isPaused);
+	}
+
+	private void setPaused(final UpdateContext updateContext, boolean paused) {
+		updateContext.isPaused = !updateContext.isPaused;
+
+		if (updateContext.isPaused) {
+			Audio.stop();
+		}
+		else {
+			Audio.start();
 		}
 	}
 
@@ -180,7 +275,7 @@ public class SpaceGame extends JFrame {
 		if (args.length > 0) {
 			fullscreen = Boolean.parseBoolean(args[0]);
 		} else {
-			fullscreen = true;
+			fullscreen = false;
 		}
 
 		SwingUtilities.invokeLater(new Runnable() {
@@ -188,14 +283,14 @@ public class SpaceGame extends JFrame {
 			@Override
 			public void run() {
 				final SpaceGame spacegame = new SpaceGame(800, 600, fullscreen);
-				final Thread gmaeThread = new Thread(new Runnable() {
+				final Thread gameThread = new Thread(new Runnable() {
 
 					@Override
 					public void run() {
 						spacegame.run();
 					}
 				});
-				gmaeThread.start();
+				gameThread.start();
 			}
 		});
 

@@ -4,12 +4,13 @@ import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Keys {
+public class Keyboard {
 
 	private Map<Integer, Key> keyMappings = new HashMap<>();
 
 	public final class Key {
 		public boolean isDown = false;
+		public boolean typed = false;
 	}
 
 	public Key exit = new Key();
@@ -19,8 +20,12 @@ public class Keys {
 	public Key right = new Key();
 	public Key powerBoost = new Key();
 	public Key shield = new Key();
+	public Key pause = new Key();
+	public Key showFps = new Key();
+	public Key sound = new Key();
+	public Key fullscreen = new Key();
 
-	public Keys() {
+	public Keyboard() {
 		keyMappings.put(KeyEvent.VK_ESCAPE, exit);
 		keyMappings.put(KeyEvent.VK_W, forward);
 		keyMappings.put(KeyEvent.VK_UP, forward);
@@ -32,19 +37,36 @@ public class Keys {
 		keyMappings.put(KeyEvent.VK_D, right);
 		keyMappings.put(KeyEvent.VK_SPACE, shield);
 		keyMappings.put(KeyEvent.VK_SHIFT, powerBoost);
+		keyMappings.put(KeyEvent.VK_P, pause);
+		keyMappings.put(KeyEvent.VK_I, showFps);
+		keyMappings.put(KeyEvent.VK_O, sound);
+		keyMappings.put(KeyEvent.VK_L, fullscreen);
 	}
 
-	public void keyDown(int keyCode) {
+	public void update() {
+		for (Key key : keyMappings.values()) {
+			key.typed = false;
+		}
+	}
+
+	public synchronized void keyDown(int keyCode) {
 		final Key key = keyMappings.get(keyCode);
 		if (key != null) {
 			key.isDown = true;
 		}
 	}
 
-	public void keyUp(int keyCode) {
+	public synchronized void keyUp(int keyCode) {
 		final Key key = keyMappings.get(keyCode);
 		if (key != null) {
 			key.isDown = false;
+		}
+	}
+
+	public synchronized void keyTyped(int keyCode) {
+		final Key key = keyMappings.get(keyCode);
+		if (key != null) {
+			key.typed = true;
 		}
 	}
 

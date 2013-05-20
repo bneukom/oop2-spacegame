@@ -6,10 +6,10 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.neb.spacegame.Camera;
 import ch.neb.spacegame.DamageListener;
 import ch.neb.spacegame.GameEntity;
 import ch.neb.spacegame.KillListener;
+import ch.neb.spacegame.UpdateContext;
 
 /**
  * A mob represents a game entity which can be drawn and destroyed.
@@ -38,11 +38,11 @@ public class Mob extends DrawableGameEntity {
 	}
 
 	@Override
-	public void render(Graphics2D graphics, Camera camera) {
-		super.render(graphics, camera);
+	public void render(Graphics2D graphics, UpdateContext updateContext) {
+		super.render(graphics, updateContext);
 
-		float x = position.x - camera.getX();
-		float y = position.y - camera.getY();
+		float x = position.x - updateContext.camera.getX();
+		float y = position.y - updateContext.camera.getY();
 
 		if (drawHealth) {
 			graphics.setColor(Color.GREEN);

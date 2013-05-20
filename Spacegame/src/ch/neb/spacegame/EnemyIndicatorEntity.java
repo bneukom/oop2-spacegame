@@ -11,6 +11,10 @@ import ch.neb.spacegame.math.Vec2;
 import ch.neb.spacegame.world.World;
 import ch.neb.spacegame.world.enemies.EnemyShip;
 
+/**
+ * Draws arrow at the edge of the screen to show where {@link EnemyShip}s are.
+ * 
+ */
 public class EnemyIndicatorEntity extends GameEntity {
 
 	private List<EnemyShip> enemiesOutOfView = new ArrayList<>();
@@ -42,8 +46,8 @@ public class EnemyIndicatorEntity extends GameEntity {
 	}
 
 	@Override
-	public void render(Graphics2D graphics, Camera camera) {
-		super.render(graphics, camera);
+	public void render(Graphics2D graphics, UpdateContext updateContext) {
+		super.render(graphics, updateContext);
 
 		// int arrowSize = 50;
 		int arrowWidth = 30;
@@ -54,8 +58,9 @@ public class EnemyIndicatorEntity extends GameEntity {
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		for (EnemyShip ship : enemiesOutOfView) {
-			final int x = (int) Math.min(Math.max(0, ship.getPosition().x - camera.getX()), camera.width - arrowWidth); // - arrowHeight because the arrow will be drawn 90° turned
-			final int y = (int) Math.min(Math.max(0, ship.getPosition().y - camera.getY()), camera.height - arrowWidth);
+			final int x = (int) Math.min(Math.max(0, ship.getPosition().x - updateContext.camera.getX()), updateContext.camera.width - arrowWidth); // - arrowHeight because the arrow will be drawn 90°
+																																					// turned
+			final int y = (int) Math.min(Math.max(0, ship.getPosition().y - updateContext.camera.getY()), updateContext.camera.height - arrowWidth);
 			final String distanceString = String.valueOf((int) Vec2.distance(world.getPlayer().getPosition(), ship.getPosition()) / 10);
 			final int stringWidth = (int) graphics.getFontMetrics().getStringBounds(distanceString, graphics).getWidth();
 
@@ -70,12 +75,12 @@ public class EnemyIndicatorEntity extends GameEntity {
 				graphics.drawLine(x + arrowHeight, y, x + ARROW_WIDTH, y + arrowWidth / 2);
 				graphics.drawLine(x + arrowHeight, y + arrowWidth, x + ARROW_WIDTH, y + arrowWidth / 2);
 				graphics.drawString(distanceString, x + 10, y + arrowWidth / 2 + 5);
-			} else if (y == camera.height - arrowWidth) {
+			} else if (y == updateContext.camera.height - arrowWidth) {
 				// south arrow
 				graphics.drawLine(x, y + delta, x + arrowWidth / 2, y + arrowHeight - ARROW_WIDTH + delta);
 				graphics.drawLine(x + arrowWidth, y + delta, x + arrowWidth / 2, y + arrowHeight - ARROW_WIDTH + delta);
 				graphics.drawString(distanceString, x + arrowWidth / 2 - stringWidth / 2, y - 20 + delta);
-			} else if (x == camera.width - arrowWidth) {
+			} else if (x == updateContext.camera.width - arrowWidth) {
 				// east arrow
 				graphics.drawLine(x + delta, y, x + arrowHeight - ARROW_WIDTH + delta, y + arrowWidth / 2);
 				graphics.drawLine(x + delta, y + arrowWidth, x + arrowHeight - ARROW_WIDTH + delta, y + arrowWidth / 2);

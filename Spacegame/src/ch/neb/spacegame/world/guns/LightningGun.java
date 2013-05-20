@@ -121,7 +121,7 @@ public class LightningGun extends Gun {
 
 			this.segments = generateLightning(Arrays.asList(new LightningSegment(start, end)), 4, 60);
 
-			setLayer(Layer.HUD);
+			setLayer(Layer.GAME_OVERLAY);
 		}
 
 		@Override
@@ -147,14 +147,14 @@ public class LightningGun extends Gun {
 		}
 
 		@Override
-		public void render(Graphics2D graphics, Camera camera) {
-			super.render(graphics, camera);
+		public void render(Graphics2D graphics, UpdateContext updateContext) {
+			super.render(graphics, updateContext);
 
 			Path2D.Float lightnig = new Path2D.Float();
-			lightnig.moveTo(start.x - camera.getX(), start.y - camera.getY());
+			lightnig.moveTo(start.x - updateContext.camera.getX(), start.y - updateContext.camera.getY());
 			for (LightningSegment seg : segments) {
-				lightnig.moveTo(seg.start.x - camera.getX(), seg.start.y - camera.getY());
-				lightnig.lineTo(seg.end.x - camera.getX(), seg.end.y - camera.getY());
+				lightnig.moveTo(seg.start.x - updateContext.camera.getX(), seg.start.y - updateContext.camera.getY());
+				lightnig.lineTo(seg.end.x - updateContext.camera.getX(), seg.end.y - updateContext.camera.getY());
 
 			}
 			if (!weak) {
@@ -197,7 +197,7 @@ public class LightningGun extends Gun {
 				newSegments.add(new LightningSegment(new Vec2(start), new Vec2(midPoint)));
 				newSegments.add(new LightningSegment(new Vec2(midPoint), new Vec2(end)));
 
-				// add a offshoot
+				// add an offshoot
 				if (Math.random() < 0.15f) {
 					final Vec2 direction = Vec2.subtract(midPoint, start);
 

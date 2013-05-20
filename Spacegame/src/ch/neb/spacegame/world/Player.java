@@ -13,7 +13,6 @@ import javax.sound.sampled.FloatControl;
 import ch.neb.spacegame.Animation;
 import ch.neb.spacegame.Arts;
 import ch.neb.spacegame.Audio;
-import ch.neb.spacegame.Camera;
 import ch.neb.spacegame.GameEntity;
 import ch.neb.spacegame.KillListener;
 import ch.neb.spacegame.SpawnListener;
@@ -52,7 +51,6 @@ public class Player extends SpaceShip {
 
 	// right click weapon
 	private LaserGun laser;
-	private Clip laserClip;
 
 	public Player(World world) {
 		super(world, Arts.ship1, DEFAULT_SPEED, 700);
@@ -74,18 +72,17 @@ public class Player extends SpaceShip {
 						public void killed(GameEntity by) {
 							if (by == Player.this) {
 								// increase expierience gain every level a bit
-								increaseExperience(mob.getExperience() * (1f + level / 5f));
+								increaseExperience(mob.getExperience() * (1f + level / 6f));
 							}
 						}
 					});
 				}
 			}
 		});
-
-		laserClip = Audio.loadSound("audio/laser.wav");
 		
-		final FloatControl gainControl = (FloatControl) laserClip.getControl(FloatControl.Type.MASTER_GAIN);
-		gainControl.setValue(-10.0f); // Reduce volume by 10 decibels.
+		
+
+		Audio.changeVolumne("audio/laser.wav", -10.0f);
 
 		guns.add(new NormalGun(200, world, Arts.bullet2, this, 4, 10));
 		guns.add(new LightningGun(500, world, this, null, 10));
@@ -99,11 +96,11 @@ public class Player extends SpaceShip {
 			onLevelUp();
 			totalXP = totalXP - nextLevelExperience;
 
-			// function for exponential xp gain needed
-			// nextLevelExperience = (float) (Math.pow(nextLevelExperience, 1.018) * nextLevelExperience / 5);
+			// exponential gain
+			nextLevelExperience = (float) (Math.pow(nextLevelExperience, 1.025) + nextLevelExperience / 2);
 
 			// linear gain
-			nextLevelExperience *= 1.8;
+			// nextLevelExperience *= 1.8;
 		}
 	}
 
@@ -114,7 +111,8 @@ public class Player extends SpaceShip {
 
 			maxPower += 20;
 			maxHealth += 10;
-			health = maxHealth;
+			health += maxHealth / 2;
+			health = Math.min(health, maxHealth);
 		}
 	}
 
@@ -127,11 +125,11 @@ public class Player extends SpaceShip {
 	}
 
 	@Override
-	public void render(Graphics2D graphics, Camera camera) {
-		super.render(graphics, camera);
+	public void render(Graphics2D graphics, UpdateContext updateContext) {
+		super.render(graphics, updateContext);
 
-		float x = position.x - camera.getX();
-		float y = position.y - camera.getY();
+		float x = position.x - updateContext.camera.getX();
+		float y = position.y - updateContext.camera.getY();
 
 		if (isShieldEnabled) {
 			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -179,21 +177,21 @@ public class Player extends SpaceShip {
 		boolean isMoving = false;
 
 		// move forwards
-		if (updateContext.keys.forward.isDown && distance > MOVE_HOLD_EPSILON) {
+		if (updateContext.keyboard.forward.isDown && distance > MOVE_HOLD_EPSILON) {
 			isMoving = true;
 			final Vec2 offset = Vec2.multiply(direction, speed * updateContext.deltaT);
 			position.add(offset);
 		}
 
 		// move backwards
-		if (updateContext.keys.backward.isDown && distance > MOVE_HOLD_EPSILON && !isMoving) {
+		if (updateContext.keyboard.backward.isDown && distance > MOVE_HOLD_EPSILON && !isMoving) {
 			isMoving = true;
 			final Vec2 offset = Vec2.multiply(direction, -speed * updateContext.deltaT);
 			position.add(offset);
 		}
 
 		// strafe left
-		if (updateContext.keys.left.isDown && distance > MOVE_HOLD_EPSILON && !isMoving) {
+		if (updateContext.keyboard.left.isDown && distance > MOVE_HOLD_EPSILON && !isMoving) {
 			isMoving = true;
 			final Vec2 strafeLeft = new Vec2(-direction.y, direction.x);
 			final Vec2 offset = Vec2.multiply(strafeLeft, speed * updateContext.deltaT);
@@ -201,7 +199,7 @@ public class Player extends SpaceShip {
 		}
 
 		// strafe right
-		if (updateContext.keys.right.isDown && distance > MOVE_HOLD_EPSILON && !isMoving) {
+		if (updateContext.keyboard.right.isDown && distance > MOVE_HOLD_EPSILON && !isMoving) {
 			isMoving = true;
 			final Vec2 strafeRight = new Vec2(direction.y, -direction.x);
 			final Vec2 offset = Vec2.multiply(strafeRight, speed * updateContext.deltaT);
@@ -209,7 +207,7 @@ public class Player extends SpaceShip {
 		}
 
 		isShieldEnabled = false;
-		if (updateContext.keys.shield.isDown && power > 0) {
+		if (updateContext.keyboard.shield.isDown && power > 0) {
 			power -= (0.085 * updateContext.deltaT);
 			power = Math.max(0, power);
 
@@ -219,7 +217,7 @@ public class Player extends SpaceShip {
 		}
 
 		isPowerEnabled = false;
-		if (updateContext.keys.powerBoost.isDown && power > 0 && isMoving && !isShieldEnabled) {
+		if (updateContext.keyboard.powerBoost.isDown && power > 0 && isMoving && !isShieldEnabled) {
 			power -= (0.045 * updateContext.deltaT);
 			power = Math.max(0, power);
 
@@ -239,10 +237,11 @@ public class Player extends SpaceShip {
 		// TODO generalize played sound
 		if (updateContext.mouseInput.isDown(1)) {
 			shoot();
-			laserClip.loop(Clip.LOOP_CONTINUOUSLY);
+			
+			Audio.loopSound("audio/laser.wav");
 		} else {
-			laserClip.stop();
-			laserClip.setFramePosition(0);
+			Audio.reset("audio/laser.wav");
+
 		}
 
 		laser.update(updateContext.deltaT);

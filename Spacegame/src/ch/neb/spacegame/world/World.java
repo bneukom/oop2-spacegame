@@ -23,9 +23,10 @@ import ch.neb.spacegame.Audio;
 import ch.neb.spacegame.Camera;
 import ch.neb.spacegame.CollisionListener;
 import ch.neb.spacegame.DamageIndicatorEntity;
-import ch.neb.spacegame.DrawGameInfoEntity;
+import ch.neb.spacegame.GameInfoEntity;
 import ch.neb.spacegame.EnemyIndicatorEntity;
 import ch.neb.spacegame.GameEntity;
+import ch.neb.spacegame.Keyboard;
 import ch.neb.spacegame.SpaceGame;
 import ch.neb.spacegame.SpawnListener;
 import ch.neb.spacegame.SpawnerGameEntity;
@@ -53,13 +54,13 @@ public class World {
 		createPlayer();
 
 		addEntity(new DamageIndicatorEntity(this));
-		addEntity(new DrawGameInfoEntity(this));
+		addEntity(new GameInfoEntity(this));
 		addEntity(new SpawnerGameEntity(this));
 		addEntity(new EnemyIndicatorEntity(this));
 
 		space = generate(800, 600, 150, 75, 6, 3);
 
-		Audio.loopSound("audio/megamantheme.wav");
+		// Audio.loopSound("audio/megamantheme.wav");
 	}
 
 	private void createPlayer() {
@@ -138,15 +139,15 @@ public class World {
 		graphics.drawImage(dst, (int) (Math.min(Math.random() * width, width - dst.getWidth())), (int) (Math.min(Math.random() * height, width - dst.getWidth())), null);
 	}
 
-	public void render(Graphics2D graphics, Camera camera) {
+	public void render(Graphics2D graphics, UpdateContext updateContext) {
 		// render background
 		graphics.drawImage(space, 0, 0, null);
 
 		// render game entities
 		synchronized (this) {
 			for (GameEntity object : gameEntities) {
-				if (object.isInView(camera)) {
-					object.render(graphics, camera);
+				if (object.isInView(updateContext.camera)) {
+					object.render(graphics, updateContext);
 				}
 			}
 		}

@@ -101,8 +101,8 @@ public class LaserGun extends Gun {
 		}
 
 		@Override
-		public void render(Graphics2D graphics, Camera camera) {
-			super.render(graphics, camera);
+		public void render(Graphics2D graphics, UpdateContext updateContext) {
+			super.render(graphics, updateContext);
 
 			if (active) {
 				graphics.setStroke(new BasicStroke(12, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));

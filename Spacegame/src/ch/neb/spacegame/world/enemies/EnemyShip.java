@@ -2,7 +2,6 @@ package ch.neb.spacegame.world.enemies;
 
 import java.awt.image.BufferedImage;
 
-import ch.neb.spacegame.Arts;
 import ch.neb.spacegame.GameEntity;
 import ch.neb.spacegame.UpdateContext;
 import ch.neb.spacegame.math.Vec2;
@@ -10,7 +9,6 @@ import ch.neb.spacegame.world.Player;
 import ch.neb.spacegame.world.SpaceShip;
 import ch.neb.spacegame.world.World;
 import ch.neb.spacegame.world.bullets.Bullet;
-import ch.neb.spacegame.world.guns.NormalGun;
 
 // TODO collision resolve?
 public class EnemyShip extends SpaceShip {
@@ -84,7 +82,7 @@ public class EnemyShip extends SpaceShip {
 
 	@Override
 	public float getExperience() {
-		return 15;
+		return 10;
 	}
 
 }
