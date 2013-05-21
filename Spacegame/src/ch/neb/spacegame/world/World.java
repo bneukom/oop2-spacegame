@@ -58,7 +58,7 @@ public class World {
 		addEntity(new SpawnerGameEntity(this));
 		addEntity(new EnemyIndicatorEntity(this));
 
-		space = generate(800, 600, 150, 75, 6, 3);
+		space = generate(2000, 2000, 1450, 800, 25, 12);
 
 		// Audio.loopSound("audio/megamantheme.wav");
 	}
@@ -136,12 +136,22 @@ public class World {
 	}
 
 	private static void drawImageRandom(Graphics2D graphics, BufferedImage dst, int width, int height) {
-		graphics.drawImage(dst, (int) (Math.min(Math.random() * width, width - dst.getWidth())), (int) (Math.min(Math.random() * height, width - dst.getWidth())), null);
+		graphics.drawImage(dst, (int) (Math.min(Math.random() * width, width - dst.getWidth())), (int) (Math.min(Math.random() * height, height - dst.getHeight())), null);
 	}
 
 	public void render(Graphics2D graphics, UpdateContext updateContext) {
 		// render background
-		graphics.drawImage(space, 0, 0, null);
+		float playerX = player.getPosition().x;
+		float playerY = player.getPosition().y;
+		int x = playerX >= 0 ? (int) (playerX % space.getWidth()) : (int) ((space.getWidth() + playerX % space.getWidth()));
+		int y = playerY >= 0 ? (int) (playerY % space.getHeight()) : (int) ((space.getHeight() + playerY % space.getHeight()));
+
+		graphics.drawImage(space, -x, -y, null);
+		graphics.drawImage(space, space.getWidth() - x, -y, null);
+		graphics.drawImage(space, -x, space.getHeight() - y, null);
+		graphics.drawImage(space, space.getWidth() - x, space.getHeight() - y, null);
+
+		// graphics.drawImage(space, 0, 0, null);
 
 		// render game entities
 		synchronized (this) {

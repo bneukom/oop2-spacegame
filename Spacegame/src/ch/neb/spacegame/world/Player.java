@@ -25,7 +25,7 @@ import ch.neb.spacegame.world.spacedebris.SpaceDebris;
 
 public class Player extends SpaceShip {
 
-	private static final float MAX_SPEED = 0.55f;
+	private static final float MAX_SPEED = 0.75f;
 	private static final BasicStroke DEFAULT_STROKE = new BasicStroke(1);
 	private static final BasicStroke BORDER_STROKE = new BasicStroke(2);
 	private static final float MOVE_HOLD_EPSILON = 10f;
@@ -217,7 +217,7 @@ public class Player extends SpaceShip {
 			power = Math.max(0, power);
 
 			if (power != 0) {
-				speed += 0.00018 * updateContext.deltaT;
+				speed += 0.00033 * updateContext.deltaT;
 				speed = Math.min(speed, MAX_SPEED);
 				isPowerEnabled = true;
 			} else {
