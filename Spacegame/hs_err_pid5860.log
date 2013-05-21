@@ -35,8 +35,8 @@ J  sun.java2d.pipe.GlyphListPipe.drawString(Lsun/java2d/SunGraphics2D;Ljava/lang
 j  sun.java2d.pipe.ValidatePipe.drawString(Lsun/java2d/SunGraphics2D;Ljava/lang/String;DD)V+17
 j  sun.java2d.SunGraphics2D.drawString(Ljava/lang/String;II)V+68
 j  ch.neb.spacegame.GameInfoEntity.render(Ljava/awt/Graphics2D;Lch/neb/spacegame/UpdateContext;)V+147
-J  ch.neb.spacegame.world.World.render(Ljava/awt/Graphics2D;Lch/neb/spacegame/UpdateContext;)V
-j  ch.neb.spacegame.SpaceGame.run()V+322
+J  ch.neb.spacegame.world.SpaceGameScreen.render(Ljava/awt/Graphics2D;Lch/neb/spacegame/UpdateContext;)V
+j  ch.neb.spacegame.SpaceGameFrame.run()V+322
 j  ch.neb.spacegame.SpaceGame$2$1.run()V+4
 j  java.lang.Thread.run()V+11
 v  ~StubRoutines::call_stub
@@ -162,7 +162,7 @@ Dynamic libraries:
 
 VM Arguments:
 jvm_args: -verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDetails -XX:+UseParallelGC -Dfile.encoding=Cp1252 
-java_command: ch.neb.spacegame.SpaceGame
+java_command: ch.neb.spacegame.SpaceGameFrame
 Launcher Type: SUN_STANDARD
 
 Environment Variables:

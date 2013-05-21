@@ -1,33 +1,32 @@
 package ch.neb.spacegame;
 
-import static ch.neb.spacegame.math.Random.selectRandom;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.neb.spacegame.gameScreens.AbstractCamera;
+import ch.neb.spacegame.gameScreens.GameScreen;
+import ch.neb.spacegame.gameScreens.game.Player;
+import ch.neb.spacegame.gameScreens.game.enemies.EnemyShip;
+import ch.neb.spacegame.gameScreens.game.guns.NormalGun;
+import ch.neb.spacegame.gameScreens.game.guns.RocketLauncher;
+import ch.neb.spacegame.gameScreens.game.spacedebris.SmallSpaceDebris;
+import ch.neb.spacegame.gameScreens.game.spacedebris.SpaceDebris;
+import ch.neb.spacegame.gameScreens.game.spacedebris.SpaceRock;
 import ch.neb.spacegame.math.Random;
 import ch.neb.spacegame.math.Vec2;
-import ch.neb.spacegame.world.Player;
-import ch.neb.spacegame.world.World;
-import ch.neb.spacegame.world.enemies.EnemyShip;
-import ch.neb.spacegame.world.guns.NormalGun;
-import ch.neb.spacegame.world.guns.RocketLauncher;
-import ch.neb.spacegame.world.spacedebris.SmallSpaceDebris;
-import ch.neb.spacegame.world.spacedebris.SpaceDebris;
-import ch.neb.spacegame.world.spacedebris.SpaceRock;
 
 public class SpawnerGameEntity extends GameEntity {
 
-	private static final long DEBRIS_SPAWN_TIME = 250;
-	private static final long ENEMY_SPAWN_TIME = 4000;
 	private static final long DEFAULT_ENEMY_HEALTH = 300;
 	private List<Spawner> spawners = new ArrayList<>();
 
-	public SpawnerGameEntity(World world) {
-		super(world);
+	public SpawnerGameEntity(GameScreen spaceGameScreen) {
+		super(spaceGameScreen);
 
-		spawners.add(new DebrisSpawner(world, DEBRIS_SPAWN_TIME));
-		spawners.add(new EnemySpawner(world, ENEMY_SPAWN_TIME));
+	}
+
+	public void addSpawner(Spawner spawner) {
+		spawners.add(spawner);
 	}
 
 	@Override
@@ -35,21 +34,12 @@ public class SpawnerGameEntity extends GameEntity {
 		super.update(updateContext);
 
 		for (Spawner spawner : spawners) {
-			spawner.update(updateContext.deltaT, updateContext.camera);
+			spawner.update(updateContext.deltaT, updateContext.gameCamera);
 		}
 	}
 
-	private EnemyShip createEnemy(float health) {
-		final EnemyShip enemyShip = new EnemyShip(world, selectRandom(Arts.ship2, Arts.ship3, Arts.ship4), (float) (0.1f * Math.random() + 0.1f), health);
-
-		enemyShip.addGun(selectRandom(new NormalGun(850, world, Arts.bullet2, enemyShip, 3, 2), new NormalGun(800, world, Arts.bullet2, enemyShip, 1, 2)));
-		enemyShip.addGun(new RocketLauncher(1750, world, enemyShip, world.getPlayer(), true, 2, 1));
-
-		return enemyShip;
-	}
-
 	@Override
-	public boolean isInView(Camera camera) {
+	public boolean isInView(AbstractCamera gameCamera) {
 		return false;
 	}
 
@@ -63,21 +53,21 @@ public class SpawnerGameEntity extends GameEntity {
 		return 0;
 	}
 
-	private static abstract class Spawner {
+	public static abstract class Spawner {
 
-		protected World world;
+		protected GameScreen spaceGameScreen;
 		private long cooldown;
 		private long currentCooldown;
 
-		public Spawner(World world, long cooldown) {
-			this.world = world;
+		public Spawner(GameScreen spaceGameScreen, long cooldown) {
+			this.spaceGameScreen = spaceGameScreen;
 			this.cooldown = cooldown;
 		}
 
-		public void update(long deltaT, Camera camera) {
+		public void update(long deltaT, AbstractCamera gameCamera) {
 			currentCooldown += deltaT;
 			if (currentCooldown > getCooldown(cooldown)) {
-				spawn(world, camera);
+				spawn(spaceGameScreen, gameCamera);
 				currentCooldown = 0;
 			}
 
@@ -87,23 +77,34 @@ public class SpawnerGameEntity extends GameEntity {
 			return originalCooldown;
 		}
 
-		public abstract void spawn(World world, Camera camera);
+		public abstract void spawn(GameScreen spaceGameScreen, AbstractCamera gameCamera);
 
 	}
 
-	private static class DebrisSpawner extends Spawner {
+	public static abstract class GameSpawner extends Spawner {
 
-		public DebrisSpawner(World world, long cooldown) {
-			super(world, cooldown);
+		protected Player player;
+
+		public GameSpawner(GameScreen spaceGameScreen, Player player, long cooldown) {
+			super(spaceGameScreen, cooldown);
+			this.player = player;
+		}
+
+	}
+
+	public static class DebrisSpawner extends GameSpawner {
+
+		public DebrisSpawner(GameScreen spaceGameScreen, Player player, long cooldown) {
+			super(spaceGameScreen, player, cooldown);
 		}
 
 		@Override
 		public long getCooldown(long originalCooldown) {
-			return originalCooldown - (15 * world.getPlayer().getLevel());
+			return originalCooldown - (15 * player.getLevel());
 		}
 
 		@Override
-		public void spawn(World world, Camera camera) {
+		public void spawn(GameScreen spaceGameScreen, AbstractCamera gameCamera) {
 
 			final Vec2 spawnPosition = new Vec2(0, 0);
 			final Vec2 direction;
@@ -112,64 +113,74 @@ public class SpawnerGameEntity extends GameEntity {
 			final double random = Math.random();
 			if (random < 0.25) {
 				// left
-				spawnPosition.translate(camera.getX() - debris.getWidth(), (float) (camera.getY() + Math.random() * camera.height));
+				spawnPosition.translate(gameCamera.getX() - debris.getWidth(), (float) (gameCamera.getY() + Math.random() * gameCamera.height));
 			} else if (random < 0.5) {
 				// right
-				spawnPosition.translate(camera.getX() + camera.width + debris.getWidth(), (float) (camera.getY() + Math.random() * camera.height));
+				spawnPosition.translate(gameCamera.getX() + gameCamera.width + debris.getWidth(), (float) (gameCamera.getY() + Math.random() * gameCamera.height));
 			} else if (random < 0.75) {
 				// top
-				spawnPosition.translate((float) (camera.getX() + Math.random() * camera.width), camera.getY() - debris.getHeight());
+				spawnPosition.translate((float) (gameCamera.getX() + Math.random() * gameCamera.width), gameCamera.getY() - debris.getHeight());
 			} else {
 				// bottom
-				spawnPosition.translate((float) (camera.getX() + Math.random() * camera.width), camera.getY() + camera.height + debris.getHeight());
+				spawnPosition.translate((float) (gameCamera.getX() + Math.random() * gameCamera.width), gameCamera.getY() + gameCamera.height + debris.getHeight());
 			}
 
 			final int spawnOffset = 550;
-			direction = Vec2.subtract(world.getPlayer().getPosition(), spawnPosition)
+			direction = Vec2.subtract(player.getPosition(), spawnPosition)
 					.translate((float) (-spawnOffset + 2 * spawnOffset * Math.random()), (float) (-spawnOffset + 2 * spawnOffset * Math.random()))
 					.normalize();
 
 			debris.setPosition(spawnPosition);
 			debris.setMovementDirection(direction);
 
-			world.addEntity(debris);
+			spaceGameScreen.addEntity(debris);
 
 		}
 
 		public SpaceDebris createDebris() {
 
-			final float speed = (float) (Math.random() * 0.075f + 0.095f + 0.008 * world.getPlayer().getLevel());
+			final float speed = (float) (Math.random() * 0.075f + 0.095f + 0.008 * player.getLevel());
 			float angularSpeed = (float) (Math.random() * 0.001f + 0.001f);
 
 			// random turn direction
 			angularSpeed *= Math.random() > 0.5 ? -1 : 1;
 
 			if (Math.random() < 0.25f) {
-				final float maxHealth = (float) ((Math.random() * 10 + 20) * ((world.getPlayer().getLevel() + 1) * 0.45f));
-				return new SmallSpaceDebris(world, new Vec2(1, 0), new Vec2(0, 0), maxHealth, speed, angularSpeed);
+				final float maxHealth = (float) ((Math.random() * 10 + 20) * ((player.getLevel() + 1) * 0.45f));
+				return new SmallSpaceDebris(spaceGameScreen, player, new Vec2(1, 0), new Vec2(0, 0), maxHealth, speed, angularSpeed);
 			} else {
-				final float maxHealth = (float) ((Math.random() * 100 + 50) * ((world.getPlayer().getLevel() + 1) * 0.65f));
-				return new SpaceRock(world, new Vec2(1, 0), new Vec2(0, 0), maxHealth, speed, angularSpeed);
+				final float maxHealth = (float) ((Math.random() * 100 + 50) * ((player.getLevel() + 1) * 0.65f));
+				return new SpaceRock(spaceGameScreen, player, new Vec2(1, 0), new Vec2(0, 0), maxHealth, speed, angularSpeed);
 			}
 		}
 
 	}
 
-	private class EnemySpawner extends Spawner {
+	public static class EnemySpawner extends GameSpawner {
 
-		public EnemySpawner(World world, long cooldown) {
-			super(world, cooldown);
+		public EnemySpawner(GameScreen spaceGameScreen, Player player, long cooldown) {
+			super(spaceGameScreen, player, cooldown);
+		}
+
+		private EnemyShip createEnemy(float health) {
+			final EnemyShip enemyShip = new EnemyShip(spaceGameScreen, player, Random.selectRandom(Arts.ship2, Arts.ship3, Arts.ship4), (float) (0.1f * Math.random() + 0.1f),
+					health);
+
+			enemyShip.addGun(Random.selectRandom(new NormalGun(850, spaceGameScreen, Arts.bullet2, enemyShip, 3, 2), new NormalGun(800, spaceGameScreen, Arts.bullet2, enemyShip,
+					1, 2)));
+			enemyShip.addGun(new RocketLauncher(1750, spaceGameScreen, enemyShip, player, true, 2, 1));
+
+			return enemyShip;
 		}
 
 		@Override
-		public void spawn(World world, Camera camera) {
+		public void spawn(GameScreen spaceGameScreen, AbstractCamera gameCamera) {
 			// TODO sometimes spawn multiple enemies (so to make it a bit burstier)...
-			final EnemyShip enemy = createEnemy(DEFAULT_ENEMY_HEALTH + (world.getPlayer().getLevel() * 60));
-			final Player player = world.getPlayer();
+			final EnemyShip enemy = createEnemy(DEFAULT_ENEMY_HEALTH + (player.getLevel() * 60));
 			final Vec2 position = new Vec2(player.getPosition()).translate((float) ((Math.random() * 500f + 300f) * Random.randomSignum()),
 					(float) ((Math.random() * 500f + 300f) * Random.randomSignum()));
 			enemy.setPosition(position);
-			world.addEntity(enemy);
+			spaceGameScreen.addEntity(enemy);
 		}
 	}
 }

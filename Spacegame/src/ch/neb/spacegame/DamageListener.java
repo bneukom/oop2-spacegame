@@ -1,6 +1,6 @@
 package ch.neb.spacegame;
 
-import ch.neb.spacegame.world.Mob;
+import ch.neb.spacegame.gameScreens.game.Mob;
 
 /**
  * Gets notified after a {@link Mob} has been hit.

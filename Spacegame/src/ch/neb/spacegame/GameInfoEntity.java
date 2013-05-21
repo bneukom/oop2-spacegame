@@ -4,7 +4,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
-import ch.neb.spacegame.world.World;
+import ch.neb.spacegame.gameScreens.AbstractCamera;
+import ch.neb.spacegame.gameScreens.GameScreenManager;
+import ch.neb.spacegame.gameScreens.game.Player;
+import ch.neb.spacegame.gameScreens.game.SpaceGameScreen;
+import ch.neb.spacegame.gameScreens.menu.MainMenuScreen;
 
 /**
  * Draws user information (like the xp, level etc.)
@@ -22,11 +26,17 @@ public class GameInfoEntity extends GameEntity {
 	private Font deathFont;
 	private Font pausedFont;
 
+	private long deathTime = MAX_DEATH_TIME;
+	private static long MAX_DEATH_TIME = 4000;
+
 	private static long MAX_INITIAL_SHOW_TIME = 12000;
 	private long initialInfoTime = MAX_INITIAL_SHOW_TIME;
 
-	public GameInfoEntity(World world) {
-		super(world);
+	private Player player;
+
+	public GameInfoEntity(SpaceGameScreen spaceGameScreen, Player player) {
+		super(spaceGameScreen);
+		this.player = player;
 
 		setLayer(Layer.HUD);
 
@@ -57,6 +67,16 @@ public class GameInfoEntity extends GameEntity {
 		if (initialInfoTime > 0) {
 			initialInfoTime -= updateContext.deltaT;
 		}
+
+		if (!player.isAlive()) {
+			deathTime -= updateContext.deltaT;
+		}
+
+		if (deathTime < 0) {
+			GameScreenManager screenManager = GameScreenManager.getInstance();
+
+			screenManager.setScreen(new MainMenuScreen(screenManager.getScreen().getResolutionX(), screenManager.getScreen().getResolutionY()));
+		}
 	}
 
 	@Override
@@ -84,7 +104,7 @@ public class GameInfoEntity extends GameEntity {
 		graphics.setColor(Color.WHITE);
 		graphics.setFont(pointsFont);
 
-		final String pointsString = "Level: " + (int) world.getPlayer().getLevel() + " Points: " + (int) world.getPlayer().getPoints();
+		final String pointsString = "Level: " + (int) player.getLevel() + " Points: " + (int) player.getPoints();
 		graphics.setColor(color);
 		graphics.fillRect(800 - 250, 0, 250, 30);
 		graphics.setColor(Color.WHITE);
@@ -94,21 +114,24 @@ public class GameInfoEntity extends GameEntity {
 		graphics.setColor(new Color(0, 0, 0, 180));
 		graphics.fillRect(49, 569, XP_BAR_WIDTH + 1, 12);
 		graphics.setColor(color);
-		float xpPercentage = world.getPlayer().getTotalExperience() / world.getPlayer().getNextLevelExperience();
+		float xpPercentage = player.getTotalExperience() / player.getNextLevelExperience();
 		graphics.fillRect(50, 570, (int) (xpPercentage * XP_BAR_WIDTH), 10);
-		graphics.setColor(new Color(255,255,255));
+		graphics.setColor(new Color(255, 255, 255));
 		graphics.setFont(xpFont);
-		graphics.drawString((int)(xpPercentage * 100) + "%", 400, 580);
+		graphics.drawString((int) (xpPercentage * 100) + "%", 400, 580);
 
-		if (!world.getPlayer().isAlive()) {
+		if (!player.isAlive()) {
+			deathFont = deathFont.deriveFont(deathFont.getSize() + deathFont.getSize() * updateContext.deltaT / 2000f);
 			graphics.setFont(deathFont);
-			graphics.setColor(Color.WHITE);
+			final int alpha = (int) (50 + 200 * deathTime / MAX_DEATH_TIME);
+			graphics.setColor(new Color(255, 255, 255, alpha));
 			graphics.drawString("Game Over!", 200, 300);
+
 		}
 	}
 
 	@Override
-	public boolean isInView(Camera camera) {
+	public boolean isInView(AbstractCamera gameCamera) {
 		return true;
 	}
 

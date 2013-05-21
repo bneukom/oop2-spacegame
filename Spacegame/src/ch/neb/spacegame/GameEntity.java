@@ -3,13 +3,14 @@ package ch.neb.spacegame;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
+import ch.neb.spacegame.gameScreens.AbstractCamera;
+import ch.neb.spacegame.gameScreens.GameScreen;
 import ch.neb.spacegame.math.Vec2;
-import ch.neb.spacegame.world.World;
 
 public abstract class GameEntity implements Comparable<GameEntity> {
 
 	/**
-	 * The world position of the {@link GameEntity}. Default is (0, 0)
+	 * The spaceGameScreen position of the {@link GameEntity}. Default is (0, 0)
 	 */
 	protected Vec2 position = new Vec2(0, 0);
 
@@ -31,36 +32,36 @@ public abstract class GameEntity implements Comparable<GameEntity> {
 
 	public static float DEFAULT_SPEED = 0.3f;
 
-	public final World world;
+	public final GameScreen spaceGameScreen;
 
 	private Layer layer = Layer.DEFAULT;
 
-	public GameEntity(World world) {
-		this(world, new Vec2(0, 0), new Vec2(1, 0));
+	public GameEntity(GameScreen spaceGameScreen) {
+		this(spaceGameScreen, new Vec2(0, 0), new Vec2(1, 0));
 	}
 
 	public void onDestroy() {
 
 	}
 
-	public GameEntity(World world, Vec2 position, Vec2 direction, float speed) {
+	public GameEntity(GameScreen spaceGameScreen, Vec2 position, Vec2 direction, float speed) {
 		super();
-		this.world = world;
+		this.spaceGameScreen = spaceGameScreen;
 		this.position = position;
 		this.direction = direction;
 		this.speed = speed;
 	}
 
-	public GameEntity(World world, Vec2 position, Vec2 direction) {
-		this(world, position, direction, 0);
+	public GameEntity(GameScreen spaceGameScreen, Vec2 position, Vec2 direction) {
+		this(spaceGameScreen, position, direction, 0);
 	}
 
-	public GameEntity(World world, Vec2 position) {
-		this(world, position, new Vec2(1, 0), 0);
+	public GameEntity(GameScreen spaceGameScreen, Vec2 position) {
+		this(spaceGameScreen, position, new Vec2(1, 0), 0);
 	}
 
-	public GameEntity(World world, float speed) {
-		this(world, new Vec2(0, 0), new Vec2(1, 0), speed);
+	public GameEntity(GameScreen spaceGameScreen, float speed) {
+		this(spaceGameScreen, new Vec2(0, 0), new Vec2(1, 0), speed);
 	}
 
 	public void checkCollisions() {
@@ -79,7 +80,7 @@ public abstract class GameEntity implements Comparable<GameEntity> {
 
 	}
 
-	public void onCollide(GameEntity other, World world) {
+	public void onCollide(GameEntity other, GameScreen spaceGameScreen) {
 
 	}
 
@@ -91,8 +92,8 @@ public abstract class GameEntity implements Comparable<GameEntity> {
 		return bounds.intersects(other.bounds);
 	}
 
-	public boolean isInView(Camera camera) {
-		return camera.isInView(bounds);
+	public boolean isInView(AbstractCamera gameCamera) {
+		return gameCamera.isInView(bounds);
 	}
 
 	public Rectangle2D.Float getBounds() {

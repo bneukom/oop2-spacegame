@@ -7,9 +7,11 @@ import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.neb.spacegame.gameScreens.AbstractCamera;
+import ch.neb.spacegame.gameScreens.game.Player;
+import ch.neb.spacegame.gameScreens.game.SpaceGameScreen;
+import ch.neb.spacegame.gameScreens.game.enemies.EnemyShip;
 import ch.neb.spacegame.math.Vec2;
-import ch.neb.spacegame.world.World;
-import ch.neb.spacegame.world.enemies.EnemyShip;
 
 /**
  * Draws arrow at the edge of the screen to show where {@link EnemyShip}s are.
@@ -21,9 +23,11 @@ public class EnemyIndicatorEntity extends GameEntity {
 	private static final int ARROW_WIDTH = 3;
 	private static final BasicStroke ARROW_STROKE = new BasicStroke(ARROW_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 	private static final Color ARROW_COLOR = new Color(255, 0, 0);
+	private Player player;
 
-	public EnemyIndicatorEntity(World world) {
-		super(world);
+	public EnemyIndicatorEntity(SpaceGameScreen spaceGameScreen, Player player) {
+		super(spaceGameScreen);
+		this.player = player;
 
 		setLayer(Layer.GAME_OVERLAY);
 	}
@@ -34,10 +38,10 @@ public class EnemyIndicatorEntity extends GameEntity {
 
 		enemiesOutOfView.clear();
 
-		for (GameEntity entity : world.getGameEntities()) {
+		for (GameEntity entity : spaceGameScreen.getGameEntities()) {
 			if (entity instanceof EnemyShip) {
 				final EnemyShip ship = (EnemyShip) entity;
-				if (!updateContext.camera.isInView(ship.bounds)) {
+				if (!updateContext.gameCamera.isInView(ship.bounds)) {
 					enemiesOutOfView.add(ship);
 				}
 			}
@@ -58,10 +62,10 @@ public class EnemyIndicatorEntity extends GameEntity {
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		for (EnemyShip ship : enemiesOutOfView) {
-			final int x = (int) Math.min(Math.max(0, ship.getPosition().x - updateContext.camera.getX()), updateContext.camera.width - arrowWidth); // - arrowHeight because the arrow will be drawn 90°
+			final int x = (int) Math.min(Math.max(0, ship.getPosition().x - updateContext.gameCamera.getX()), updateContext.gameCamera.width - arrowWidth); // - arrowHeight because the arrow will be drawn 90°
 																																					// turned
-			final int y = (int) Math.min(Math.max(0, ship.getPosition().y - updateContext.camera.getY()), updateContext.camera.height - arrowWidth);
-			final String distanceString = String.valueOf((int) Vec2.distance(world.getPlayer().getPosition(), ship.getPosition()) / 10);
+			final int y = (int) Math.min(Math.max(0, ship.getPosition().y - updateContext.gameCamera.getY()), updateContext.gameCamera.height - arrowWidth);
+			final String distanceString = String.valueOf((int) Vec2.distance(player.getPosition(), ship.getPosition()) / 10);
 			final int stringWidth = (int) graphics.getFontMetrics().getStringBounds(distanceString, graphics).getWidth();
 
 			graphics.setColor(ARROW_COLOR);
@@ -75,12 +79,12 @@ public class EnemyIndicatorEntity extends GameEntity {
 				graphics.drawLine(x + arrowHeight, y, x + ARROW_WIDTH, y + arrowWidth / 2);
 				graphics.drawLine(x + arrowHeight, y + arrowWidth, x + ARROW_WIDTH, y + arrowWidth / 2);
 				graphics.drawString(distanceString, x + 10, y + arrowWidth / 2 + 5);
-			} else if (y == updateContext.camera.height - arrowWidth) {
+			} else if (y == updateContext.gameCamera.height - arrowWidth) {
 				// south arrow
 				graphics.drawLine(x, y + delta, x + arrowWidth / 2, y + arrowHeight - ARROW_WIDTH + delta);
 				graphics.drawLine(x + arrowWidth, y + delta, x + arrowWidth / 2, y + arrowHeight - ARROW_WIDTH + delta);
 				graphics.drawString(distanceString, x + arrowWidth / 2 - stringWidth / 2, y - 20 + delta);
-			} else if (x == updateContext.camera.width - arrowWidth) {
+			} else if (x == updateContext.gameCamera.width - arrowWidth) {
 				// east arrow
 				graphics.drawLine(x + delta, y, x + arrowHeight - ARROW_WIDTH + delta, y + arrowWidth / 2);
 				graphics.drawLine(x + delta, y + arrowWidth, x + arrowHeight - ARROW_WIDTH + delta, y + arrowWidth / 2);
@@ -100,7 +104,7 @@ public class EnemyIndicatorEntity extends GameEntity {
 	}
 
 	@Override
-	public boolean isInView(Camera camera) {
+	public boolean isInView(AbstractCamera gameCamera) {
 		return true;
 	}
 

@@ -1,0 +1,167 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  Internal Error (os_windows_x86.cpp:149), pid=9080, tid=9264
+#  guarantee(result == EXCEPTION_CONTINUE_EXECUTION) failed: Unexpected result from topLevelExceptionFilter
+#
+# JRE version: 7.0_02-b13
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (22.0-b10 mixed mode windows-amd64 compressed oops)
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.sun.com/bugreport/crash.jsp
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x000000000855e800):  JavaThread "Thread-4" [_thread_in_native, id=9264, stack(0x000000000ce70000,0x000000000cf70000)]
+
+Stack: [0x000000000ce70000,0x000000000cf70000]
+Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
+j  sun.font.T2KFontScaler.getGlyphOutlineNative(Lsun/font/Font2D;JJIFF)Ljava/awt/geom/GeneralPath;+0
+j  sun.font.T2KFontScaler.getGlyphOutline(JIFF)Ljava/awt/geom/GeneralPath;+30
+j  sun.font.FileFont.getGlyphOutline(JIFF)Ljava/awt/geom/GeneralPath;+10
+J  sun.font.StandardGlyphVector.getGlyphsOutline(IIFF)Ljava/awt/Shape;
+j  sun.font.StandardGlyphVector.getOutline(FF)Ljava/awt/Shape;+9
+j  sun.font.ExtendedTextSourceLabel.handleGetOutline(FF)Ljava/awt/Shape;+6
+j  sun.font.Decoration.getOutline(Lsun/font/Decoration$Label;FF)Ljava/awt/Shape;+3
+j  sun.font.ExtendedTextSourceLabel.getOutline(FF)Ljava/awt/Shape;+7
+j  java.awt.font.TextLine.getOutline(Ljava/awt/geom/AffineTransform;)Ljava/awt/Shape;+54
+j  java.awt.font.TextLayout.getOutline(Ljava/awt/geom/AffineTransform;)Ljava/awt/Shape;+9
+j  sun.java2d.pipe.OutlineTextRenderer.drawString(Lsun/java2d/SunGraphics2D;Ljava/lang/String;DD)V+36
+j  sun.java2d.pipe.GlyphListPipe.drawString(Lsun/java2d/SunGraphics2D;Ljava/lang/String;DD)V+24
+j  sun.java2d.SunGraphics2D.drawString(Ljava/lang/String;FF)V+66
+J  ch.neb.spacegame.gameScreens.game.GameScreen.render(Ljava/awt/Graphics2D;Lch/neb/spacegame/UpdateContext;)V
+j  ch.neb.spacegame.gameScreens.menu.MainMenuScreen.render(Ljava/awt/Graphics2D;Lch/neb/spacegame/UpdateContext;)V+15
+j  ch.neb.spacegame.gameScreens.ScreenManager.render(Ljava/awt/Graphics2D;Lch/neb/spacegame/UpdateContext;)V+13
+j  ch.neb.spacegame.SpaceGameFrame.run()V+415
+j  ch.neb.spacegame.SpaceGameFrame$3$1.run()V+4
+j  java.lang.Thread.run()V+11
+v  ~StubRoutines::call_stub
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+=>0x000000000855e800 JavaThread "Thread-4" [_thread_in_native, id=9264, stack(0x000000000ce70000,0x000000000cf70000)]
+  0x000000000031c800 JavaThread "DestroyJavaVM" [_thread_blocked, id=7952, stack(0x0000000002560000,0x0000000002660000)]
+  0x0000000006ba4800 JavaThread "AWT-EventQueue-0" [_thread_blocked, id=9948, stack(0x0000000008e50000,0x0000000008f50000)]
+  0x0000000006b9f000 JavaThread "AWT-Shutdown" [_thread_blocked, id=9828, stack(0x0000000008a20000,0x0000000008b20000)]
+  0x00000000082d0800 JavaThread "Java2D Disposer" daemon [_thread_blocked, id=7520, stack(0x0000000008850000,0x0000000008950000)]
+  0x0000000006b0c000 JavaThread "Service Thread" daemon [_thread_blocked, id=988, stack(0x0000000008040000,0x0000000008140000)]
+  0x0000000006aee000 JavaThread "C2 CompilerThread1" daemon [_thread_blocked, id=9748, stack(0x00000000074a0000,0x00000000075a0000)]
+  0x0000000006ad9800 JavaThread "C2 CompilerThread0" daemon [_thread_blocked, id=8460, stack(0x0000000007ee0000,0x0000000007fe0000)]
+  0x0000000006ad8000 JavaThread "Attach Listener" daemon [_thread_blocked, id=9704, stack(0x0000000007ca0000,0x0000000007da0000)]
+  0x0000000006ad7000 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=8532, stack(0x0000000007ad0000,0x0000000007bd0000)]
+  0x0000000006a52000 JavaThread "Finalizer" daemon [_thread_blocked, id=9640, stack(0x0000000007910000,0x0000000007a10000)]
+  0x0000000006a49800 JavaThread "Reference Handler" daemon [_thread_blocked, id=6028, stack(0x0000000007750000,0x0000000007850000)]
+
+Other Threads:
+  0x0000000006a40800 VMThread [stack: 0x00000000075a0000,0x00000000076a0000] [id=9396]
+
+VM state:at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
+[0x0000000000319d80] Threads_lock - owner thread: 0x0000000006a40800
+
+Heap
+ PSYoungGen      total 38080K, used 2643K [0x00000007d58b0000, 0x00000007d8e10000, 0x0000000800000000)
+  eden space 32704K, 7% used [0x00000007d58b0000,0x00000007d5b0cdc0,0x00000007d78a0000)
+  from space 5376K, 4% used [0x00000007d7de0000,0x00000007d7e18000,0x00000007d8320000)
+  to   space 5376K, 0% used [0x00000007d78a0000,0x00000007d78a0000,0x00000007d7de0000)
+ PSOldGen        total 122432K, used 20881K [0x0000000780a00000, 0x0000000788190000, 0x00000007d58b0000)
+  object space 122432K, 17% used [0x0000000780a00000,0x0000000781e64600,0x0000000788190000)
+ PSPermGen       total 21248K, used 10187K [0x000000077b800000, 0x000000077ccc0000, 0x0000000780a00000)
+  object space 21248K, 47% used [0x000000077b800000,0x000000077c1f2e90,0x000000077ccc0000)
+
+Code Cache  [0x0000000002660000, 0x00000000028d0000, 0x0000000005660000)
+ total_blobs=675 nmethods=239 adapters=388 free_code_cache=48225Kb largest_free_block=49354816
+
+Dynamic libraries:
+0x000000013f900000 - 0x000000013f933000 	C:\Program Files\Java\jdk1.7.0_02\bin\javaw.exe
+0x0000000076e80000 - 0x0000000077029000 	C:\Windows\SYSTEM32\ntdll.dll
+0x0000000076c60000 - 0x0000000076d7f000 	C:\Windows\system32\kernel32.dll
+0x000007fefd390000 - 0x000007fefd3fb000 	C:\Windows\system32\KERNELBASE.dll
+0x000007fefefe0000 - 0x000007feff0bb000 	C:\Windows\system32\ADVAPI32.dll
+0x000007fefd7a0000 - 0x000007fefd83f000 	C:\Windows\system32\msvcrt.dll
+0x000007feff130000 - 0x000007feff14f000 	C:\Windows\SYSTEM32\sechost.dll
+0x000007fefdf30000 - 0x000007fefe05d000 	C:\Windows\system32\RPCRT4.dll
+0x0000000076d80000 - 0x0000000076e7a000 	C:\Windows\system32\USER32.dll
+0x000007feff0c0000 - 0x000007feff127000 	C:\Windows\system32\GDI32.dll
+0x000007feff180000 - 0x000007feff18e000 	C:\Windows\system32\LPK.dll
+0x000007fefd860000 - 0x000007fefd929000 	C:\Windows\system32\USP10.dll
+0x000007fefbc50000 - 0x000007fefbe44000 	C:\Windows\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.7601.17514_none_fa396087175ac9ac\COMCTL32.dll
+0x000007fefef60000 - 0x000007fefefd1000 	C:\Windows\system32\SHLWAPI.dll
+0x000007feff150000 - 0x000007feff17e000 	C:\Windows\system32\IMM32.DLL
+0x000007fefdb70000 - 0x000007fefdc79000 	C:\Windows\system32\MSCTF.dll
+0x0000000061340000 - 0x0000000061411000 	C:\Program Files\Java\jdk1.7.0_02\jre\bin\msvcr100.dll
+0x000000005d590000 - 0x000000005dc6a000 	C:\Program Files\Java\jdk1.7.0_02\jre\bin\server\jvm.dll
+0x000007fef7e20000 - 0x000007fef7e29000 	C:\Windows\system32\WSOCK32.dll
+0x000007fefef10000 - 0x000007fefef5d000 	C:\Windows\system32\WS2_32.dll
+0x000007fefd6b0000 - 0x000007fefd6b8000 	C:\Windows\system32\NSI.dll
+0x000007fefaeb0000 - 0x000007fefaeeb000 	C:\Windows\system32\WINMM.dll
+0x0000000077040000 - 0x0000000077047000 	C:\Windows\system32\PSAPI.DLL
+0x0000000073270000 - 0x000000007327f000 	C:\Program Files\Java\jdk1.7.0_02\jre\bin\verify.dll
+0x00000000731a0000 - 0x00000000731c8000 	C:\Program Files\Java\jdk1.7.0_02\jre\bin\java.dll
+0x0000000073230000 - 0x0000000073245000 	C:\Program Files\Java\jdk1.7.0_02\jre\bin\zip.dll
+0x000000005f1a0000 - 0x000000005f334000 	C:\Program Files\Java\jdk1.7.0_02\jre\bin\awt.dll
+0x000007fefd6c0000 - 0x000007fefd797000 	C:\Windows\system32\OLEAUT32.dll
+0x000007fefdc80000 - 0x000007fefde83000 	C:\Windows\system32\ole32.dll
+0x000007fefba70000 - 0x000007fefbac6000 	C:\Windows\system32\uxtheme.dll
+0x000007fefb640000 - 0x000007fefb658000 	C:\Windows\system32\dwmapi.dll
+0x000007fefd1d0000 - 0x000007fefd1df000 	C:\Windows\system32\CRYPTBASE.dll
+0x000007fefc3d0000 - 0x000007fefc3dc000 	C:\Windows\system32\VERSION.dll
+0x000007fefd930000 - 0x000007fefdb07000 	C:\Windows\system32\SETUPAPI.dll
+0x000007fefd670000 - 0x000007fefd6a6000 	C:\Windows\system32\CFGMGR32.dll
+0x000007fefd5b0000 - 0x000007fefd5ca000 	C:\Windows\system32\DEVOBJ.dll
+0x0000000180000000 - 0x0000000180139000 	C:\Program Files (x86)\NVIDIA Corporation\3D Vision\nvSCPAPI64.dll
+0x000007fefe180000 - 0x000007fefef08000 	C:\Windows\system32\SHELL32.dll
+0x000007fefcb70000 - 0x000007fefcb87000 	C:\Windows\system32\CRYPTSP.dll
+0x000007fefc870000 - 0x000007fefc8b7000 	C:\Windows\system32\rsaenh.dll
+0x000007fefc5d0000 - 0x000007fefc5ee000 	C:\Windows\system32\USERENV.dll
+0x000007fefd2e0000 - 0x000007fefd2ef000 	C:\Windows\system32\profapi.dll
+0x0000000073210000 - 0x0000000073229000 	C:\Program Files\Java\jdk1.7.0_02\jre\bin\net.dll
+0x000007fefcb10000 - 0x000007fefcb65000 	C:\Windows\system32\mswsock.dll
+0x000007fefcb00000 - 0x000007fefcb07000 	C:\Windows\System32\wship6.dll
+0x000007fefb060000 - 0x000007fefb075000 	C:\Windows\system32\NLAapi.dll
+0x000007feede70000 - 0x000007feede85000 	C:\Windows\system32\napinsp.dll
+0x000007feede50000 - 0x000007feede69000 	C:\Windows\system32\pnrpnsp.dll
+0x000007feefdf0000 - 0x000007feefe1f000 	C:\Program Files\Common Files\Microsoft Shared\Windows Live\WLIDNSP.DLL
+0x000007fefc990000 - 0x000007fefc9eb000 	C:\Windows\system32\DNSAPI.dll
+0x000007feede40000 - 0x000007feede4b000 	C:\Windows\System32\winrnr.dll
+0x000007fefc4a0000 - 0x000007fefc4a7000 	C:\Windows\System32\wshtcpip.dll
+0x000007fefab90000 - 0x000007fefabb7000 	C:\Windows\system32\IPHLPAPI.DLL
+0x000007fefaae0000 - 0x000007fefaaeb000 	C:\Windows\system32\WINNSI.DLL
+0x000007feefc90000 - 0x000007feefc98000 	C:\Windows\system32\rasadhlp.dll
+0x000007fefaa10000 - 0x000007fefaa63000 	C:\Windows\System32\fwpuclnt.dll
+0x0000000073180000 - 0x0000000073191000 	C:\Program Files\Java\jdk1.7.0_02\jre\bin\nio.dll
+0x00000000684e0000 - 0x0000000068514000 	C:\Program Files\Java\jdk1.7.0_02\jre\bin\fontmanager.dll
+0x0000000068490000 - 0x00000000684d1000 	C:\Program Files\Java\jdk1.7.0_02\jre\bin\t2k.dll
+
+VM Arguments:
+jvm_args: -verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDetails -XX:+UseParallelGC -Dfile.encoding=Cp1252 
+java_command: ch.neb.spacegame.SpaceGameFrame
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+PATH=C:/Program Files/Java/jdk1.7.0_02/bin/../jre/bin/server;C:/Program Files/Java/jdk1.7.0_02/bin/../jre/bin;C:/Program Files/Java/jdk1.7.0_02/bin/../jre/lib/amd64;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Common Files\Microsoft Shared\Windows Live;C:\Program Files (x86)\Common Files\Microsoft Shared\Windows Live;C:\Program Files\Java\jdk1.7.0_02\bin\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;c:\Program Files (x86)\Common Files\Roxio Shared\10.0\DLLShared\;c:\Program Files (x86)\Common Files\Roxio Shared\DLLShared\;C:\Program Files\jEdit;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files\Jad\;C:\cygwin\bin;C:\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Pages\v1.0\;C:\Program Files\Microsoft SQL Server\110\Tools\Binn\;C:\Program Files (x86)\GtkSharp\2.12\bin;C:\Program Files\Microsoft\Web Platform Installer\;C:\Program Files (x86)\Windows Kits\8.0\Windows Performance Toolkit\;C:\Program Files (x86)\VisualSVN\bin;C:\Program Files\TortoiseSVN\bin;C:\Program Files\Eclipse\eclipse-4.2-default;
+USERNAME=bneukom
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 30 Stepping 5, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 7 , 64 bit Build 7601 Service Pack 1
+
+CPU:total 8 (4 cores per cpu, 2 threads per core) family 6 model 30 stepping 5, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, ht
+
+Memory: 4k page, physical 8346704k(1837192k free), swap 16691548k(8536656k free)
+
+vm_info: Java HotSpot(TM) 64-Bit Server VM (22.0-b10) for windows-amd64 JRE (1.7.0_02-b13), built on Nov 17 2011 13:51:15 by "java_re" with unknown MS VC++:1600
+
+time: Tue May 21 22:22:45 2013
+elapsed time: 11 seconds
+

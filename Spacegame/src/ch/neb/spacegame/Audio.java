@@ -63,7 +63,7 @@ public class Audio {
 		}
 
 		try {
-			File file = new File(SpaceGame.class.getClassLoader().getResource(path).toURI());
+			File file = new File(SpaceGameFrame.class.getClassLoader().getResource(path).toURI());
 			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
 			Clip clip = AudioSystem.getClip();
 			clip.open(audioInputStream);

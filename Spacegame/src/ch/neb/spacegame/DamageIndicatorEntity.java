@@ -3,19 +3,20 @@ package ch.neb.spacegame;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import ch.neb.spacegame.world.Player;
-import ch.neb.spacegame.world.World;
+import ch.neb.spacegame.gameScreens.AbstractCamera;
+import ch.neb.spacegame.gameScreens.game.Player;
+import ch.neb.spacegame.gameScreens.game.SpaceGameScreen;
 
 public class DamageIndicatorEntity extends GameEntity {
 
 	private long hitDelay = 0;
 
-	public DamageIndicatorEntity(final World world) {
-		super(world);
+	public DamageIndicatorEntity(final SpaceGameScreen spaceGameScreen) {
+		super(spaceGameScreen);
 
 		setLayer(Layer.HUD);
 
-		world.getPlayer().addDamageListener(new DamageListener() {
+		spaceGameScreen.getPlayer().addDamageListener(new DamageListener() {
 
 			@Override
 			public void damageRecieved(GameEntity attackee, float amount) {
@@ -55,7 +56,7 @@ public class DamageIndicatorEntity extends GameEntity {
 	}
 
 	@Override
-	public boolean isInView(Camera camera) {
+	public boolean isInView(AbstractCamera gameCamera) {
 		return true;
 	}
 

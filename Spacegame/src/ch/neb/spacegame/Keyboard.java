@@ -13,7 +13,7 @@ public class Keyboard {
 		public boolean typed = false;
 	}
 
-	public Key exit = new Key();
+	public Key escape = new Key();
 	public Key forward = new Key();
 	public Key backward = new Key();
 	public Key left = new Key();
@@ -26,7 +26,7 @@ public class Keyboard {
 	public Key fullscreen = new Key();
 
 	public Keyboard() {
-		keyMappings.put(KeyEvent.VK_ESCAPE, exit);
+		keyMappings.put(KeyEvent.VK_ESCAPE, escape);
 		keyMappings.put(KeyEvent.VK_W, forward);
 		keyMappings.put(KeyEvent.VK_UP, forward);
 		keyMappings.put(KeyEvent.VK_S, backward);
