@@ -75,7 +75,7 @@ public class GameInfoEntity extends GameEntity {
 		if (deathTime < 0) {
 			GameScreenManager screenManager = GameScreenManager.getInstance();
 
-			screenManager.setScreen(new MainMenuScreen(screenManager.getScreen().getResolutionX(), screenManager.getScreen().getResolutionY()));
+			screenManager.setScreen(new MainMenuScreen(screenManager.getScreen().getResolutionX(), screenManager.getScreen().getResolutionY(), null));
 		}
 	}
 
@@ -86,17 +86,18 @@ public class GameInfoEntity extends GameEntity {
 		if (!updateContext.isPaused) {
 			if (initialInfoTime > 0) {
 				graphics.setFont(infoFont);
+				
+				// draw info
 				graphics.setColor(new Color(1f, 1f, 1f, (float) initialInfoTime / MAX_INITIAL_SHOW_TIME));
-
-				graphics.drawString("Use W A S D for movement.", 20, 250);
-				graphics.drawString("Press Shift for a speed boost an Space for a shield.", 20, 275);
-				graphics.drawString("Use the right mouse button for a laser.", 20, 300);
-				graphics.drawString("Press Escape to exit the game.", 20, 325);
-				graphics.drawString("Press P for pause..", 20, 350);
-				graphics.drawString("Gain Points by shooting stuff.", 20, 376);
+				drawInfo(graphics, 20, 250);
 			}
 		} else {
 			graphics.setFont(pausedFont);
+			graphics.setColor(Color.BLACK);
+			graphics.drawString("Paused", 203, 300);
+			graphics.drawString("Paused", 197, 300);
+			graphics.drawString("Paused", 200, 303);
+			graphics.drawString("Paused", 200, 297);
 			graphics.setColor(Color.WHITE);
 			graphics.drawString("Paused", 200, 300);
 		}
@@ -121,13 +122,21 @@ public class GameInfoEntity extends GameEntity {
 		graphics.drawString((int) (xpPercentage * 100) + "%", 400, 580);
 
 		if (!player.isAlive()) {
-			deathFont = deathFont.deriveFont(deathFont.getSize() + deathFont.getSize() * updateContext.deltaT / 2000f);
 			graphics.setFont(deathFont);
 			final int alpha = (int) (50 + 200 * deathTime / MAX_DEATH_TIME);
 			graphics.setColor(new Color(255, 255, 255, alpha));
 			graphics.drawString("Game Over!", 200, 300);
 
 		}
+	}
+
+	private void drawInfo(Graphics2D graphics, int x, int y) {
+		graphics.drawString("Use W A S D for movement.", x, y);
+		graphics.drawString("Press Shift for a speed boost an Space for a shield.", x, y += 25);
+		graphics.drawString("Use the right mouse button for a laser.", x, y += 25);
+		graphics.drawString("Press Escape to exit the game.", x, y += 25);
+		graphics.drawString("Press P for pause..", x, y += 25);
+		graphics.drawString("Gain Points by shooting stuff.", x, y += 25);
 	}
 
 	@Override

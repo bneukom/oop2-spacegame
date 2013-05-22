@@ -24,27 +24,40 @@ public class MainMenuScreen extends SpaceScreen {
 
 	private MenuCamera menuCamera;
 
-	public MainMenuScreen(final int resolutionX, final int resolutionY) {
+	public MainMenuScreen(final int resolutionX, final int resolutionY, final SpaceGameScreen spaceGameScreen) {
 		super(resolutionX, resolutionY);
-		space = generateSpaceImage(800, 600, 150, 20, 4, 4);
+
+		space = generateSpaceImage(800, 700, 350, 50, 5, 4);
 
 		SpawnerGameEntity spawnerGameEntity = new SpawnerGameEntity(this);
 		spawnerGameEntity.addSpawner(new DebrisSpawner(this, 400));
 		addEntity(spawnerGameEntity);
 
+		int y = spaceGameScreen != null ? 180 : 220;
 		ButtonEntity newGameMenu = new ButtonEntity(this, new Runnable() {
 			@Override
 			public void run() {
 				GameScreenManager.getInstance().setScreen(new SpaceGameScreen(resolutionX, resolutionY));
 			}
-		}, "New Game", 110, 550, 70, 10, 220);
-		ButtonEntity options = new ButtonEntity(this, null, "Options", 72, 300, 50, 10, 320);
+		}, "New Game", 110, 550, 70, 10, y);
+
+		if (spaceGameScreen != null) {
+			ButtonEntity continueButton = new ButtonEntity(this, new Runnable() {
+				@Override
+				public void run() {
+					GameScreenManager.getInstance().setScreen(spaceGameScreen);
+				}
+			}, "Continue", 110, 550, 70, 10, y += 100);
+			addEntity(continueButton);
+		}
+
+		ButtonEntity options = new ButtonEntity(this, null, "Options", 72, 300, 50, 10, y += 100);
 		ButtonEntity exit = new ButtonEntity(this, new Runnable() {
 			@Override
 			public void run() {
 				System.exit(0);
 			}
-		}, "Exit", 72, 200, 50, 10, 400);
+		}, "Exit", 72, 200, 50, 10, y += 100);
 
 		addEntity(exit);
 		addEntity(options);
@@ -145,6 +158,16 @@ public class MainMenuScreen extends SpaceScreen {
 			drawHealth = false;
 		}
 
+		@Override
+		public void update(UpdateContext updateContext) {
+			super.update(updateContext);
+
+			// remove if too far away from player
+			if (age > MIN_AGE_TO_DIE && isInView(updateContext.gameCamera)) {
+				spaceGameScreen.removeEntity(this);
+			}
+		}
+
 	}
 
 	private static class ButtonEntity extends GameEntity {
@@ -196,6 +219,14 @@ public class MainMenuScreen extends SpaceScreen {
 		public void render(Graphics2D graphics, UpdateContext updateContext) {
 			super.render(graphics, updateContext);
 
+			// border
+			graphics.setFont(menuFont);
+			graphics.setColor(Color.BLACK);
+			graphics.drawString(text, position.x + 3, position.y);
+			graphics.drawString(text, position.x - 3, position.y);
+			graphics.drawString(text, position.x, position.y + 3);
+			graphics.drawString(text, position.x, position.y - 3);
+
 			Vec2 mousePos = updateContext.mouseInput.getPosition();
 			if (bounds.contains(mousePos.x, mousePos.y)) {
 				graphics.setColor(hooverColor);
@@ -203,7 +234,6 @@ public class MainMenuScreen extends SpaceScreen {
 				graphics.setColor(Color.WHITE);
 			}
 
-			graphics.setFont(menuFont);
 			graphics.drawString(text, position.x, position.y);
 		}
 

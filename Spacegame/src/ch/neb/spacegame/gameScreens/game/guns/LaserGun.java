@@ -38,7 +38,7 @@ public class LaserGun extends Gun {
 
 	@Override
 	public void upgrade(int level) {
-		laser.damageTick += 7.5;
+		laser.damageTick += 15;
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class LaserGun extends Gun {
 
 	private static class Laser extends GameEntity {
 
-		private double damageTick = 1.95;
+		private double damageTick = 2;
 
 		private boolean active = false;
 		private float length = 800;

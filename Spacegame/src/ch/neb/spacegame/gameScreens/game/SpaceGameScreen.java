@@ -69,7 +69,7 @@ public class SpaceGameScreen extends SpaceScreen {
 	public void update(UpdateContext updateContext) {
 		// main menu
 		if (updateContext.keyboard.escape.isDown) {
-			GameScreenManager.getInstance().setScreen(new MainMenuScreen(resolutionX, resolutionY));
+			GameScreenManager.getInstance().setScreen(new MainMenuScreen(resolutionX, resolutionY, this));
 		}
 
 		super.update(updateContext);

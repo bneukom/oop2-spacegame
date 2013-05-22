@@ -59,7 +59,7 @@ public class SpaceGameFrame extends JFrame {
 		this.gameCamera = new GameCamera(resolutionX, resolutionY);
 
 		this.spaceGameScreen = new SpaceGameScreen(resolutionX, resolutionY);
-		this.mainMenuScreen = new MainMenuScreen(resolutionX, resolutionY);
+		this.mainMenuScreen = new MainMenuScreen(resolutionX, resolutionY, null);
 
 		gameScreenManager.setScreen(mainMenuScreen);
 
