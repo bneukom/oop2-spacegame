@@ -3,7 +3,7 @@ package ch.fhnw.oop2.spacegame;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
-import ch.neb.spacegame.math.Vec2;
+import ch.fhnw.oop2.spacegame.math.Vec2;
 
 public class Sprite {
 	public final BufferedImage image;

@@ -20,11 +20,11 @@ import java.lang.reflect.InvocationTargetException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import ch.neb.spacegame.gameScreens.GameScreen;
-import ch.neb.spacegame.gameScreens.GameScreenManager;
-import ch.neb.spacegame.gameScreens.game.GameCamera;
-import ch.neb.spacegame.gameScreens.game.SpaceGameScreen;
-import ch.neb.spacegame.gameScreens.menu.MainMenuScreen;
+import ch.fhnw.oop2.gameScreens.GameScreen;
+import ch.fhnw.oop2.gameScreens.GameScreenManager;
+import ch.fhnw.oop2.gameScreens.game.GameCamera;
+import ch.fhnw.oop2.gameScreens.game.SpaceGameScreen;
+import ch.fhnw.oop2.gameScreens.menu.MainMenuScreen;
 
 public class SpaceGameFrame extends JFrame {
 

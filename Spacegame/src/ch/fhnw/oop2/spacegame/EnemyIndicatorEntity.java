@@ -7,11 +7,11 @@ import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.neb.spacegame.gameScreens.AbstractCamera;
-import ch.neb.spacegame.gameScreens.game.Player;
-import ch.neb.spacegame.gameScreens.game.SpaceGameScreen;
-import ch.neb.spacegame.gameScreens.game.enemies.EnemyShip;
-import ch.neb.spacegame.math.Vec2;
+import ch.fhnw.oop2.gameScreens.AbstractCamera;
+import ch.fhnw.oop2.gameScreens.game.Player;
+import ch.fhnw.oop2.gameScreens.game.SpaceGameScreen;
+import ch.fhnw.oop2.gameScreens.game.enemies.EnemyShip;
+import ch.fhnw.oop2.spacegame.math.Vec2;
 
 /**
  * Draws arrow at the edge of the screen to show where {@link EnemyShip}s are.

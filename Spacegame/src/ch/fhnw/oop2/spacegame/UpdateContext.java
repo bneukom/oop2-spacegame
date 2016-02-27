@@ -1,6 +1,6 @@
 package ch.fhnw.oop2.spacegame;
 
-import ch.neb.spacegame.gameScreens.AbstractCamera;
+import ch.fhnw.oop2.gameScreens.AbstractCamera;
 
 
 public class UpdateContext {

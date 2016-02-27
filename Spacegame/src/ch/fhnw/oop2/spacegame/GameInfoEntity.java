@@ -4,11 +4,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
-import ch.neb.spacegame.gameScreens.AbstractCamera;
-import ch.neb.spacegame.gameScreens.GameScreenManager;
-import ch.neb.spacegame.gameScreens.game.Player;
-import ch.neb.spacegame.gameScreens.game.SpaceGameScreen;
-import ch.neb.spacegame.gameScreens.menu.MainMenuScreen;
+import ch.fhnw.oop2.gameScreens.AbstractCamera;
+import ch.fhnw.oop2.gameScreens.GameScreenManager;
+import ch.fhnw.oop2.gameScreens.game.Player;
+import ch.fhnw.oop2.gameScreens.game.SpaceGameScreen;
+import ch.fhnw.oop2.gameScreens.menu.MainMenuScreen;
 
 /**
  * Draws user information (like the xp, level etc.)

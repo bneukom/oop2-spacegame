@@ -3,9 +3,9 @@ package ch.fhnw.oop2.spacegame;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import ch.neb.spacegame.gameScreens.AbstractCamera;
-import ch.neb.spacegame.gameScreens.game.Player;
-import ch.neb.spacegame.gameScreens.game.SpaceGameScreen;
+import ch.fhnw.oop2.gameScreens.AbstractCamera;
+import ch.fhnw.oop2.gameScreens.game.Player;
+import ch.fhnw.oop2.gameScreens.game.SpaceGameScreen;
 
 public class DamageIndicatorEntity extends GameEntity {
 

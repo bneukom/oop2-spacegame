@@ -1,6 +1,6 @@
 package ch.fhnw.oop2.spacegame;
 
-import ch.neb.spacegame.gameScreens.game.Mob;
+import ch.fhnw.oop2.gameScreens.game.Mob;
 
 /**
  * Gets notified after a {@link Mob} has been hit.

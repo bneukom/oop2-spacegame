@@ -1,6 +1,6 @@
 package ch.fhnw.oop2.spacegame;
 
-import ch.neb.spacegame.math.Vec2;
+import ch.fhnw.oop2.spacegame.math.Vec2;
 
 public class MouseInput {
 

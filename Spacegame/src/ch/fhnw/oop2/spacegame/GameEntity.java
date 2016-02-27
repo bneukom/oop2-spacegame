@@ -3,9 +3,9 @@ package ch.fhnw.oop2.spacegame;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
-import ch.neb.spacegame.gameScreens.AbstractCamera;
-import ch.neb.spacegame.gameScreens.GameScreen;
-import ch.neb.spacegame.math.Vec2;
+import ch.fhnw.oop2.gameScreens.AbstractCamera;
+import ch.fhnw.oop2.gameScreens.GameScreen;
+import ch.fhnw.oop2.spacegame.math.Vec2;
 
 public abstract class GameEntity implements Comparable<GameEntity> {
 

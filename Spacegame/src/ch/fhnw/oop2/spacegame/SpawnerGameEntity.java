@@ -3,17 +3,17 @@ package ch.fhnw.oop2.spacegame;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.neb.spacegame.gameScreens.AbstractCamera;
-import ch.neb.spacegame.gameScreens.GameScreen;
-import ch.neb.spacegame.gameScreens.game.Player;
-import ch.neb.spacegame.gameScreens.game.enemies.EnemyShip;
-import ch.neb.spacegame.gameScreens.game.guns.NormalGun;
-import ch.neb.spacegame.gameScreens.game.guns.RocketLauncher;
-import ch.neb.spacegame.gameScreens.game.spacedebris.SmallSpaceDebris;
-import ch.neb.spacegame.gameScreens.game.spacedebris.SpaceDebris;
-import ch.neb.spacegame.gameScreens.game.spacedebris.SpaceRock;
-import ch.neb.spacegame.math.Random;
-import ch.neb.spacegame.math.Vec2;
+import ch.fhnw.oop2.gameScreens.AbstractCamera;
+import ch.fhnw.oop2.gameScreens.GameScreen;
+import ch.fhnw.oop2.gameScreens.game.Player;
+import ch.fhnw.oop2.gameScreens.game.enemies.EnemyShip;
+import ch.fhnw.oop2.gameScreens.game.guns.NormalGun;
+import ch.fhnw.oop2.gameScreens.game.guns.RocketLauncher;
+import ch.fhnw.oop2.gameScreens.game.spacedebris.SmallSpaceDebris;
+import ch.fhnw.oop2.gameScreens.game.spacedebris.SpaceDebris;
+import ch.fhnw.oop2.gameScreens.game.spacedebris.SpaceRock;
+import ch.fhnw.oop2.spacegame.math.Random;
+import ch.fhnw.oop2.spacegame.math.Vec2;
 
 public class SpawnerGameEntity extends GameEntity {
 
