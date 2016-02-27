@@ -2,7 +2,7 @@ package ch.neb.spacegame.gameScreens.game.guns;
 
 import java.awt.image.BufferedImage;
 
-import ch.neb.spacegame.GameEntity;
+import ch.fhnw.oop2.spacegame.GameEntity;
 import ch.neb.spacegame.gameScreens.GameScreen;
 import ch.neb.spacegame.gameScreens.game.bullets.Bullet;
 import ch.neb.spacegame.math.Vec2;

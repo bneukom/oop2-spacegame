@@ -6,12 +6,12 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
-import ch.neb.spacegame.Arts;
-import ch.neb.spacegame.GameEntity;
-import ch.neb.spacegame.Layer;
-import ch.neb.spacegame.SpawnerGameEntity;
-import ch.neb.spacegame.SpawnerGameEntity.Spawner;
-import ch.neb.spacegame.UpdateContext;
+import ch.fhnw.oop2.spacegame.Arts;
+import ch.fhnw.oop2.spacegame.GameEntity;
+import ch.fhnw.oop2.spacegame.Layer;
+import ch.fhnw.oop2.spacegame.SpawnerGameEntity;
+import ch.fhnw.oop2.spacegame.UpdateContext;
+import ch.fhnw.oop2.spacegame.SpawnerGameEntity.Spawner;
 import ch.neb.spacegame.gameScreens.AbstractCamera;
 import ch.neb.spacegame.gameScreens.GameScreen;
 import ch.neb.spacegame.gameScreens.GameScreenManager;

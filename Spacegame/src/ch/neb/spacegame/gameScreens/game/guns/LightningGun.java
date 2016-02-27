@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import ch.neb.spacegame.GameEntity;
-import ch.neb.spacegame.Layer;
-import ch.neb.spacegame.UpdateContext;
+import ch.fhnw.oop2.spacegame.GameEntity;
+import ch.fhnw.oop2.spacegame.Layer;
+import ch.fhnw.oop2.spacegame.UpdateContext;
 import ch.neb.spacegame.gameScreens.AbstractCamera;
 import ch.neb.spacegame.gameScreens.GameScreen;
 import ch.neb.spacegame.gameScreens.game.Mob;

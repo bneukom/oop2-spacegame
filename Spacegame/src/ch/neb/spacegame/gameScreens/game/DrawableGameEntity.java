@@ -4,8 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
-import ch.neb.spacegame.GameEntity;
-import ch.neb.spacegame.UpdateContext;
+import ch.fhnw.oop2.spacegame.GameEntity;
+import ch.fhnw.oop2.spacegame.UpdateContext;
 import ch.neb.spacegame.gameScreens.GameScreen;
 import ch.neb.spacegame.math.Vec2;
 

@@ -2,11 +2,11 @@ package ch.neb.spacegame.gameScreens.game.bullets;
 
 import java.awt.image.BufferedImage;
 
-import ch.neb.spacegame.Animation;
-import ch.neb.spacegame.Arts;
-import ch.neb.spacegame.CollisionListener;
-import ch.neb.spacegame.GameEntity;
-import ch.neb.spacegame.UpdateContext;
+import ch.fhnw.oop2.spacegame.Animation;
+import ch.fhnw.oop2.spacegame.Arts;
+import ch.fhnw.oop2.spacegame.CollisionListener;
+import ch.fhnw.oop2.spacegame.GameEntity;
+import ch.fhnw.oop2.spacegame.UpdateContext;
 import ch.neb.spacegame.gameScreens.GameScreen;
 import ch.neb.spacegame.gameScreens.game.Explosion;
 import ch.neb.spacegame.gameScreens.game.Mob;

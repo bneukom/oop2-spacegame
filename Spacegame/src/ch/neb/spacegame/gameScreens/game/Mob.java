@@ -6,10 +6,10 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.neb.spacegame.DamageListener;
-import ch.neb.spacegame.GameEntity;
-import ch.neb.spacegame.KillListener;
-import ch.neb.spacegame.UpdateContext;
+import ch.fhnw.oop2.spacegame.DamageListener;
+import ch.fhnw.oop2.spacegame.GameEntity;
+import ch.fhnw.oop2.spacegame.KillListener;
+import ch.fhnw.oop2.spacegame.UpdateContext;
 import ch.neb.spacegame.gameScreens.GameScreen;
 
 /**

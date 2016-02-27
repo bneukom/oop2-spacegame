@@ -6,10 +6,10 @@ import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D.Float;
 
-import ch.neb.spacegame.CollisionListener;
-import ch.neb.spacegame.GameEntity;
-import ch.neb.spacegame.Layer;
-import ch.neb.spacegame.UpdateContext;
+import ch.fhnw.oop2.spacegame.CollisionListener;
+import ch.fhnw.oop2.spacegame.GameEntity;
+import ch.fhnw.oop2.spacegame.Layer;
+import ch.fhnw.oop2.spacegame.UpdateContext;
 import ch.neb.spacegame.gameScreens.AbstractCamera;
 import ch.neb.spacegame.gameScreens.GameScreen;
 import ch.neb.spacegame.gameScreens.game.GameCamera;

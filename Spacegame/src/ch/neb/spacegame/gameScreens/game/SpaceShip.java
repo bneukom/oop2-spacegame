@@ -4,9 +4,9 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.neb.spacegame.Animation;
-import ch.neb.spacegame.Arts;
-import ch.neb.spacegame.UpdateContext;
+import ch.fhnw.oop2.spacegame.Animation;
+import ch.fhnw.oop2.spacegame.Arts;
+import ch.fhnw.oop2.spacegame.UpdateContext;
 import ch.neb.spacegame.gameScreens.GameScreen;
 import ch.neb.spacegame.gameScreens.game.guns.Gun;
 import ch.neb.spacegame.math.Vec2;

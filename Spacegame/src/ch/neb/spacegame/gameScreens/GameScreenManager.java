@@ -2,8 +2,8 @@ package ch.neb.spacegame.gameScreens;
 
 import java.awt.Graphics2D;
 
-import ch.neb.spacegame.Audio;
-import ch.neb.spacegame.UpdateContext;
+import ch.fhnw.oop2.spacegame.Audio;
+import ch.fhnw.oop2.spacegame.UpdateContext;
 
 public class GameScreenManager {
 	private static GameScreenManager instance;

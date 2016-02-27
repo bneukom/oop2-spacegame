@@ -7,8 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import ch.neb.spacegame.GameEntity;
-import ch.neb.spacegame.UpdateContext;
+import ch.fhnw.oop2.spacegame.GameEntity;
+import ch.fhnw.oop2.spacegame.UpdateContext;
 
 public abstract class GameScreen {
 	protected List<GameEntity> gameEntities = new ArrayList<>();

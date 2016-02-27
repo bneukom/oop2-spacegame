@@ -1,9 +1,9 @@
 package ch.neb.spacegame.gameScreens.game.spacedebris;
 
-import ch.neb.spacegame.Animation;
-import ch.neb.spacegame.Arts;
-import ch.neb.spacegame.GameEntity;
-import ch.neb.spacegame.KillListener;
+import ch.fhnw.oop2.spacegame.Animation;
+import ch.fhnw.oop2.spacegame.Arts;
+import ch.fhnw.oop2.spacegame.GameEntity;
+import ch.fhnw.oop2.spacegame.KillListener;
 import ch.neb.spacegame.gameScreens.GameScreen;
 import ch.neb.spacegame.gameScreens.game.Explosion;
 import ch.neb.spacegame.gameScreens.game.Player;

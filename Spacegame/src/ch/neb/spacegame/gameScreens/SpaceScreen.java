@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import ch.neb.spacegame.Arts;
+import ch.fhnw.oop2.spacegame.Arts;
 
 public abstract class SpaceScreen extends GameScreen {
 
